@@ -1,0 +1,20 @@
+"Stage","Message","Choice1","Choice2","Outro1","Outro2"
+"CallToAdventure","{name}, your best friend, {character:bestfriend:name:captured}, has been kidnapped in the night!","Search the nearby Black Forest for {character:captured:objPronoun}","Spend the week consoling {character:captured:possPronoun} family","You spend days searching the nearby Black Forest for {character:captured:name}. One day, a figure emerges from behind the trees.{|MTM|}","All of you feel much better, but {character:captured:name} is still missing.{|ROC|}"
+"RefusalOfCall","In the middle of the night, you wake up. You're somewhere in the Black Forest. Your hands and feet are tied. A {character:mentor:sexAge} is crouching over you.","Spit in {character:mentor:possPronoun} face","Wait until {character:mentor:subPronoun} goes away","{character:mentor:subPronoun:cap} wipes off {character:mentor:possPronoun} face and smiles. ""You wouldn't be so upset if you knew I saved your life. You were next to go, you know that?""{|MTM|}","{character:mentor:subPronoun:cap} unties you silently. When {character:mentor:subPronoun}'s done, {character:mentor:subPronoun} says, ""Hope you know I saved your life. You were next to go, did you know that?""{|MTM|}"
+"MeetingTheMentor","""My name's {character:mentor:name:ranger},"" {character:ranger:subPronoun} says. ""I'm sure you want to know where your friend is. Well, {character:captured:subPronoun}'s been taken to the Tower by {character:antagonist:baron:baron} {character:baron:name}. {character:baron:name}'s too powerful, {character:baron:subPronoun} wants to make your friend fight for {character:baron:objPronoun}, just like {character:baron:subPronoun}'s done to the others {character:baron:subPronoun}'s kidnapped. You have to stop {character:baron:objPronoun}.""","Ask {character:ranger:name} for {character:ranger:possPronoun} help","Set off for the tower (you know the way)","""I'm sorry, I can't go near the {character:baron:baron}'s Tower myself. {character:baron:subPronoun:cap} and {character:baron:possPronoun} goons'll be looking for me. But here, you take this."" {character:ranger:subPronoun:cap} hands you a hard object wrapped in cloth. ""You'll need it."" With that, {character:ranger:name} disappears into the forest. {|GIVE:artifact:A mysterious gift:a hard object wrapped in cloth|}{|CTT|}","You walk further into the forest, headed for the Tower. ""Good luck with the {character:baron:baron},"" {character:ranger:name} calls after you.{|CTT|}"
+"CrossingTheThreshhold","You travel through the Black Forest for several days. One night, you open {character:ranger:name}'s gift.{RENAME:artifact:A blue orb:glows slightly in the dark} Beneath the cloth is a blue orb, glowing slightly.
+
+On the far side of the Black Forest, a wide river blocks your path to the Tower.","Wade through the rushing water","Look for another way around","{|BOTW|}","{|BOTW|}"
+"BellyOfTheWhale",,,,,
+"RoadOfTrials",,,,,
+"MeetingWithGoddess",,,,,
+"WomanAsTemptress",,,,,
+"AtonementWithFather",,,,,
+"Apotheosis",,,,,
+"UltimateBoon",,,,,
+"RefusalOfReturn",,,,,
+"MagicFlight",,,,,
+"RescueFromWithout",,,,,
+"CrossingReturnThreshhold",,,,,
+"MasterOfTwoWorlds",,,,,
+"FreedomToLive",,,,,

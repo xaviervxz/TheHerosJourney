@@ -48,6 +48,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Names.json" />
+    <None Include="Scenes.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NeverendingStory\NeverendingStory.csproj">
