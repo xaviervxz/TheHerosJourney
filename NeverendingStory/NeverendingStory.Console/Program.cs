@@ -96,7 +96,10 @@ namespace NeverendingStory.Console
 
                         File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "story_log.txt"), string.Join(Environment.NewLine, MessageLog));
 
-                        break;
+                        ReadInput();
+
+                        gameRunning = false;
+                        continue;
                     }
 
                     // Generate and display the scene message.
@@ -154,6 +157,8 @@ inventory or i - view your inventory (your collected items)
                 {
                     WriteMessage("(Please enter \"1\" or \"2\" to choose an action.)");
                 }
+
+                currentScene.Done = true;
             }
         }
     }

@@ -93,59 +93,13 @@ namespace NeverendingStory.Functions
 
                     if (commandOptions.Length == 1)
                     {
-                        switch (command)
+                        if (commandOptions[0] == "DONE")
                         {
-                            case "CTA":
-                                story.CurrentStage = JourneyStage.CallToAdventure;
-                                break;
-                            case "ROC":
-                                story.CurrentStage = JourneyStage.RefusalOfCall;
-                                break;
-                            case "MTM":
-                                story.CurrentStage = JourneyStage.MeetingTheMentor;
-                                break;
-                            case "CTT":
-                                story.CurrentStage = JourneyStage.CrossingTheThreshhold;
-                                break;
-                            case "BOTW":
-                                story.CurrentStage = JourneyStage.BellyOfTheWhale;
-                                break;
-                            case "ROT":
-                                story.CurrentStage = JourneyStage.RoadOfTrials;
-                                break;
-                            case "MWG":
-                                story.CurrentStage = JourneyStage.MeetingWithGoddess;
-                                break;
-                            case "WAT":
-                                story.CurrentStage = JourneyStage.WomanAsTemptress;
-                                break;
-                            case "AWF":
-                                story.CurrentStage = JourneyStage.AtonementWithFather;
-                                break;
-                            case "A":
-                                story.CurrentStage = JourneyStage.Apotheosis;
-                                break;
-                            case "UB":
-                                story.CurrentStage = JourneyStage.UltimateBoon;
-                                break;
-                            case "ROR":
-                                story.CurrentStage = JourneyStage.RefusalOfReturn;
-                                break;
-                            case "MF":
-                                story.CurrentStage = JourneyStage.MagicFlight;
-                                break;
-                            case "RFW":
-                                story.CurrentStage = JourneyStage.RescueFromWithout;
-                                break;
-                            case "CRT":
-                                story.CurrentStage = JourneyStage.CrossingReturnThreshhold;
-                                break;
-                            case "MOTW":
-                                story.CurrentStage = JourneyStage.MasterOfTwoWorlds;
-                                break;
-                            case "FTL":
-                                story.CurrentStage = JourneyStage.FreedomToLive;
-                                break;
+                            story.CurrentStage = Pick.NextStage(story);
+                        }
+                        else
+                        {
+                            story.NextSceneIdentifier = commandOptions[0];
                         }
                     }
                     else

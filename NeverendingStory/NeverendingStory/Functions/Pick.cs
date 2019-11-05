@@ -25,21 +25,63 @@ namespace NeverendingStory.Functions
 
         public static Scene NextScene(Scene[] scenes, Story story)
         {
-            bool SceneMatchesAndIsFilledOut(Scene s, JourneyStage currentStage)
+            if (story.NextSceneIdentifier != null)
             {
-                bool sceneIsFilledOut = !string.IsNullOrWhiteSpace(s.Message)
-                && !string.IsNullOrWhiteSpace(s.Choice1)
-                && !string.IsNullOrWhiteSpace(s.Choice2)
-                && !string.IsNullOrWhiteSpace(s.Outro1)
-                && !string.IsNullOrWhiteSpace(s.Outro2);
+                string nextSceneIdentifier = story.NextSceneIdentifier;
+                story.NextSceneIdentifier = null;
+
+                var nextScene = scenes.FirstOrDefault(s => s.Identifier == nextSceneIdentifier);
+
+                if (nextScene != null)
+                {
+                    return nextScene;
+                }
+                else if (!string.IsNullOrWhiteSpace(nextSceneIdentifier))
+                {
+                    var nextStage = Pick.StageFromCode(nextSceneIdentifier);
+
+                    if (nextStage != null)
+                    {
+                        story.CurrentStage = nextStage.Value;
+                    }
+                }
+            }
+
+            bool SceneCanBeUsedHere(Scene s, JourneyStage currentStage)
+            {
+                bool sceneIsFilledOut = !string.IsNullOrWhiteSpace(s.Message);
 
                 bool sceneMatches = s.Stage == currentStage;
 
-                return sceneMatches && sceneIsFilledOut;    
+                var conditions = s.Conditions.Split('|');
+                bool AreMet(string condition)
+                {
+                    var conditionPieces = condition.Split(':');
+
+                    if (conditionPieces.Length == 0 || string.IsNullOrWhiteSpace(conditionPieces[0]))
+                    {
+                        return true;
+                    }
+
+                    if (conditionPieces[0] == "item" && conditionPieces.Length == 2)
+                    {
+                        bool haveItem = story.You.Inventory.Any(i => i.Identifier == conditionPieces[1]);
+
+                        return haveItem;
+                    }
+
+                    return false;
+                }
+                bool sceneConditionsAreMet = conditions.All(AreMet);
+
+                return sceneConditionsAreMet && sceneMatches && sceneIsFilledOut && !s.Done && !s.IsSubStage;
             }
 
 
-            var scene = Random(scenes.Where(s => SceneMatchesAndIsFilledOut(s, story.CurrentStage)).ToArray());
+            var scene = scenes
+                .Where(s => SceneCanBeUsedHere(s, story.CurrentStage))
+                .OrderByDescending(s => s.Conditions.Length)
+                .FirstOrDefault();
 
             return scene;
         }
@@ -63,6 +105,65 @@ namespace NeverendingStory.Functions
             }
 
             return character;
+        }
+
+        public static JourneyStage NextStage(Story story)
+        {
+            JourneyStage nextStage;
+
+            if (story.CurrentStage == JourneyStage.RoadOfTrials)
+            {
+                nextStage = story.CurrentStage;
+                story.CurrentStageNumber += 1;
+
+                if (story.CurrentStageNumber > 3)
+                {
+                    story.CurrentStageNumber = 1;
+                }
+            }
+            else if (story.CurrentStage == JourneyStage.FreedomToLive)
+            {
+                return JourneyStage.CallToAdventure;
+            }
+            else
+            {
+                nextStage = story.CurrentStage + 1;
+            }
+
+            return nextStage;
+        }
+
+        private static Dictionary<string, JourneyStage> stageCodes = new Dictionary<string, JourneyStage>
+        {
+            { "CTA", JourneyStage.CallToAdventure },
+            { "ROC", JourneyStage.RefusalOfCall },
+            { "MTM", JourneyStage.MeetingTheMentor },
+            { "CTT", JourneyStage.CrossingTheThreshhold },
+            { "BOTW", JourneyStage.BellyOfTheWhale },
+            { "ROT", JourneyStage.RoadOfTrials },
+            { "MWG", JourneyStage.MeetingWithGoddess },
+            { "WAT", JourneyStage.WomanAsTemptress },
+            { "AWF", JourneyStage.AtonementWithFather },
+            { "A", JourneyStage.Apotheosis },
+            { "UB", JourneyStage.UltimateBoon },
+            { "ROR", JourneyStage.RefusalOfReturn },
+            { "MF", JourneyStage.MagicFlight },
+            { "RFW", JourneyStage.RescueFromWithout },
+            { "CRT", JourneyStage.CrossingReturnThreshhold },
+            { "MOTW", JourneyStage.MasterOfTwoWorlds },
+            { "FTL", JourneyStage.FreedomToLive }
+        };
+
+        public static JourneyStage? StageFromCode(string code)
+        {
+            var matchingStage = stageCodes.FirstOrDefault(c => code.StartsWith(c.Key));
+
+            if (matchingStage.Equals(default(KeyValuePair<string, JourneyStage>)))
+            {
+                return null;
+            }
+
+            return matchingStage.Value;
         }
     }
 }

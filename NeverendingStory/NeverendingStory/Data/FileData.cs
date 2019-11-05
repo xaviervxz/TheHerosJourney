@@ -18,19 +18,4 @@ namespace NeverendingStory.Data
         Southron,
         Northish
     }
-
-    public class Scene
-    {
-        public JourneyStage Stage { get; set; }
-
-        public string Message { get; set; }
-
-        public string Choice1 { get; set; }
-
-        public string Choice2 { get; set; }
-
-        public string Outro1 { get; set; }
-
-        public string Outro2 { get; set; }
-    }
 }

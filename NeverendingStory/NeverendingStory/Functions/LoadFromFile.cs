@@ -54,7 +54,19 @@ namespace NeverendingStory.Functions
             using (var streamReader = new StreamReader(fileStream))
             using (var csv = new CsvReader(streamReader))
             {
+                // Get the scenes from the CSV.
                 var scenes = csv.GetRecords<Scene>().ToArray();
+
+                // For each scene we got, assign some calculated variables...
+                foreach (var scene in scenes)
+                {
+                    // The Stage
+                    scene.Stage = Pick.StageFromCode(scene.Identifier);
+
+                    // IsSubStage
+                    char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
+                    scene.IsSubStage = char.IsLetter(lastCharacter);
+                }
 
                 return scenes;
             }

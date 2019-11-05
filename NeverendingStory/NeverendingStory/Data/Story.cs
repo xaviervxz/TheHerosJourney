@@ -11,5 +11,9 @@ namespace NeverendingStory.Data
         public Dictionary<string, Character> NamedCharacters { get; } = new Dictionary<string, Character>();
 
         public List<Character> Characters { get; } = new List<Character>();
+
+        public int CurrentStageNumber { get; set; } = 0;
+
+        public string NextSceneIdentifier { get; set; } = null;
     }
 }

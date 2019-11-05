@@ -28,6 +28,7 @@ namespace NeverendingStory.Data
 
         public List<Item> Inventory { get; set; } = new List<Item>{new Item
         {
+            Identifier = "clothes",
             Name = "Clothes",
             Description = "shirt, pants, shoes, and a cloak"
         }};
