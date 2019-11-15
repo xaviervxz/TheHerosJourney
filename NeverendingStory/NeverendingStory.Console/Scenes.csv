@@ -1,15 +1,39 @@
 "Identifier","Conditions","Message","Choice1","Choice2","Outro1","Outro2"
-"CTA1",,"{name}, your best friend, {character:bestfriend:name:captured}, has been kidnapped in the night!","Search the nearby Black Forest for {character:captured:objPronoun}","Spend the week consoling {character:captured:possPronoun} family","You spend days searching the nearby Black Forest for {character:captured:name}. One day, a figure emerges from behind the trees.{|MTM|}","All of you feel much better, but {character:captured:name} is still missing.{|ROC|}"
-"ROC1",,"In the middle of the night, you wake up. You're somewhere in the Black Forest. Your hands and feet are tied. A {character:mentor:sexAge} is crouching over you.","Spit in {character:mentor:possPronoun} face","Wait until {character:mentor:subPronoun} goes away","{character:mentor:subPronoun:cap} wipes off {character:mentor:possPronoun} face and smiles. ""You wouldn't be so upset if you knew I saved your life. You were next to go, you know that?""{|DONE|}","{character:mentor:subPronoun:cap} unties you silently. When {character:mentor:subPronoun}'s done, {character:mentor:subPronoun} says, ""Hope you know I saved your life. You were next to go, did you know that?""{|DONE|}"
-"MTM1",,"""My name's {character:mentor:name:ranger},"" {character:ranger:subPronoun} says. ""I'm sure you want to know where your friend is. Well, {character:captured:subPronoun}'s been taken to the Tower by {character:antagonist:baron:baron} {character:baron:name}. {character:baron:name}'s too powerful, {character:baron:subPronoun} wants to make your friend fight for {character:baron:objPronoun}, just like {character:baron:subPronoun}'s done to the others {character:baron:subPronoun}'s kidnapped. You have to stop {character:baron:objPronoun}.""","Ask {character:ranger:name} for {character:ranger:possPronoun} help","Set off for the Tower (you know the way)","""I'm sorry, I can't go near the {character:baron:baron}'s Tower myself. {character:baron:subPronoun:cap} and {character:baron:possPronoun} goons'll be looking for me. But here, you take this."" {character:ranger:subPronoun:cap} hands you a hard object wrapped in cloth. ""You'll need it."" With that, {character:ranger:name} disappears into the forest. {|GIVE:artifact:A mysterious gift:a hard object wrapped in cloth|}
+"CTA1",,"{name}, you live in Lakeville, a small village on the edge of Lake Calhoun. You work on the fishing boats, bringing back enough fish each day to feed your small village.
+
+One day, a messenger rides into town. ""Citizens of Lakeville, the {character:antagonist:baron:baron} {character:baron:name} lays claim to your city. You are now under {character:baron:possPronoun} rule and will pay taxes and fealty to {character:baron:objPronoun}.""
+
+What do you do?","Leave Lakeville to tell the {character:baron:baron} that {character:baron:subPronoun} doesn't own you","Go to work like always and see if anything changes","You set out for the {character:baron:baron}'s home, the Tower. You know the way, which leads through the nearby Black Forest.
+
+Deep in the Black Forest, a {character:mentor:ageSex:ranger} emerges from behind the trees. {character:mentor:subPronoun:cap}'s wearing rough clothing.{|MTM|}","The fish are biting, just like they always are this time of year. It's a good haul.{|ROC|}"
+"ROC1",,"The next week, the {character:baron:baron}'s men arrive. They are soldiers, well-armed and uniformed, with the insignia of the {character:baron:baron} on their jackets.
+
+They say they're here to collect taxes, but they take so much more than that. They eat food they don't pay for, destroy property that isn't theirs, and leer at young men and women.
+
+In the morning, your friend {character:bestfriend:name:stolen} is missing. {character:stolen:possPronoun:cap} family say that {character:stolen:subPronoun} was taken by {character:baron:baron} {character:baron:name}'s men. They don't know when, or if, {character:stolen:subPronoun} will return.","Set out for the Tower immediately","Start a fight with the {character:baron:baron}'s men","You slink into the nearby Black Forest in the night, setting your course straight for the Tower.
+
+The next day, deep in the forest, a {character:mentor:ageSex:ranger} emerges from behind the trees. {character:mentor:subPronoun:cap}'s wearing rough clothing.{|MTM|}","You find a group of the {character:baron:baron}'s men in the tavern drinking. As one of them turns to you, your first blow lands squarely on his jaw. An all-out brawl breaks out. You give as good as you get, but in the end there are too many of them.
+
+""I'll take care of {objPronoun},"" you hear a voice say. Rough hands carry you out of town into the Black Forest. You pass out.
+
+You wake up the next day, deep in the Black Forest. A {character:mentor:ageSex:ranger} sits under a nearby tree. As you open your eyes, {character:ranger:subPronoun} says, ""Hope you appreciate I saved your life. That was kind of a stupid fight to start, you know?""{|DONE|}"
+"MTM1",,"""My name's {character:mentor:name:ranger},"" {character:ranger:subPronoun} says. ""Lakeville's not the first village that {character:baron:baron} {character:baron:name}'s taken control of. {character:baron:subPronoun:cap}'ll stop at nothing until the whole region is under {character:baron:possPronoun} control. We can't let that happen.
+
+""If you want to stop {character:baron:objPronoun} and get back Lakeville, you'll have to make it to the Tower.""","Ask {character:ranger:name} for {character:ranger:possPronoun} help","Set off for the Tower (you know the way)","""I'm sorry, I can't go near the {character:baron:baron}'s Tower myself. {character:baron:subPronoun:cap} and {character:baron:possPronoun} goons'll be looking for me. But here, you take this."" {character:ranger:subPronoun:cap} hands you piece of rolled cloth. ""It might be useful."" With that, {character:ranger:name} disappears into the forest. {|GIVE:map:A cloth map:shows a hidden path into the Tower|}
+
+The cloth, once unrolled, looks like some sort of map of a secret entrance into the {character:baron:baron}'s Tower. You roll it up again and put it in your pack.
+
 You travel through the Black Forest for several days.{|DONE|}","You walk further into the forest, headed for the Tower. ""Good luck with the {character:baron:baron},"" {character:ranger:name} calls after you.
 You travel through the Black Forest for several days.{|DONE|}"
-"CTT1","item:artifact","One night, sitting by a flickering campfire, you take {character:ranger:name}'s gift out of your bag to look at it. It's still wrapped in cloth. Whatever's in it is hard and round.","Remove the cloth","Put it away in your pack","You remove the cloth and examine the object underneath. {|RENAME:artifact:A blue orb:glows slightly in the dark|} {character:ranger:name}'s gift is a blue orb, glowing slightly in the dark.
+"MTM2","character:ranger","""My name's {character:ranger:name},"" {character:ranger:subPronoun} says. ""Lakeville's not the first village that {character:baron:baron} {character:baron:name}'s taken control of. {character:baron:subPronoun:cap}'ll stop at nothing until the whole region is under {character:baron:possPronoun} control. We can't let that happen.
 
-A few days later, you reach the edge of the Black Forest. {|CTT2|}","You put it back in your pack and go to sleep.
+""If you want to stop {character:baron:objPronoun} and get back Lakeville, you'll have to make it to the Tower.""","Ask {character:ranger:name} for {character:ranger:possPronoun} help","Set off for the Tower (you know the way)","""I'm sorry, I can't go near the {character:baron:baron}'s Tower myself. {character:baron:subPronoun:cap} and {character:baron:possPronoun} goons'll be looking for me. But here, you take this."" {character:ranger:subPronoun:cap} hands you piece of rolled cloth. ""It might be useful."" With that, {character:ranger:name} disappears into the forest. {|GIVE:map:A cloth map:shows a hidden path into the Tower|}
 
-A few days later, you reach the edge of the Black Forest. {|CTT2|}"
-"CTT2",,"A wide river blocks your path to the Tower. The water is deep and moving fast.","Wade through the rushing water","Look for another way around","You wade through the rushing water. It comes up to your armpits. You hold your pack above your head.
+The cloth, once unrolled, looks like some sort of map of a secret entrance into the {character:baron:baron}'s Tower. You roll it up again and put it in your pack.
+
+You travel through the Black Forest for several days.{|DONE|}","You walk further into the forest, headed for the Tower. ""Good luck with the {character:baron:baron},"" {character:ranger:name} calls after you.
+You travel through the Black Forest for several days.{|DONE|}"
+"CTT1",,"A wide river blocks your path to the Tower. The water is deep and moving fast.","Wade through the rushing water","Look for another way around","You wade through the rushing water. It comes up to your armpits. You hold your pack above your head.
 
 It takes every ounce of your strength, but you make it across. On the other side, you're soaked to the bone and exhausted. You rest for an hour while your clothes dry.
 
@@ -18,30 +42,58 @@ Once you're ready, you continue on your way to the Tower.{|DONE|}","You walk alo
 On the other side, you continue on your way to the Tower.{|DONE|}"
 "BOTW1",,"Your path lies through a thick forest, overgrown and difficult to travel through.
 
-After a day or so, you hear footsteps crashing through the brush. They're getting nearer.","Hide in the brush and wait","Seek out the footsteps","You find a clump of bushes to hide inside. As the footsteps get closer, you see two dozen armed men in uniform tramping through the underbrush. They bear the insignia of the {character:baron:baron} on their jackets.
+After a day or so, you hear footsteps crashing through the brush. They're getting nearer.","Hide in the brush and wait","Seek out the footsteps","You find a clump of bushes to hide inside. As the footsteps get closer, you see two dozen armed of the {character:baron:baron}'s men tramping through the underbrush.
 
 You hold your breath, but one of them stumbles just too close to you.
 
-""What do we have here?"" he says. He grabs you roughly by the shoulder and jerks you to your feet. ""Well, well, well, the {character:baron:baron} will be THRILLED to meet you. I guess we can go home early, everyone!"" Cheers erupt.{|BOTW1a|}","You tramp through the underbrush towards the sound of footsteps, getting closer as you hike. Then, through the trees, two dozen armed men in uniform emerge. They bear the insignia of the {character:baron:baron} on their jackets.
+""What do we have here?"" he says. He grabs you roughly by the shoulder and jerks you to your feet. ""Well, well, well, the {character:baron:baron} will be THRILLED to meet you!"" Cheers erupt.{|BOTW1a|}","You tramp through the underbrush towards the sound of footsteps, getting closer as you hike. Then, through the trees, two dozen of the {character:baron:baron}'s men in uniform emerge.
 
-One of them grabs you roughly by the shoulder. ""What do we have here?"" he says. ""Well, well, well, the {character:baron:baron} will be THRILLED to meet you. I guess we can go home early, everyone!"" Cheers erupt.{|BOTW1a|}"
+One of them grabs you roughly by the shoulder. ""What do we have here?"" he says. ""Well, well, well, the {character:baron:baron} will be THRILLED to meet you!"" Cheers erupt.{|BOTW1a|}"
 "BOTW1a",,"Two more men grab your arms and bind them. You're taken to a camp in the woods an hour away. The {character:baron:baron}'s men tie you to a tree and spend the night drinking and making coarse jokes.
 
 Most of them have fallen asleep, but there is still one awake, on guard, staring into the fire. He isn't looking directly at you, you could try to escape while he isn't looking. What do you do?","Wiggle out of your bonds and sneak into the night","Wait until morning for a chance to escape","It takes you over an hour, but you eventually feel the bonds loosening enough that you can slip out of them. The lone guard is still staring into the fire, poking at it with his sword and humming.
 
 You grab your pack silently and disappear into the night, using the stars to head in the direction of the Tower.{|DONE|}","You close your eyes and eventually fall into a fitful sleep.
 
-Hours later you feel someone removing your bonds. It's still night out. You turn to look and see {character:mentor:name}'s face. ""Didn't think I'd find you when I came to investigate. Stay quiet."" {character:mentor:subPronoun:cap} finishes cutting your bonds with {character:mentor:possPronoun} knife, and the two of you slip into the night.
+Hours later you feel someone removing your bonds. It's still night out. You turn to look and see {character:mentor:name}'s face. ""Didn't think I'd find YOU when I came to investigate. Stay quiet."" {character:mentor:subPronoun:cap} finishes cutting your bonds with {character:mentor:possPronoun} knife, and the two of you slip into the night.
 
 You travel for a few minutes away from the camp before you realize {character:mentor:name} is gone. The sun begins to rise as you silently make your way toward the Tower.{|DONE|}"
-"ROT1",,"The forest begins to disappear around you. The trees become less and less frequent, and the ground becomes drier and drier.
+"ROT1",,"The next day, a small creature runs across your path. You almost step on it.
 
-A small creature runs across the path by your feet.",,,,
-"ROT2",,,,,,
-"ROT3",,,,,,
-"MWG1",,,,,,
-"WAT1",,"As you head toward the Tower, on your left, you see a field of berry bushes, overflowing with red berries. Your food is running low, and you feel hungry.","Gather and enjoy some berries","Avoid the patch and press on",,
-"AWF1",,"The {character:baron:baron} stands at the entrance to the room, {character:baron:possPronoun} sword leveled at you as {character:baron:subPronoun} approaches slowly.",,,,
+You squat down to look at it. It seems like some sort of squirrel, but it's eyes are ruby red. It sits still, staring at you, alert","Give it some of your food","Ignore it","The squirrel seems appreciative, and chirps happily. It looks deep into your eyes, then it scampers off into the forest. {|DONE|}","The squirrel watches you as you leave, then scampers off."
+"ROT2",,"Late in the day, you hear a voice calling out through the forest. You hide immediately, but then realize the voice seems to be that of a young {character:child:sexAge:petowner}. You can see {character:petowner:objPronoun} walking alone, calling out for her cat. What do you do?","Reveal yourself and offer to help","Wait until {character:petowner:subPronoun}'s gone and continue","You step out from behind your tree, startling the {character:petowner:sexAge} briefly. {character:petowner:subPronoun:cap} seems thrilled to have the help. {character:petowner:subPronoun:cap} tells you {character:petowner:possPronoun} name is {character:petowner:name}, and {character:petowner:possPronoun} cat's name is Sniffles.
+
+Together, it takes you a few ours to find Sniffles. {character:petowner:name:cap} thanks you profusely for your help. Then, you continue on your way to the Tower.{|DONE|}","{character:petowner:subPronoun:cap} continues calling and passes out of earshot in a few minutes. Then, you continue on your way to the Tower.{|DONE|}"
+"ROT3",,"You're being careful, but you don't notice a well-concealed pit before it's too late. You step through the thin covering of leaves and ferns and fall right through to the bottom, landing with a crunch.
+
+Your leg hurts. You look up: the pit's sides are sheer hard dirt, about 15 feet deep. There are no roots, nothing down there with you besides dirt and whatever you have with you.","Try to climb out","Call for help","There's nothing to grab onto, but you dig your fingernails and toes into the dirt as best you can, trying to find rocks or roots to hold onto.
+
+You fall a few times, but you make progress. The pain in your leg blends with the pain in the rest of your body. Very slowly, you make your way to the top. Your fingers are bleeding, your wrists hurt.{|DONE|}","Your voice rings out into the forest. No one answers.
+
+After a few minutes, you hear skittering and see the squirrel peek its head into view. Then it disappears.
+
+A minute later, a vine woven from ferns and grasses drops down into the pit with you. The squirrel reappears, it's red eyes flashing, before it disappears again.
+
+You climb easily out of the pit. The squirrel is nowhere to be seen.{|DONE|}"
+"MWG1",,"As the sun sets, you see a small hut ahead of you, nestled between the trees. You pause, considering whether or not to investigate, but before you can decide, a group of men and women dressed like {character:mentor:name} steps out from behind the trees, surrounding you.
+
+""What are YOU doing here?"" {character:guardian:subPronoun} asks.","Ask them what THEY are doing here","Tell them you're here to free Lakeville from {character:baron:baron} {character:baron:name}","""We're fighting against the {character:baron:baron}'s influence, to free the villages he's conquered from his control."" You share that you're trying to do the same thing.
+
+You spend the night with the resistance fighters. They have a plan to draw off {character:baron:possPronoun} men while you infiltrate the Tower. If you can find a way to cut {character:baron:objPronoun} off from {character:baron:possPronoun} men, they tell you, the {character:baron:baron} won't have any power over the villages any more.
+
+In the morning, you set off for the Tower again.","""We're on the same side then! Have you met our friend {character:ranger:name}? {character:ranger:subPronoun:cap}'s out somewhere, fighting against the {character:baron:baron}'s influence.""
+
+You spend the night with the resistance fighters. They have a plan to draw off {character:baron:possPronoun} men while you infiltrate the Tower. If you can find a way to cut {character:baron:objPronoun} off from {character:baron:possPronoun} men, they tell you, the {character:baron:baron} won't have any power over the villages any more.
+
+In the morning, you set off for the Tower again."
+"WAT1",,"As you head toward the Tower, late that day, on your left, you see a field of berry bushes, overflowing with red berries. Your food is running low, and you feel hungry.","Gather and enjoy some berries","Avoid the patch and press on","You gather and eat some of the berries. They are delicious.
+
+You begin to feel sleepy, and soon fall asleep in the middle of the berry patch. When you wake up, the sun is high in the sky. You have no idea how long you've been asleep—it could have been days!","Your stomach growls, but you continue on your way. As your food supply dwindles, your limbs grow weaker."
+"AWF1",,"You finally arrive at the base of the Tower. Staying out of view of any of the {character:baron:baron}'s men, you find the hidden path into the Tower on {character:ranger:name}'s map. The hidden path leads underground, and comes out into a tall, well-decorated corridor inside the Tower.
+
+The {character:baron:baron} is walking down the hall with one of {character:baron:possPronoun} men. You find a place to hide, and you can here them talking.
+
+""stands at the entrance to the room, {character:baron:possPronoun} sword leveled at you as {character:baron:subPronoun} approaches slowly.",,,,
 "A1",,,,,,
 "UB1",,,,,,
 "ROR1",,,,,,

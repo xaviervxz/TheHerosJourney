@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Data\Character.cs" />
     <Compile Include="Data\FileData.cs" />
+    <Compile Include="Data\Instincts.cs" />
     <Compile Include="Data\JourneyStage.cs" />
     <Compile Include="Data\Scene.cs" />
     <Compile Include="Data\Story.cs" />

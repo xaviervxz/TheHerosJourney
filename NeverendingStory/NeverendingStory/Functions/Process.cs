@@ -25,6 +25,18 @@ namespace NeverendingStory.Functions
                 {
                     replacedMessage = replacedMessage.Replace("{name}", story.You.Name);
                 }
+                else if (key == "subPronoun")
+                {
+                    replacedMessage = replacedMessage.Replace("{subPronoun}", story.You.SubPronoun);
+                }
+                else if (key == "objPronoun")
+                {
+                    replacedMessage = replacedMessage.Replace("{objPronoun}", story.You.ObjPronoun);
+                }
+                else if (key == "possPronoun")
+                {
+                    replacedMessage = replacedMessage.Replace("{possPronoun}", story.You.PossPronoun);
+                }
                 else if (key.StartsWith("character"))
                 {
                     var keyPieces = key.ToLower().Split(':');

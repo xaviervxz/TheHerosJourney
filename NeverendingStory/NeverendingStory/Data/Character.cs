@@ -18,7 +18,7 @@ namespace NeverendingStory.Data
         
         public string PossPronoun => SexEnum == Sex.Female ? "her" : "his";
 
-        public string SexAge => SexEnum == Sex.Female ? "woman" : "man";
+        public string SexAge => Relationship == Relationship.Child ? (SexEnum == Sex.Female ? "girl" : "boy") : (SexEnum == Sex.Female ? "woman" : "man");
 
         public string Baron => SexEnum == Sex.Female ? "Baroness" : "Baron";
 
@@ -44,7 +44,9 @@ namespace NeverendingStory.Data
         Self,
         BestFriend,
         Mentor,
-        Antagonist
+        Antagonist,
+        Child,
+        Hermit
     }
 
     public class Item

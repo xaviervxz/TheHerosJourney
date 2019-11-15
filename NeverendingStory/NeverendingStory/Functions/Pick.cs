@@ -70,6 +70,13 @@ namespace NeverendingStory.Functions
                         return haveItem;
                     }
 
+                    if (conditionPieces[0] == "character" && conditionPieces.Length == 2)
+                    {
+                        bool hasNamedCharacter = story.NamedCharacters.ContainsKey(conditionPieces[1]);
+
+                        return hasNamedCharacter;
+                    }
+
                     return false;
                 }
                 bool sceneConditionsAreMet = conditions.All(AreMet);
