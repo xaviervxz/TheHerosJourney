@@ -67,6 +67,10 @@ namespace NeverendingStory.Console
 
         private static void Main(string[] args)
         {
+            // ----------------
+            // DATA SET UP AND INTRODUCTION
+            // ----------------
+
             // LOAD DATA FROM FILES AND CREATE EMPTY STORY
             var fileData = LoadFromFile.Data(names: "Names", scenes: "Scenes");
             var story = new Story();
@@ -95,6 +99,7 @@ namespace NeverendingStory.Console
                     instinct = Instinct.ToReclaimWhatWasTaken;
                     break;
             }
+            WriteDashes();
             WriteMessage("Hello, " + story.You.Name + ", your instinct is " + instinct.ToLower() + ".");
             WriteDashes();
 
@@ -112,13 +117,10 @@ namespace NeverendingStory.Console
                 // DON'T PICK A NEW SCENE.
                 if (getNewScene)
                 {
-                    getNewScene = false;
-
                     // OTHERWISE, PICK A NEW SCENE.
                     currentScene = Pick.NextScene(fileData.Scenes, story);
 
-                    // IF NO NEW SCENE IS FOUND,
-                    // THE STORY IS OVER.
+                    // IF NO NEW SCENE IS FOUND, THE STORY IS OVER.
                     // WRITE OUT THE STORY TO A FILE AND SHOW "THE END"
                     if (currentScene == null)
                     {
@@ -134,13 +136,26 @@ namespace NeverendingStory.Console
                         continue;
                     }
                 }
+                else
+                {
+                    getNewScene = true;
+                }
 
                 // PROCESS AND DISPLAY MAIN MESSAGE
                 string message = Process.Message(currentScene.Message, story, fileData.Names);
                 WriteMessage(message);
-                WriteDashes();
 
-                // PROCESS AND DISPLAY SCENE'S OPTIONS
+                // IF THERE ARE NO CHOICES AVAILABLE IN THIS SCENE,
+                // SKIP TO THE NEXT SCENE.
+                if (string.IsNullOrWhiteSpace(currentScene.Choice1) || string.IsNullOrWhiteSpace(currentScene.Choice2))
+                {
+                    WriteMessage("");
+                    continue;
+                }
+
+                // IF THERE ARE CHOICES AVAILABLE IN THIS SCENE,
+                // PROCESS AND DISPLAY THEM.
+                WriteDashes();
                 string choice1 = Process.Message(currentScene.Choice1, story, fileData.Names);
                 WriteMessage("1) " + choice1);
                 string choice2 = Process.Message(currentScene.Choice2, story, fileData.Names);
@@ -154,6 +169,8 @@ namespace NeverendingStory.Console
                 if (input == "exit")
                 {
                     gameRunning = false;
+
+                    getNewScene = false;
                 }
                 else if (input == "help" || input == "?")
                 {
@@ -162,6 +179,8 @@ exit - exit the program
 inventory or i - view your inventory (your collected items)
 1 or 2 - choose an action");
                     WriteDashes();
+
+                    getNewScene = false;
                 }
                 else if (input == "inventory" || input == "i")
                 {
@@ -170,6 +189,8 @@ inventory or i - view your inventory (your collected items)
                     WriteMessage("You're carrying:");
                     WriteMessage(inventoryMessage);
                     WriteDashes();
+
+                    getNewScene = false;
                 }
                 else if (input == "1")
                 {
@@ -194,6 +215,8 @@ inventory or i - view your inventory (your collected items)
                 else
                 {
                     WriteMessage("(Please enter \"1\" or \"2\" to choose an action.)");
+
+                    getNewScene = false;
                 }
 
                 currentScene.Done = true;

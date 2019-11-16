@@ -12,7 +12,7 @@ namespace NeverendingStory.Data
 
         public List<Character> Characters { get; } = new List<Character>();
 
-        public int CurrentStageNumber { get; set; } = 0;
+        public int CurrentStageNumber { get; set; } = 1;
 
         public string NextSceneIdentifier { get; set; } = null;
     }

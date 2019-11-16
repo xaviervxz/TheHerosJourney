@@ -90,6 +90,12 @@ namespace NeverendingStory.Functions
                 .OrderByDescending(s => s.Conditions.Length)
                 .FirstOrDefault();
 
+            if (scene == null && story.CurrentStage != JourneyStage.FreedomToLive)
+            {
+                story.CurrentStage = Pick.NextStage(story);
+                scene = Pick.NextScene(scenes, story);
+            }
+
             return scene;
         }
 
@@ -123,14 +129,15 @@ namespace NeverendingStory.Functions
                 nextStage = story.CurrentStage;
                 story.CurrentStageNumber += 1;
 
-                if (story.CurrentStageNumber > 3)
+                if (story.CurrentStageNumber >= 3)
                 {
                     story.CurrentStageNumber = 1;
+                    nextStage = story.CurrentStage + 1;
                 }
             }
             else if (story.CurrentStage == JourneyStage.FreedomToLive)
             {
-                return JourneyStage.CallToAdventure;
+                return JourneyStage.FreedomToLive;
             }
             else
             {
