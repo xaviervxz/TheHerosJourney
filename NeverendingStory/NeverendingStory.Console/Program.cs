@@ -100,8 +100,8 @@ namespace NeverendingStory.Console
             WriteDashes();
 
             WriteMessage("Male or female? (M/F)");
-            string playerSex = ReadInput();
-            if (playerSex == "M")
+            string playerSex = ReadInput().ToLower();
+            if (playerSex == "m")
             {
                 story.You.Sex = Sex.Male;
             }
@@ -155,7 +155,6 @@ namespace NeverendingStory.Console
                         WriteDashes();
                         WriteMessage("THE END");
                         WriteDashes();
-                        WriteMessage("");
                         WriteMessage("(Press Enter to exit.)");
 
                         File.WriteAllText(Path.Combine(Directory.GetCurrentDirectory(), "story_log.txt"), string.Join(Environment.NewLine, MessageLog));

@@ -105,14 +105,7 @@ namespace NeverendingStory.Functions
 
                     if (commandOptions.Length == 1)
                     {
-                        if (commandOptions[0] == "DONE")
-                        {
-                            story.CurrentStage = Pick.NextStage(story);
-                        }
-                        else
-                        {
-                            story.NextSceneIdentifier = commandOptions[0];
-                        }
+                        story.NextSceneIdentifier = commandOptions[0];
                     }
                     else
                     {

@@ -1,0 +1,179 @@
+--------
+Welcome to the Neverending Story, Leo!
+(Type "help" and hit the "return" key to learn how to play.)
+--------
+Which one best describes what you want to do?
+1) To avoid notice
+2) To reclaim what was taken
+1
+--------
+Hello, Leo, your instinct is to avoid notice.
+--------
+Leo, you live in Lakeville, a small village on the edge of Lake Calhoun. You work on the fishing boats, bringing back enough fish each day to feed your small village.
+
+One day, a messenger rides into town. "Citizens of Lakeville, the Baroness Aendrea lays claim to your city. You are now under her rule and will pay taxes and fealty to her."
+
+What do you do?
+--------
+1) Leave Lakeville to tell the Baroness that she doesn't own you
+2) Go to work like always and see if anything changes
+1
+--------
+You set out for the Baroness's home, the Tower. You know the way, which leads through the nearby Black Forest.
+
+Deep in the Black Forest, a woman emerges from behind the trees. She's wearing rough clothing.
+
+"My name's Ariana," she says. "Lakeville's not the first village that Baroness Aendrea's taken control of. She'll stop at nothing until the whole region is under her control. We can't let that happen.
+
+"If you want to stop her and get back Lakeville, you'll have to make it to the Tower."
+--------
+1) Ask Ariana for her help
+2) Set off for the Tower (you know the way)
+2
+--------
+You walk further into the forest, headed for the Tower. "Good luck with the Baroness," Ariana calls after you.
+You travel through the Black Forest for several days.
+
+A wide river blocks your path to the Tower. The water is deep and moving fast.
+--------
+1) Wade through the rushing water
+2) Look for another way around
+1
+--------
+You wade through the rushing water. It comes up to your armpits. You hold your pack above your head.
+
+It takes every ounce of your strength, but you make it across. On the other side, you're soaked to the bone and exhausted. You rest for an hour while your clothes dry.
+
+Once you're ready, you continue on your way to the Tower.
+
+Your path lies through a thick forest, overgrown and difficult to travel through.
+
+After a day or so, you hear footsteps crashing through the brush. They're getting nearer.
+--------
+1) Hide in the brush and wait
+2) Seek out the footsteps
+1
+--------
+You find a clump of bushes to hide inside. As the footsteps get closer, you see two dozen armed of the Baroness's men tramping through the underbrush.
+
+You hold your breath, but one of them stumbles just too close to you.
+
+"What do we have here?" he says. He grabs you roughly by the shoulder and jerks you to your feet. "Well, well, well, the Baroness will be THRILLED to meet you!" Cheers erupt.
+
+Two more men grab your arms and bind them. You're taken to a camp in the woods an hour away. The Baroness's men tie you to a tree and spend the night drinking and making coarse jokes.
+
+Most of them have fallen asleep, but there is still one awake, on guard, staring into the fire. He isn't looking directly at you, you could try to escape while he isn't looking. What do you do?
+--------
+1) Wiggle out of your bonds and sneak into the night
+2) Wait until morning for a chance to escape
+2
+--------
+You close your eyes and eventually fall into a fitful sleep.
+
+Hours later you feel someone removing your bonds. It's still night out. You turn to look and see Ariana's face. "Didn't think I'd find YOU when I came to investigate. Stay quiet." She finishes cutting your bonds with her knife, and the two of you slip into the night.
+
+You travel for a few minutes away from the camp before you realize Ariana is gone. The sun begins to rise as you silently make your way toward the Tower.
+
+The next day, a small creature runs across your path. You almost step on it.
+
+You squat down to look at it. It seems like some sort of squirrel, but it's eyes are ruby red. It sits still, staring at you, alert
+--------
+1) Give it some of your food
+2) Ignore it
+2
+--------
+The squirrel watches you as you leave, then scampers off.
+
+Late in the day, you hear a voice calling out through the forest. You hide immediately, but then realize the voice seems to be that of a young girl. You can see her walking alone, calling out for her cat. What do you do?
+--------
+1) Reveal yourself and offer to help
+2) Wait until she's gone and continue
+2
+--------
+She continues calling and passes out of earshot in a few minutes. Then, you continue on your way to the Tower.
+
+You're being careful, but you don't notice a well-concealed pit before it's too late. You step through the thin covering of leaves and ferns and fall right through to the bottom, landing with a crunch.
+
+Your leg hurts. You look up: the pit's sides are sheer hard dirt, about 15 feet deep. There are no roots, nothing down there with you besides dirt and whatever you have with you.
+--------
+1) Try to climb out
+2) Call for help
+1
+--------
+There's nothing to grab onto, but you dig your fingernails and toes into the dirt as best you can, trying to find rocks or roots to hold onto.
+
+You fall a few times, but you make progress. The pain in your leg blends with the pain in the rest of your body. Very slowly, you make your way to the top. Your fingers are bleeding, your wrists hurt.
+
+As the sun sets, you see a small hut ahead of you, nestled between the trees. You pause, considering whether or not to investigate, but before you can decide, a group of men and women dressed like Ariana steps out from behind the trees, surrounding you.
+
+"What are YOU doing here?" one of them asks you.
+--------
+1) Ask them what THEY are doing here
+2) Tell them you're here to free Lakeville from Baroness Aendrea
+2
+--------
+"We're on the same side then! Have you met our friend Ariana? She's out somewhere, fighting against the Baroness's influence."
+
+You spend the night with the resistance fighters. The Baroness's men, they tell you, are only working for her because she pays them handsomely. If you can find a way to stop the Baroness's men from being paid, most of her influence over the region will be gone.
+
+They have plans to attack one of the Baroness's outposts tomorrow, which should draw most of her men away from the Tower, allowing you to get inside more easily.
+
+In the morning, you set off for the Tower again.
+
+As you head toward the Tower, late that day, on your left, you see a field of berry bushes, overflowing with red berries. Your food is running low, and you feel hungry.
+--------
+1) Gather and enjoy some berries
+2) Avoid the patch and press on
+1
+--------
+You gather and eat some of the berries. They are delicious.
+
+You begin to feel sleepy, and soon fall asleep in the middle of the berry patch. When you wake up, the sun is high in the sky. You have no idea how long you've been asleep; it could have been days!
+
+You finally arrive at the base of the Tower. Staying out of view of any of the Baroness's men, you look for a way in. There's a patrol of guards circling the Tower. You think you can find a way in between them, but it would be tough. What do you do?
+--------
+1) Sneak past the guards
+2) Take out one of the guards silently, then sneak inside
+2
+--------
+Jumping out from your hiding place as a guard comes by, you snap his neck quickly and quietly. You drag the body behind a bush before quickly making your way inside the Tower in the gap in the patrol.
+
+Inside the Tower, you look around for the treasury. While you're looking, you hear voices.
+
+The Baroness is walking down the hall with one of her men. You find a place to hide, and you can hear them talking.
+
+"...if they resist, remind them that, if the kingdoms from the north attack, they will not be able to defend themselves. Under our rule, we will provide them with protection against invasion. What is that safety worth to them? . . ."
+
+The voices fade away as they turn a corner and are gone.
+
+Searching in the Tower, you finally find the treasury. You take out the lone guard, and go inside. Several heavy chests of gold are inside. You dump them out the window into a lake outside the Tower. The Baroness's gold is gone. You leave the Tower.
+
+As you leave, Baroness Aendrea spots you leaving. "After him!" she shouts to her men, and they begin to chase after you. You sprint into the forest as fast as you can.
+
+The Baroness's men are chasing you through the Black Forest on your way back to Lakeville. If they catch you, there's no telling what they might do to you. How do you attempt to avoid their notice at night?
+--------
+1) Dig holes to sleep inside
+2) Travel through the night to stay ahead of them
+1
+--------
+It's uncomfortable in the holes. You wake up each morning covered in dirt. One night, you're awoken in the middle of the night by the sound of men's footsteps. The Baroness's men don't find you in your hiding place.
+
+You return to Lakeville ahead of the Baroness's men.
+
+You finally return to Lakeville. The people have been under the rule of the Baroness's men since you left.
+
+You organize a secret meeting at night to rally the people together. You lead the people in a revolt against the Baroness's men. Drunk and caught off guard by armed civilians, they're not sure what to do. A few of them are killed before they retreat, leaving the town forever.
+
+The next day, the reinforcements arrive who were pursuing you. Lakeville easily chases them off.
+
+Lakeville is now free! Your fellow citizens are eagerly offering you a position of leadership: they want to make you the Chief of Lakeville. What do you do?
+--------
+1) Go back to your old job, fishing
+2) Take the new job as Chief of Lakeville
+1
+--------
+The lake is peaceful and calm, and the fish are biting just like they always have. Lakeville's freedom allows things to go back to the way that they were. But you know that, if ever another Baroness tried to take control of Lakeville again, you and your neighbors would be ready for them.
+
+--------
+THE END
+--------

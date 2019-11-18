@@ -2,7 +2,6 @@
 using NeverendingStory.Data;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 
@@ -31,7 +30,7 @@ namespace NeverendingStory.Functions
             jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
 #endif
             string filePath = Path.Combine(jsonFileDirectory, "PeopleNames.json");
-            
+
             // Read the JSON file.
             string fileContents = File.ReadAllText(filePath);
 

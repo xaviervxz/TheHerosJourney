@@ -46,6 +46,43 @@ namespace NeverendingStory.Functions
                     }
                 }
             }
+            else
+            {
+                JourneyStage NextStage(Story s)
+                {
+                    JourneyStage nextStage;
+
+                    if (s.CurrentStage == JourneyStage.RoadOfTrials)
+                    {
+                        nextStage = s.CurrentStage;
+                        s.CurrentStageNumber += 1;
+
+                        if (s.CurrentStageNumber > 3)
+                        {
+                            s.CurrentStageNumber = 1;
+                            nextStage = s.CurrentStage + 1;
+                        }
+                    }
+                    else if (s.CurrentStage == JourneyStage.FreedomToLive)
+                    {
+                        return JourneyStage.FreedomToLive;
+                    }
+                    else if (story.CurrentStageNumber > 0)
+                    {
+                        nextStage = s.CurrentStage + 1;
+                    }
+                    else
+                    {
+                        s.CurrentStageNumber = 1;
+
+                        nextStage = s.CurrentStage;
+                    }
+
+                    return nextStage;
+                }
+
+                story.CurrentStage = NextStage(story);
+            }
 
             bool SceneCanBeUsedHere(Scene s, JourneyStage currentStage)
             {
@@ -84,7 +121,7 @@ namespace NeverendingStory.Functions
                 return sceneConditionsAreMet && sceneMatches && sceneIsFilledOut && !s.Done && !s.IsSubStage;
             }
 
-
+            
             var scene = scenes
                 .Where(s => SceneCanBeUsedHere(s, story.CurrentStage))
                 .OrderByDescending(s => s.Conditions.Length)
@@ -92,8 +129,7 @@ namespace NeverendingStory.Functions
 
             if (scene == null && story.CurrentStage != JourneyStage.FreedomToLive)
             {
-                story.CurrentStage = Pick.NextStage(story);
-                scene = Pick.NextScene(scenes, story);
+                scene = NextScene(scenes, story);
             }
 
             return scene;
@@ -140,33 +176,6 @@ namespace NeverendingStory.Functions
 
         //    return character;
         //}
-
-        public static JourneyStage NextStage(Story story)
-        {
-            JourneyStage nextStage;
-
-            if (story.CurrentStage == JourneyStage.RoadOfTrials)
-            {
-                nextStage = story.CurrentStage;
-                story.CurrentStageNumber += 1;
-
-                if (story.CurrentStageNumber > 3)
-                {
-                    story.CurrentStageNumber = 1;
-                    nextStage = story.CurrentStage + 1;
-                }
-            }
-            else if (story.CurrentStage == JourneyStage.FreedomToLive)
-            {
-                return JourneyStage.FreedomToLive;
-            }
-            else
-            {
-                nextStage = story.CurrentStage + 1;
-            }
-
-            return nextStage;
-        }
 
         private static Dictionary<string, JourneyStage> stageCodes = new Dictionary<string, JourneyStage>
         {
