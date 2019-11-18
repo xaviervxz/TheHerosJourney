@@ -10,23 +10,14 @@ Deep in the Black Forest, a {character:mentor:sexAge:ranger} emerges from behind
 
 They say they're here to collect taxes, but they take so much more than that. They eat food they don't pay for, destroy property that isn't theirs, and leer at young men and women.
 
-In the morning, your friend {character:bestfriend:name:stolen} is missing. {character:stolen:possPronoun:cap} family say that {character:stolen:subPronoun} was taken to {character:baron:baron} {character:baron:name}'s Tower by {character:baron:possPronoun}'s men. They don't know when, or if, {character:stolen:subPronoun} will return.","Set out for the Tower immediately","Start a fight with the {character:baron:baron}'s men","You slink into the nearby Black Forest in the night, setting your course straight for the Tower.
+In the morning, your friend {character:bestfriend:name:stolen} is missing. {character:stolen:possPronoun:cap} family says that {character:stolen:subPronoun} was taken to {character:baron:baron} {character:baron:name}'s Tower by {character:baron:possPronoun}'s men. They don't know when, or if, {character:stolen:subPronoun} will return.","Set out for the Tower immediately","Start a fight with the {character:baron:baron}'s men","You slink into the nearby Black Forest in the night, setting your course straight for the Tower.
 
-The next day, deep in the forest, a {character:mentor:sexAge:ranger} emerges from behind the trees. {character:mentor:subPronoun:cap}'s wearing rough clothing.{|MTM|}","You find a group of the {character:baron:baron}'s men in the tavern drinking. As one of them turns to you, your first blow lands squarely on his jaw. An all-out brawl breaks out. You give as good as you get, but in the end there are too many of them.
+The next day, deep in the forest, a {character:mentor:sexAge:ranger} emerges from behind the trees. {character:mentor:subPronoun:cap}'s wearing rough clothing.{|DONE|}","You find a group of the {character:baron:baron}'s men in the tavern drinking. As one of them turns to you, your first blow lands squarely on his jaw. An all-out brawl breaks out. You give as good as you get, but in the end there are too many of them.
 
 ""I'll take care of {objPronoun},"" you hear a voice say. Rough hands carry you out of town into the Black Forest. You pass out.
 
 You wake up the next day, deep in the Black Forest. A {character:mentor:sexAge:ranger} sits under a nearby tree. As you open your eyes, {character:ranger:subPronoun} says, ""Hope you appreciate I saved your life. That was kind of a stupid fight to start, you know?""{|DONE|}"
-"MTM1","character:baron","""My name's {character:mentor:name:ranger},"" {character:ranger:subPronoun} says. ""Lakeville's not the first village that {character:baron:baron} {character:baron:name}'s taken control of. {character:baron:subPronoun:cap}'ll stop at nothing until the whole region is under {character:baron:possPronoun} control. We can't let that happen.
-
-""If you want to stop {character:baron:objPronoun} and get back Lakeville, you'll have to make it to the Tower.""","Ask {character:ranger:name} for {character:ranger:possPronoun} help","Set off for the Tower (you know the way)","""I'm sorry, I can't go near the {character:baron:baron}'s Tower myself. {character:baron:subPronoun:cap} and {character:baron:possPronoun} goons'll be looking for me. But here, you take this."" {character:ranger:subPronoun:cap} hands you piece of rolled cloth. ""It might be useful."" With that, {character:ranger:name} disappears into the forest. {|GIVE:map:A cloth map:shows a hidden path into the Tower|}
-
-The cloth, once unrolled, looks like some sort of map of a secret entrance into the {character:baron:baron}'s Tower. You roll it up again and put it in your pack.
-
-You travel through the Black Forest for several days.{|DONE|}","You walk further into the forest, headed for the Tower. ""Good luck with the {character:baron:baron},"" {character:ranger:name} calls after you.
-
-You travel through the Black Forest for several days.{|DONE|}"
-"MTM2","character:baron|character:ranger","""My name's {character:ranger:name},"" {character:ranger:subPronoun} says. ""Lakeville's not the first village that {character:baron:baron} {character:baron:name}'s taken control of. {character:baron:subPronoun:cap}'ll stop at nothing until the whole region is under {character:baron:possPronoun} control. We can't let that happen.
+"MTM1","character:baron|character:ranger","""My name's {character:ranger:name},"" {character:ranger:subPronoun} says. ""Lakeville's not the first village that {character:baron:baron} {character:baron:name}'s taken control of. {character:baron:subPronoun:cap}'ll stop at nothing until the whole region is under {character:baron:possPronoun} control. We can't let that happen.
 
 ""If you want to stop {character:baron:objPronoun} and get back Lakeville, you'll have to make it to the Tower.""","Ask {character:ranger:name} for {character:ranger:possPronoun} help","Set off for the Tower (you know the way)","""I'm sorry, I can't go near the {character:baron:baron}'s Tower myself. {character:baron:subPronoun:cap} and {character:baron:possPronoun} goons'll be looking for me. But here, you take this."" {character:ranger:subPronoun:cap} hands you piece of rolled cloth. ""It might be useful."" With that, {character:ranger:name} disappears into the forest. {|GIVE:map:A cloth map:shows a hidden path into the Tower|}
 
@@ -42,7 +33,7 @@ It takes every ounce of your strength, but you make it across. On the other side
 Once you're ready, you continue on your way to the Tower.{|DONE|}","You walk along the river's edge until you find an enormous tree trunk lying across the river. It looks as though someone has recently cut it down. You're able to nimbly walk across the log and cross the river.
 
 On the other side, you continue on your way to the Tower.{|DONE|}"
-"BOTW1","character:baron","Your path lies through a thick forest, overgrown and difficult to travel through.
+"BOTW1","character:baron|character:ranger","Your path lies through a thick forest, overgrown and difficult to travel through.
 
 After a day or so, you hear footsteps crashing through the brush. They're getting nearer.","Hide in the brush and wait","Seek out the footsteps","You find a clump of bushes to hide inside. As the footsteps get closer, you see two dozen of the {character:baron:baron}'s armed men tramping through the underbrush.
 
@@ -51,7 +42,7 @@ You hold your breath, but one of them stumbles just too close to you.
 ""What do we have here?"" he says. He grabs you roughly by the shoulder and jerks you to your feet. ""Well, well, well, the {character:baron:baron} will be THRILLED to meet you!"" Cheers erupt.{|BOTW1a|}","You tramp through the underbrush towards the sound of footsteps, getting closer as you hike. Then, through the trees, two dozen of the {character:baron:baron}'s men in uniform emerge.
 
 One of them grabs you roughly by the shoulder. ""What do we have here?"" he says. ""Well, well, well, the {character:baron:baron} will be THRILLED to meet you!"" Cheers erupt.{|BOTW1a|}"
-"BOTW1a","character:baron","Two more men grab your arms and bind them. You're taken to a camp in the woods an hour away. The {character:baron:baron}'s men tie you to a tree and spend the night drinking and making coarse jokes.
+"BOTW1a","character:baron|character:ranger","Two more men grab your arms and bind them. You're taken to a camp in the woods an hour away. The {character:baron:baron}'s men tie you to a tree and spend the night drinking and making coarse jokes.
 
 Most of them have fallen asleep, but there is still one awake, on guard, staring into the fire. He isn't looking directly at you, you could try to escape while he isn't looking. What do you do?","Wiggle out of your bonds and sneak into the night","Wait until morning for a chance to escape","It takes you over an hour, but you eventually feel the bonds loosening enough that you can slip out of them. The lone guard is still staring into the fire, poking at it with his sword and humming.
 
@@ -92,19 +83,19 @@ You spend the night with the resistance fighters. The {character:baron:baron}'s 
 They have plans to attack one of the {character:baron:baron}'s outposts tomorrow, which should draw most of {character:baron:possPronoun} men away from the Tower, allowing you to get inside more easily.
 
 In the morning, you set off for the Tower again.{|DONE|}"
-"WAT1",,"As you head toward the Tower, late that day, on your left, you see a field of berry bushes, overflowing with red berries. Your food is running low, and you feel hungry.","Gather and enjoy some berries","Avoid the patch and press on","You gather and eat some of the berries. They are delicious.
+"WAT1",,"As you head towards the Tower, late that day, on your left, you see a field of berry bushes, overflowing with red berries. Your food is running low, and you feel hungry.","Gather and enjoy some berries","Avoid the patch and press on","You gather and eat some of the berries. They are delicious.
 
 You begin to feel sleepy, and soon fall asleep in the middle of the berry patch. When you wake up, the sun is high in the sky. You have no idea how long you've been asleep; it could have been days!{|DONE|}","Your stomach growls, but you continue on your way. As your food supply dwindles, your limbs grow weaker.{|DONE|}"
 "AWF1","character:baron|item:map","You finally arrive at the base of the Tower. Staying out of view of any of the {character:baron:baron}'s men, you find the hidden path into the Tower on {character:ranger:name}'s map. The hidden path leads underground, and comes out into a tall, well-decorated corridor inside the Tower.{|AWF1a|}",,,,
 "AWF2","character:baron|item:map|character:stolen","You finally arrive at the base of the Tower. Staying out of view of any of the {character:baron:baron}'s men, you find the hidden path into the Tower on {character:ranger:name}'s map. The hidden path leads underground, and comes out into a tall, well-decorated corridor inside the Tower. You look around for any sign of {character:stolen:name}.{|AWF1a|}",,,,
-"AWF3","character:baron|character:stolen","You finally arrive at the base of the Tower. Staying out of view of any of the {character:baron:baron}'s men, you look for a way in. There's a patrol of guards circling the Tower. You think you can find a way in between them, but it would be tough. What do you do?","Sneak past the guards","Take out one of the guards silently, then sneak inside","You have to wait until nightfall to sneak in. The cover of dark covers your movements, and you sneak in through a gap in the patrol you've found.
+"AWF3","character:baron|character:stolen","You finally arrive at the base of the Tower. Staying out of view of any of the {character:baron:baron}'s men, you look for a way in. There's a patrol of guards circling the Tower. You think you can find a way in between them, but it would be tough. What do you do?","Sneak past the guards","Take out one of the guards silently, then sneak inside","You have to wait until nightfall to sneak in. The darkness covers your movements, and you sneak in through a gap in the patrol you've found.
 
-Inside the Tower, you look around for any sign of {character:stolen:name}. While you're looking, you hear voices.{|AWF1a|}","Jumping out from your hiding place as a guard comes by, you snap his neck quickly and quietly. You drag the body behind a bush before quickly making your way inside the Tower in the gap in the patrol.
+Inside the Tower, you look around for any sign of {character:stolen:name}. While you're looking, you hear voices.{|AWF1a|}","Jumping out from your hiding place as a guard comes by, you take him out quickly and quietly. You drag the body behind a bush before quickly making your way inside the Tower in the gap in the patrol.
 
 Inside the Tower, you look around for any sign of {character:stolen:name}. While you're looking, you hear voices.{|AWF1a|}"
-"AWF4","character:baron","You finally arrive at the base of the Tower. Staying out of view of any of the {character:baron:baron}'s men, you look for a way in. There's a patrol of guards circling the Tower. You think you can find a way in between them, but it would be tough. What do you do?","Sneak past the guards","Take out one of the guards silently, then sneak inside","You have to wait until nightfall to sneak in. The cover of dark covers your movements, and you sneak in through a gap in the patrol you've found.
+"AWF4","character:baron","You finally arrive at the base of the Tower. Staying out of view of any of the {character:baron:baron}'s men, you look for a way in. There's a patrol of guards circling the Tower. You think you can find a way in between them, but it would be tough. What do you do?","Sneak past the guards","Take out one of the guards silently, then sneak inside","You have to wait until nightfall to sneak in. The darkness covers your movements, and you sneak in through a gap in the patrol you've found.
 
-Inside the Tower, you look around for the treasury. While you're looking, you hear voices.{|AWF1a|}","Jumping out from your hiding place as a guard comes by, you snap his neck quickly and quietly. You drag the body behind a bush before quickly making your way inside the Tower in the gap in the patrol.
+Inside the Tower, you look around for the treasury. While you're looking, you hear voices.{|AWF1a|}","Jumping out from your hiding place as a guard comes by, you take him out quickly and quietly. You drag the body behind a bush before quickly making your way inside the Tower in the gap in the patrol.
 
 Inside the Tower, you look around for the treasury. While you're looking, you hear voices.{|AWF1a|}"
 "AWF1a","character:baron","The {character:baron:baron} is walking down the hall with one of {character:baron:possPronoun} men. You find a place to hide, and you can hear them talking.
@@ -113,11 +104,11 @@ Inside the Tower, you look around for the treasury. While you're looking, you he
 
 The voices fade away as they turn a corner and are gone.{|DONE|}",,,,
 "A1","character:stolen|character:baron","You find {character:stolen:name} locked in a dungeon with a bunch of other young people. It seems they've been locked up here for some future purpose of the {character:baron:baron}. You set them all free.{|DONE|}",,,,
-"UB1","character:baron","Searching in the Tower, you finally find the treasury. You take out the lone guard, and go inside. Several heavy chests of gold are inside. You dump them out the window into a lake outside the Tower. The {character:baron:baron}'s gold is gone. You leave the Tower.
+"UB1","character:baron","Searching in the Tower, you finally find the treasury. You take out the lone guard, and go inside. Several heavy chests of gold are inside. You dump them out the window into a lake outside the Tower. The {character:baron:baron}'s gold is gone.{|DONE|}",,,,
+"ROR1","character:baron","You leave the Tower.{|DONE|}",,,,
+"MF1","character:baron","As you leave, {character:baron:baron} {character:baron:name} spots you leaving. ""After {objPronoun}!"" {character:baron:subPronoun} shouts to {character:baron:possPronoun} men, and they begin to chase after you. You sprint into the forest as fast as you can.
 
-As you leave, {character:baron:baron} {character:baron:name} spots you leaving. ""After {objPronoun}!"" {character:baron:subPronoun} shouts to {character:baron:possPronoun} men, and they begin to chase after you. You sprint into the forest as fast as you can.{|DONE|}",,,,
-"ROR1",,,,,,
-"MF1","character:baron","The {character:baron:baron}'s men are chasing you through the Black Forest on your way back to Lakeville. If they catch you, there's no telling what they might do to you. To avoid notice, you. . .","Spend your nights well-hidden, in a hole or under heavy brush","Travel through the night to stay ahead of them","Your nights are uncomfortable. You wake up each morning covered in dirt or leaves or both.
+The {character:baron:baron}'s men are chasing you through the Black Forest on your way back to Lakeville. If they catch you, there's no telling what they might do to you. To avoid notice, you. . .","Spend your nights well-hidden, in a hole or under heavy brush","Travel through the night to stay ahead of them","Your nights are uncomfortable. You wake up each morning covered in dirt or leaves or both.
 
 One night, you're woken in the middle of the night by the sound of men's footsteps. The {character:baron:baron}'s men are searching the Black Forest for you. They almost find your hiding spot, but you hear skittering in the trees, and the {character:baron:baron}'s men go off to investigate the sound. You see a flash of red in the trees, possibly two eyes looking at you, and then it's gone.
 
