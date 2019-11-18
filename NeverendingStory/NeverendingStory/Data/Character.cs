@@ -32,6 +32,8 @@ namespace NeverendingStory.Data
             Name = "Clothes",
             Description = "shirt, pants, shoes, and a cloak"
         }};
+
+        public Location Hometown { get; set; }
     }
     public enum Sex
     {

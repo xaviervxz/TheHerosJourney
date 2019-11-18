@@ -1,0 +1,93 @@
+{
+  "Names": {
+    "Adjectives": [
+      "Ageless",
+      "Ashen",
+      "Black",
+      "Blessed",
+      "Blighted",
+      "Blue",
+      "Broken",
+      "Burning",
+      "Cold",
+      "Cursed",
+      "Dark",
+      "Dead",
+      "Deadly",
+      "Deep",
+      "Desolate",
+      "Diamond",
+      "Dim",
+      "Dismal",
+      "Dun",
+      "Eerie",
+      "Endless",
+      "Fallen",
+      "Far",
+      "Fell",
+      "Flaming",
+      "Forgotten",
+      "Forsaken",
+      "Frozen",
+      "Glittering",
+      "Golden",
+      "Green",
+      "Grim",
+      "Holy",
+      "Impassable",
+      "Jagged",
+      "Light",
+      "Long",
+      "Misty",
+      "Perilous",
+      "Purple",
+      "Red",
+      "Savage",
+      "Shadowy",
+      "Shattered",
+      "Shifting",
+      "Shining",
+      "Silver",
+      "White",
+      "Wicked",
+      "Yellow"
+    ],
+    "Terrain": {
+      "Forest": [ "Forest", "Wood", "Woods", "Thicket" ],
+      "Swamp": [ "Swamp", "Bog", "Mire", "Marsh", "Morass", "Quagmire" ],
+      "Lake": [ "Lake" ],
+      "River": [ "River", "Stream", "Creek" ],
+      "Bay": [ "Bay", "Harbor" ]
+    },
+    "Formats": ["The {adjective} {terrain}", "{terrain} {adjective}"]
+  },
+  "Geography": [
+    {
+      "location": "along {name} Bay",
+    },
+    {
+      "location": "on the edge of Lake {name}"
+    },
+    {
+      "location": "on the {name} River"
+    },
+    {
+      "location": "at the mouth of the River {name}"
+    },
+    {
+      "location": "where the River {name1} runs into the {name2} Sea"
+    },
+    {
+      "location": "along the {name1} River where it runs into the {name2} River"
+    },
+    {
+      "location": "next to the {name} Springs"
+    },
+    {
+      "location": "that lies where the {name1} Road meets the {name2} Road"
+    },
+    {
+      "location": "that lies between Lake/River {name1} and the {name2} Road"
+    }
+  ]
+}

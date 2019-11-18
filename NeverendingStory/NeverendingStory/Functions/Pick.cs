@@ -10,9 +10,10 @@ namespace NeverendingStory.Functions
     public static class Pick
     {
         private static readonly Random rng = new Random();
-
-        public static T Random<T>(T[] array)
+        public static T Random<T>(this IEnumerable<T> list)
         {
+            var array = list.ToArray();
+
             if (array.Length == 0)
             {
                 return default;
@@ -122,10 +123,15 @@ namespace NeverendingStory.Functions
             }
 
             
+            // RANDOMLY PICK A NEW SCENE
             var scene = scenes
                 .Where(s => SceneCanBeUsedHere(s, story.CurrentStage))
-                .OrderByDescending(s => s.Conditions.Length)
-                .FirstOrDefault();
+                // The idea of this next line is that the Scenes would be
+                // select randomly from those scenes that have the most
+                // conditions (i.e. requires Baron and Ranger would be 2).
+                // How would I implement that?
+                //.OrderByDescending(s => s.Conditions.Length)
+                .Random();
 
             if (scene == null && story.CurrentStage != JourneyStage.FreedomToLive)
             {
@@ -156,26 +162,46 @@ namespace NeverendingStory.Functions
             return character;
         }
 
-        //public static Location Location(
-        //    Biome biome,
-        //    IList<Location> locations,
-        //    LocationNames names)
-        //{
-        //    var character = characters.FirstOrDefault(c => c.Relationship == relationship);
+        public static Location Location(
+            LocationType type,
+            IList<Location> locations,
+            LocationData data)
+        {
+            var location = locations.FirstOrDefault(c => c.Type == type);
 
-        //    if (character == null)
-        //    {
-        //        character = new Character
-        //        {
-        //            Relationship = relationship
-        //        };
-        //        character.Name = Pick.Random(names[PeopleNameOrigin.Westron][character.SexEnum].Except(characters.Select(c => c.Name)).ToArray();
+            if (location == null)
+            {
+                if (type == LocationType.Town)
+                {
+                    string name = "Lakeville";
 
-        //        characters.Add(character);
-        //    }
+                    location = new Town
+                    {
+                        Name = name,
+                        MainGeologicalFeature = Pick.Location(LocationType.Lake, locations, data),
+                        MainIndustry = Industry.Fishing
+                    };
+                }
+                else
+                {
+                    string terrain = data.Names.Terrain[type].Random();
+                    string adjective = data.Names.Adjectives.Random();
+                    string format = data.Names.Formats.Random();
 
-        //    return character;
-        //}
+                    string name = format.Replace("{terrain}", terrain).Replace("{adjective}", adjective);
+
+                    location = new Location
+                    {
+                        Name = name,
+                        Type = type
+                    };
+                }
+
+                locations.Add(location);
+            }
+
+            return location;
+        }
 
         private static Dictionary<string, JourneyStage> stageCodes = new Dictionary<string, JourneyStage>
         {

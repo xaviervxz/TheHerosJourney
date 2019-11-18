@@ -13,6 +13,7 @@
         Swamp,
         Lake,
         River,
-        Bay
+        Bay,
+        Town
     }
 }

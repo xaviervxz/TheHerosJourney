@@ -88,11 +88,11 @@ namespace NeverendingStory.Console
             // LOAD DATA FROM FILES AND CREATE EMPTY STORY
             var fileData = LoadFromFile.Data();
             var story = new Story();
-
-            // PICK PLAYER'S NAME
             story.You = Pick.Character(Relationship.Self, story.Characters, fileData.PeopleNames);
+            story.You.Hometown = Pick.Location(LocationType.Town, story.Locations, fileData.LocationData);
 
             // DISPLAY INTRODUCTION
+            // PICK PLAYER'S NAME
             WriteDashes();
             WriteMessage("Welcome to the Neverending Story!");
             WriteMessage("Type your name and press Enter.");

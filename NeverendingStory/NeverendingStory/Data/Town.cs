@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NeverendingStory.Data
 {
-    public class Town
+    public class Town : Location
     {
-        public string Name { get; set; }
+        public LocationType Type => LocationType.Town;
 
         public Location MainGeologicalFeature { get; set; }
 
@@ -33,5 +33,19 @@ namespace NeverendingStory.Data
         BarleyFarming,
         OatFarming,
         BeanFarming,
+        CornFarming,
+        NutsAndOlives,
+        Rice,
+        Wheat,
+        PotatoesAndLeeks,
+        SugarCane,
+        Tobacco,
+        Cotton,
+        FruitTrees,
+        CabbageAndBeets,
+        Cattle,
+        DairyCows,
+        Sheep,
+        Fishing
     }
 }

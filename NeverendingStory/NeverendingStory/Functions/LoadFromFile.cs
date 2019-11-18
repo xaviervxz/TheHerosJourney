@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using Names = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
+    using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
     public static class LoadFromFile
     {
@@ -16,13 +16,14 @@ namespace NeverendingStory.Functions
             var fileData = new FileData();
 
             fileData.PeopleNames = LoadFromFile.PeopleNames();
+            fileData.LocationData = LoadFromFile.LocationData();
 
             fileData.Scenes = LoadFromFile.Scenes();
 
             return fileData;
         }
 
-        private static Names PeopleNames()
+        private static PeopleNames PeopleNames()
         {
             // Get the file path of the JSON file.
             string jsonFileDirectory = Directory.GetCurrentDirectory();
@@ -35,9 +36,27 @@ namespace NeverendingStory.Functions
             string fileContents = File.ReadAllText(filePath);
 
             // Deserialize the JSON file.
-            var names = JsonConvert.DeserializeObject<Names>(fileContents);
+            var names = JsonConvert.DeserializeObject<PeopleNames>(fileContents);
 
             return names;
+        }
+
+        private static LocationData LocationData()
+        {
+            // Get the file path of the JSON file.
+            string jsonFileDirectory = Directory.GetCurrentDirectory();
+#if DEBUG
+            jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
+#endif
+            string filePath = Path.Combine(jsonFileDirectory, "LocationData.json");
+
+            // Read the JSON file.
+            string fileContents = File.ReadAllText(filePath);
+
+            // Deserialize the JSON file.
+            var locationData = JsonConvert.DeserializeObject<LocationData>(fileContents);
+
+            return locationData;
         }
 
         private static Scene[] Scenes()

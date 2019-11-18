@@ -56,7 +56,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <None Include="TownData.json" />
+    <None Include="LocationData.json" />
     <None Include="PeopleNames.json" />
     <None Include="Scenes.csv" />
   </ItemGroup>

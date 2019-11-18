@@ -19,6 +19,8 @@ namespace NeverendingStory.Data
 
         public List<Character> Characters { get; } = new List<Character>();
 
+        public List<Location> Locations { get; } = new List<Location>();
+
         /// <summary>
         /// Contains references to characters in the Characters list.
         /// </summary>
