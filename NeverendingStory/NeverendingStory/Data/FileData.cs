@@ -2,16 +2,19 @@
 
 namespace NeverendingStory.Data
 {
-    using Names = Dictionary<NameOrigin, Dictionary<Sex, string[]>>;
+    using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
+    //using TownData = Dictionary<Biome, Dictionary<Sex, string[]>>;
 
     public class FileData
     {
-        public Names Names { get; set; }
+        public PeopleNames PeopleNames { get; set; }
+
+        //public TownData TownData { get; set; }
 
         public Scene[] Scenes { get; set; }
     }
 
-    public enum NameOrigin
+    public enum PeopleNameOrigin
     {
         Archaic,
         Westron,

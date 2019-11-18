@@ -52,10 +52,24 @@ namespace NeverendingStory.Console
 
                 foreach (string wrap in wrapped)
                 {
-                    System.Console.WriteLine(wrap);
+                    if (wrap == "")
+                    {
+                        System.Console.ReadLine();
+                    }
+                    else
+                    {
+                        System.Console.WriteLine(wrap);
+                    }
                 }
 
-                System.Console.WriteLine(process);
+                if (process == "")
+                {
+                    System.Console.ReadLine();
+                }
+                else
+                {
+                    System.Console.WriteLine(process);
+                }
             }
         }
 
@@ -72,20 +86,33 @@ namespace NeverendingStory.Console
             // ----------------
 
             // LOAD DATA FROM FILES AND CREATE EMPTY STORY
-            var fileData = LoadFromFile.Data(names: "Names", scenes: "Scenes");
+            var fileData = LoadFromFile.Data();
             var story = new Story();
 
             // PICK PLAYER'S NAME
-            story.You = Pick.Character(Relationship.Self, story.Characters, fileData.Names);
+            story.You = Pick.Character(Relationship.Self, story.Characters, fileData.PeopleNames);
 
             // DISPLAY INTRODUCTION
             WriteDashes();
-            WriteMessage("Welcome to the Neverending Story, " + story.You.Name + "!");
-            WriteMessage("(Type \"help\" and hit the \"return\" key to learn how to play.)");
+            WriteMessage("Welcome to the Neverending Story!");
+            WriteMessage("Type your name and press Enter.");
+            story.You.Name = ReadInput();
+            WriteDashes();
+
+            WriteMessage("Male or female? (M/F)");
+            string playerSex = ReadInput();
+            if (playerSex == "M")
+            {
+                story.You.Sex = Sex.Male;
+            }
+            else
+            {
+                story.You.Sex = Sex.Female;
+            }
             WriteDashes();
 
             // ASSIGN INSTINCT
-            WriteMessage(@"Which one best describes what you want to do?
+            WriteMessage(story.You.Name + @", which one best describes what you want to do?
 1) " + Instinct.ToAvoidNotice + @"
 2) " + Instinct.ToReclaimWhatWasTaken);
             string instinct = ReadInput();
@@ -100,7 +127,7 @@ namespace NeverendingStory.Console
                     break;
             }
             WriteDashes();
-            WriteMessage("Hello, " + story.You.Name + ", your instinct is " + instinct.ToLower() + ".");
+            WriteMessage("Hello, " + story.You.Name + ", you want " + instinct.ToLower() + ".");
             WriteDashes();
 
             // ----------------
@@ -109,6 +136,7 @@ namespace NeverendingStory.Console
 
             Scene currentScene = null;
             bool getNewScene = true;
+            bool shownHelp = false;
 
             bool gameRunning = true;
             while (gameRunning)
@@ -142,7 +170,7 @@ namespace NeverendingStory.Console
                 }
 
                 // PROCESS AND DISPLAY MAIN MESSAGE
-                string message = Process.Message(currentScene.Message, story, fileData.Names);
+                string message = Process.Message(currentScene.Message, story, fileData.PeopleNames);
                 WriteMessage(message);
 
                 // IF THERE ARE NO CHOICES AVAILABLE IN THIS SCENE,
@@ -156,10 +184,16 @@ namespace NeverendingStory.Console
                 // IF THERE ARE CHOICES AVAILABLE IN THIS SCENE,
                 // PROCESS AND DISPLAY THEM.
                 WriteDashes();
-                string choice1 = Process.Message(currentScene.Choice1, story, fileData.Names);
+                string choice1 = Process.Message(currentScene.Choice1, story, fileData.PeopleNames);
                 WriteMessage("1) " + choice1);
-                string choice2 = Process.Message(currentScene.Choice2, story, fileData.Names);
+                string choice2 = Process.Message(currentScene.Choice2, story, fileData.PeopleNames);
                 WriteMessage("2) " + choice2);
+
+                if (!shownHelp)
+                {
+                    shownHelp = true;
+                    WriteMessage("(Type \"help\" and hit Enter to learn how to play.)");
+                }
 
                 // ALLOW THE PLAYER TO MAKE A CHOICE
                 string input = ReadInput();
@@ -195,7 +229,7 @@ inventory or i - view your inventory (your collected items)
                 else if (input == "1")
                 {
                     string rawOutro = currentScene.Outro1;
-                    string outro = Process.Message(rawOutro, story, fileData.Names);
+                    string outro = Process.Message(rawOutro, story, fileData.PeopleNames);
 
                     WriteMessage(outro);
                     WriteMessage("");
@@ -205,7 +239,7 @@ inventory or i - view your inventory (your collected items)
                 else if (input == "2")
                 {
                     string rawOutro = currentScene.Outro2;
-                    string outro = Process.Message(rawOutro, story, fileData.Names);
+                    string outro = Process.Message(rawOutro, story, fileData.PeopleNames);
 
                     WriteMessage(outro);
                     WriteMessage("");

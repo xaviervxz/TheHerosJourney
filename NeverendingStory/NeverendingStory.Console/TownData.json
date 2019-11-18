@@ -1,0 +1,31 @@
+{
+  "Geography": [
+    {
+      "location": "along {name} Bay",
+    },
+    {
+      "location": "on the edge of Lake {name}"
+    },
+    {
+      "location": "on the {name} River"
+    },
+    {
+      "location": "at the mouth of the River {name}"
+    },
+    {
+      "location": "where the River {name1} runs into the {name2} Sea"
+    },
+    {
+      "location": "along the {name1} River where it runs into the {name2} River"
+    },
+    {
+      "location": "next to the {name} Springs"
+    },
+    {
+      "location": "that lies where the {name1} Road meets the {name2} Road"
+    },
+    {
+      "location": "that lies between Lake/River {name1} and the {name2} Road"
+    }
+  ]
+}

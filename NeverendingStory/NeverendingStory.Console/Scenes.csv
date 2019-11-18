@@ -10,7 +10,7 @@ Deep in the Black Forest, a {character:mentor:sexAge:ranger} emerges from behind
 
 They say they're here to collect taxes, but they take so much more than that. They eat food they don't pay for, destroy property that isn't theirs, and leer at young men and women.
 
-In the morning, your friend {character:bestfriend:name:stolen} is missing. {character:stolen:possPronoun:cap} family say that {character:stolen:subPronoun} was taken by {character:baron:baron} {character:baron:name}'s men. They don't know when, or if, {character:stolen:subPronoun} will return.","Set out for the Tower immediately","Start a fight with the {character:baron:baron}'s men","You slink into the nearby Black Forest in the night, setting your course straight for the Tower.
+In the morning, your friend {character:bestfriend:name:stolen} is missing. {character:stolen:possPronoun:cap} family say that {character:stolen:subPronoun} was taken to {character:baron:baron} {character:baron:name}'s Tower by {character:baron:possPronoun}'s men. They don't know when, or if, {character:stolen:subPronoun} will return.","Set out for the Tower immediately","Start a fight with the {character:baron:baron}'s men","You slink into the nearby Black Forest in the night, setting your course straight for the Tower.
 
 The next day, deep in the forest, a {character:mentor:sexAge:ranger} emerges from behind the trees. {character:mentor:subPronoun:cap}'s wearing rough clothing.{|MTM|}","You find a group of the {character:baron:baron}'s men in the tavern drinking. As one of them turns to you, your first blow lands squarely on his jaw. An all-out brawl breaks out. You give as good as you get, but in the end there are too many of them.
 
@@ -24,6 +24,7 @@ You wake up the next day, deep in the Black Forest. A {character:mentor:sexAge:r
 The cloth, once unrolled, looks like some sort of map of a secret entrance into the {character:baron:baron}'s Tower. You roll it up again and put it in your pack.
 
 You travel through the Black Forest for several days.{|DONE|}","You walk further into the forest, headed for the Tower. ""Good luck with the {character:baron:baron},"" {character:ranger:name} calls after you.
+
 You travel through the Black Forest for several days.{|DONE|}"
 "MTM2","character:baron|character:ranger","""My name's {character:ranger:name},"" {character:ranger:subPronoun} says. ""Lakeville's not the first village that {character:baron:baron} {character:baron:name}'s taken control of. {character:baron:subPronoun:cap}'ll stop at nothing until the whole region is under {character:baron:possPronoun} control. We can't let that happen.
 
@@ -32,6 +33,7 @@ You travel through the Black Forest for several days.{|DONE|}"
 The cloth, once unrolled, looks like some sort of map of a secret entrance into the {character:baron:baron}'s Tower. You roll it up again and put it in your pack.
 
 You travel through the Black Forest for several days.{|DONE|}","You walk further into the forest, headed for the Tower. ""Good luck with the {character:baron:baron},"" {character:ranger:name} calls after you.
+
 You travel through the Black Forest for several days.{|DONE|}"
 "CTT1",,"A wide river blocks your path to the Tower. The water is deep and moving fast.","Wade through the rushing water","Look for another way around","You wade through the rushing water. It comes up to your armpits. You hold your pack above your head.
 
@@ -42,7 +44,7 @@ Once you're ready, you continue on your way to the Tower.{|DONE|}","You walk alo
 On the other side, you continue on your way to the Tower.{|DONE|}"
 "BOTW1","character:baron","Your path lies through a thick forest, overgrown and difficult to travel through.
 
-After a day or so, you hear footsteps crashing through the brush. They're getting nearer.","Hide in the brush and wait","Seek out the footsteps","You find a clump of bushes to hide inside. As the footsteps get closer, you see two dozen armed of the {character:baron:baron}'s men tramping through the underbrush.
+After a day or so, you hear footsteps crashing through the brush. They're getting nearer.","Hide in the brush and wait","Seek out the footsteps","You find a clump of bushes to hide inside. As the footsteps get closer, you see two dozen of the {character:baron:baron}'s armed men tramping through the underbrush.
 
 You hold your breath, but one of them stumbles just too close to you.
 
@@ -60,10 +62,10 @@ Hours later you feel someone removing your bonds. It's still night out. You turn
 You travel for a few minutes away from the camp before you realize {character:ranger:name} is gone. The sun begins to rise as you silently make your way toward the Tower.{|DONE|}"
 "ROT1",,"The next day, a small creature runs across your path. You almost step on it.
 
-You squat down to look at it. It seems like some sort of squirrel, but it's eyes are ruby red. It sits still, staring at you, alert","Give it some of your food","Ignore it","The squirrel seems appreciative, and chirps happily. It looks deep into your eyes, then it scampers off into the forest. {|DONE|}","The squirrel watches you as you leave, then scampers off."
-"ROT2",,"Late in the day, you hear a voice calling out through the forest. You hide immediately, but then realize the voice seems to be that of a young {character:child:sexAge:petowner}. You can see {character:petowner:objPronoun} walking alone, calling out for her cat. What do you do?","Reveal yourself and offer to help","Wait until {character:petowner:subPronoun}'s gone and continue","You step out from behind your tree, startling the {character:petowner:sexAge} briefly. {character:petowner:subPronoun:cap} seems thrilled to have the help. {character:petowner:subPronoun:cap} tells you {character:petowner:possPronoun} name is {character:petowner:name}, and {character:petowner:possPronoun} cat's name is Sniffles.
+You squat down to look at it. It seems like some sort of squirrel, but it's eyes are ruby red. It sits still, staring at you, alert.","Give it some of your food","Ignore it","The squirrel seems appreciative, and chirps happily. It looks deep into your eyes, then it scampers off into the forest. {|DONE|}","The squirrel watches you as you leave, then scampers off.{|DONE|}"
+"ROT2",,"Late in the day, you hear a voice calling out through the forest. You hide immediately, but then realize the voice seems to be that of a young {character:child:sexAge:petowner}. You can see {character:petowner:objPronoun} walking alone, calling out for {character:petowner:possPronoun} cat. What do you do?","Reveal yourself and offer to help","Wait until {character:petowner:subPronoun}'s gone and continue","You step out from behind your tree, startling the {character:petowner:sexAge} briefly. {character:petowner:subPronoun:cap} seems thrilled to have the help. {character:petowner:subPronoun:cap} tells you {character:petowner:possPronoun} name is {character:petowner:name}, and {character:petowner:possPronoun} cat's name is Sniffles.
 
-Together, it takes you a few ours to find Sniffles. {character:petowner:name:cap} thanks you profusely for your help. Then, you continue on your way to the Tower.{|DONE|}","{character:petowner:subPronoun:cap} continues calling and passes out of earshot in a few minutes. Then, you continue on your way to the Tower.{|DONE|}"
+Together, it takes you a few hours to find Sniffles. {character:petowner:name:cap} thanks you profusely for your help. Then, you continue on your way to the Tower.{|DONE|}","{character:petowner:subPronoun:cap} continues calling and passes out of earshot in a few minutes. Then, you continue on your way to the Tower.{|DONE|}"
 "ROT3",,"You're being careful, but you don't notice a well-concealed pit before it's too late. You step through the thin covering of leaves and ferns and fall right through to the bottom, landing with a crunch.
 
 Your leg hurts. You look up: the pit's sides are sheer hard dirt, about 15 feet deep. There are no roots, nothing down there with you besides dirt and whatever you have with you.","Try to climb out","Call for help","There's nothing to grab onto, but you dig your fingernails and toes into the dirt as best you can, trying to find rocks or roots to hold onto.
@@ -77,7 +79,7 @@ A minute later, a vine woven from ferns and grasses drops down into the pit with
 You climb easily out of the pit. The squirrel is nowhere to be seen.{|DONE|}"
 "MWG1","character:baron|character:ranger","As the sun sets, you see a small hut ahead of you, nestled between the trees. You pause, considering whether or not to investigate, but before you can decide, a group of men and women dressed like {character:ranger:name} steps out from behind the trees, surrounding you.
 
-""What are YOU doing here?"" one of them asks you.","Ask them what THEY are doing here","Tell them you're here to free Lakeville from {character:baron:baron} {character:baron:name}","""We're fighting against the {character:baron:baron}'s influence, to free the villages he's conquered from his control."" You share that you're trying to do the same thing.
+""What are YOU doing here?"" one of them asks you.","Ask them what THEY are doing here","Tell them you're here to free Lakeville from {character:baron:baron} {character:baron:name}","""We're fighting against the {character:baron:baron}'s influence, to free the villages {character:baron:subPronoun}'s conquered from {character:baron:possPronoun} control."" You share that you're trying to do the same thing.
 
 You spend the night with the resistance fighters. The {character:baron:baron}'s men, they tell you, are only working for {character:baron:objPronoun} because {character:baron:subPronoun} pays them handsomely. If you can find a way to stop the {character:baron:baron}'s men from being paid, most of {character:baron:possPronoun} influence over the region will be gone.
 
@@ -110,17 +112,19 @@ Inside the Tower, you look around for the treasury. While you're looking, you he
 ""...if they resist, remind them that, if the kingdoms from the north attack, they will not be able to defend themselves. Under our rule, we will provide them with protection against invasion. What is that safety worth to them? . . .""
 
 The voices fade away as they turn a corner and are gone.{|DONE|}",,,,
-"A1","character:stolen|character:baron","You find {character:stolen:name} locked in a dungeon with a bunch of other young people. It seems they've been locked up here for some future purpose of the {character:baron:baron|. You set them all free.{|DONE|}",,,,
+"A1","character:stolen|character:baron","You find {character:stolen:name} locked in a dungeon with a bunch of other young people. It seems they've been locked up here for some future purpose of the {character:baron:baron}. You set them all free.{|DONE|}",,,,
 "UB1","character:baron","Searching in the Tower, you finally find the treasury. You take out the lone guard, and go inside. Several heavy chests of gold are inside. You dump them out the window into a lake outside the Tower. The {character:baron:baron}'s gold is gone. You leave the Tower.
 
 As you leave, {character:baron:baron} {character:baron:name} spots you leaving. ""After {objPronoun}!"" {character:baron:subPronoun} shouts to {character:baron:possPronoun} men, and they begin to chase after you. You sprint into the forest as fast as you can.{|DONE|}",,,,
 "ROR1",,,,,,
-"MF1","character:baron","The {character:baron:baron}'s men are chasing you through the Black Forest on your way back to Lakeville. If they catch you, there's no telling what they might do to you. How do you attempt to avoid their notice at night?","Dig holes to sleep inside","Travel through the night to stay ahead of them","It's uncomfortable in the holes. You wake up each morning covered in dirt. One night, you're awoken in the middle of the night by the sound of men's footsteps. The {character:baron:baron}'s men don't find you in your hiding place.
+"MF1","character:baron","The {character:baron:baron}'s men are chasing you through the Black Forest on your way back to Lakeville. If they catch you, there's no telling what they might do to you. To avoid notice, you. . .","Spend your nights well-hidden, in a hole or under heavy brush","Travel through the night to stay ahead of them","Your nights are uncomfortable. You wake up each morning covered in dirt or leaves or both.
 
-You return to Lakeville ahead of the {character:baron:baron}'s men.{|DONE|}","You push on through the night. You're exhausted by the time you reach Lakeville, but you are ahead of the {character:baron:baron}'s men.{|DONE|}"
+One night, you're woken in the middle of the night by the sound of men's footsteps. The {character:baron:baron}'s men are searching the Black Forest for you. They almost find your hiding spot, but you hear skittering in the trees, and the {character:baron:baron}'s men go off to investigate the sound. You see a flash of red in the trees, possibly two eyes looking at you, and then it's gone.
+
+You keep going, and you manage to stay ahead of the {character:baron:baron}'s men.{|DONE|}","You push on through the night. You're exhausted by the time you reach Lakeville, but you are ahead of the {character:baron:baron}'s men.{|DONE|}"
 "RFW1",,,,,,
-"CRT1","character:baron","You finally return to Lakeville. The people have been under the rule of the {character:baron:baron}'s men since you left.{|DONE|}",,,,
-"MOTW1","character:baron","You organize a secret meeting at night to rally the people together. You lead the people in a revolt against the {character:baron:baron}'s men. Drunk and caught off guard by armed civilians, they're not sure what to do. A few of them are killed before they retreat, leaving the town forever.
+"CRT1","character:baron","You finally return to Lakeville. The people have been under the rule of the {character:baron:baron}'s men since you left, who have done nothing but drink and destroy property that isn't theirs. The men pursuing you are close behind, maybe a day or so.{|DONE|}",,,,
+"MOTW1","character:baron","You organize a secret meeting at night to rally the people together. You lead the people in a revolt against the {character:baron:baron}'s standing force in Lakeville. Drunk and caught off guard by armed civilians, they're not sure what to do. A few of them are killed before they retreat, leaving the town forever.
 
-The next day, the reinforcements arrive who were pursuing you. Lakeville easily chases them off.{|DONE|}",,,,
+The next day, the men who were pursuing you arrive. Lakeville's finest easily chases them off; there is strength in numbers, and they knew what to expect, thanks to you.{|DONE|}",,,,
 "FTL1","character:baron","Lakeville is now free! Your fellow citizens are eagerly offering you a position of leadership: they want to make you the Chief of Lakeville. What do you do?","Go back to your old job, fishing","Take the new job as Chief of Lakeville","The lake is peaceful and calm, and the fish are biting just like they always have. Lakeville's freedom allows things to go back to the way that they were. But you know that, if ever another {character:baron:baron} tried to take control of Lakeville again, you and your neighbors would be ready for them.{|DONE|}","Under your leadership, Lakeville is led to a new age of prosperity. You establish trade with other villages that were under {character:baron:baron} {character:baron:name}'s control. Lakeville thrives, and your people remain free and happy.{|DONE|}"

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using Names = Dictionary<NameOrigin, Dictionary<Sex, string[]>>;
+    using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
     public static class Pick
     {
@@ -15,7 +15,7 @@ namespace NeverendingStory.Functions
         {
             if (array.Length == 0)
             {
-                return default(T);
+                return default;
             }
 
             int randomIndex = rng.Next(0, array.Length);
@@ -102,7 +102,7 @@ namespace NeverendingStory.Functions
         public static Character Character(
             Relationship relationship,
             IList<Character> characters,
-            Names names)
+            PeopleNames names)
         {
             var character = characters.FirstOrDefault(c => c.Relationship == relationship);
 
@@ -112,13 +112,34 @@ namespace NeverendingStory.Functions
                 {
                     Relationship = relationship
                 };
-                character.Name = Pick.Random(names[NameOrigin.Westron][character.SexEnum]);
+                character.Name = Pick.Random(names[PeopleNameOrigin.Westron][character.Sex].Except(characters.Select(c => c.Name)).ToArray());
 
                 characters.Add(character);
             }
 
             return character;
         }
+
+        //public static Location Location(
+        //    Biome biome,
+        //    IList<Location> locations,
+        //    LocationNames names)
+        //{
+        //    var character = characters.FirstOrDefault(c => c.Relationship == relationship);
+
+        //    if (character == null)
+        //    {
+        //        character = new Character
+        //        {
+        //            Relationship = relationship
+        //        };
+        //        character.Name = Pick.Random(names[PeopleNameOrigin.Westron][character.SexEnum].Except(characters.Select(c => c.Name)).ToArray();
+
+        //        characters.Add(character);
+        //    }
+
+        //    return character;
+        //}
 
         public static JourneyStage NextStage(Story story)
         {
@@ -129,7 +150,7 @@ namespace NeverendingStory.Functions
                 nextStage = story.CurrentStage;
                 story.CurrentStageNumber += 1;
 
-                if (story.CurrentStageNumber >= 3)
+                if (story.CurrentStageNumber > 3)
                 {
                     story.CurrentStageNumber = 1;
                     nextStage = story.CurrentStage + 1;

@@ -2,34 +2,35 @@
 using NeverendingStory.Data;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using Names = Dictionary<NameOrigin, Dictionary<Sex, string[]>>;
+    using Names = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
     public static class LoadFromFile
     {
-        public static FileData Data(string names, string scenes)
+        public static FileData Data()
         {
             var fileData = new FileData();
 
-            fileData.Names = LoadFromFile.Names(names);
+            fileData.PeopleNames = LoadFromFile.PeopleNames();
 
-            fileData.Scenes = LoadFromFile.Scenes(scenes);
+            fileData.Scenes = LoadFromFile.Scenes();
 
             return fileData;
         }
 
-        private static Names Names(string fileName)
+        private static Names PeopleNames()
         {
             // Get the file path of the JSON file.
             string jsonFileDirectory = Directory.GetCurrentDirectory();
 #if DEBUG
             jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
 #endif
-            string filePath = Path.Combine(jsonFileDirectory, fileName + ".json");
+            string filePath = Path.Combine(jsonFileDirectory, "PeopleNames.json");
             
             // Read the JSON file.
             string fileContents = File.ReadAllText(filePath);
@@ -40,14 +41,16 @@ namespace NeverendingStory.Functions
             return names;
         }
 
-        private static Scene[] Scenes(string fileName)
+        private static Scene[] Scenes()
         {
             // Get the file path of the CSV file.
             string jsonFileDirectory = Directory.GetCurrentDirectory();
 #if DEBUG
             jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
 #endif
-            string filePath = Path.Combine(jsonFileDirectory, fileName + ".csv");
+            string filePath = Path.Combine(jsonFileDirectory, "Scenes.csv");
+
+            // TODO: Read from ODS file instead.
 
             // Read and parse the CSV file.
             using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))

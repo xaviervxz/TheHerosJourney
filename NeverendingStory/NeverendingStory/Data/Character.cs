@@ -7,20 +7,20 @@ namespace NeverendingStory.Data
     {
         public Character()
         {
-            SexEnum = Pick.Random(new[] { Sex.Female, Sex.Male });
+            Sex = Pick.Random(new[] { Sex.Female, Sex.Male });
         }
 
-        internal Sex SexEnum { get; set; }
+        public Sex Sex { get; set; }
 
-        public string SubPronoun => SexEnum == Sex.Female ? "she" : "he";
+        public string SubPronoun => Sex == Sex.Female ? "she" : "he";
         
-        public string ObjPronoun => SexEnum == Sex.Female ? "her" : "him";
+        public string ObjPronoun => Sex == Sex.Female ? "her" : "him";
         
-        public string PossPronoun => SexEnum == Sex.Female ? "her" : "his";
+        public string PossPronoun => Sex == Sex.Female ? "her" : "his";
 
-        public string SexAge => Relationship == Relationship.Child ? (SexEnum == Sex.Female ? "girl" : "boy") : (SexEnum == Sex.Female ? "woman" : "man");
+        public string SexAge => Relationship == Relationship.Child ? (Sex == Sex.Female ? "girl" : "boy") : (Sex == Sex.Female ? "woman" : "man");
 
-        public string Baron => SexEnum == Sex.Female ? "Baroness" : "Baron";
+        public string Baron => Sex == Sex.Female ? "Baroness" : "Baron";
 
         public string Name { get; set; }
 

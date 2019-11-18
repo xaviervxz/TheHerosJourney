@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using Names = Dictionary<NameOrigin, Dictionary<Sex, string[]>>;
+    using Names = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
     public static class Process
     {
