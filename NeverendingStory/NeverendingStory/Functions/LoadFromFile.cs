@@ -23,14 +23,22 @@ namespace NeverendingStory.Functions
             return fileData;
         }
 
-        private static PeopleNames PeopleNames()
+        private static string GetDataFilePath(string fileName)
         {
-            // Get the file path of the JSON file.
             string jsonFileDirectory = Directory.GetCurrentDirectory();
 #if DEBUG
             jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
+            //jsonFileDirectory = Path.Combine(Directory.GetParent(jsonFileDirectory).Parent.Parent.Parent.FullName, "NeverendingStory.Console");
 #endif
-            string filePath = Path.Combine(jsonFileDirectory, "PeopleNames.json");
+            string filePath = Path.Combine(jsonFileDirectory, fileName);
+
+            return filePath;
+        }
+
+        private static PeopleNames PeopleNames()
+        {
+            // Get the file path of the JSON file.
+            string filePath = GetDataFilePath("PeopleNames.json");
 
             // Read the JSON file.
             string fileContents = File.ReadAllText(filePath);
@@ -44,12 +52,8 @@ namespace NeverendingStory.Functions
         private static LocationData LocationData()
         {
             // Get the file path of the JSON file.
-            string jsonFileDirectory = Directory.GetCurrentDirectory();
-#if DEBUG
-            jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
-#endif
-            string filePath = Path.Combine(jsonFileDirectory, "LocationData.json");
-
+            string filePath = GetDataFilePath("LocationData.json");
+            
             // Read the JSON file.
             string fileContents = File.ReadAllText(filePath);
 
@@ -62,11 +66,7 @@ namespace NeverendingStory.Functions
         private static Scene[] Scenes()
         {
             // Get the file path of the CSV file.
-            string jsonFileDirectory = Directory.GetCurrentDirectory();
-#if DEBUG
-            jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
-#endif
-            string filePath = Path.Combine(jsonFileDirectory, "Scenes.csv");
+            string filePath = GetDataFilePath("Scenes.csv");
 
             // TODO: Read from ODS file instead.
 

@@ -52,18 +52,70 @@
       "Wicked",
       "Yellow"
     ],
+    "Nouns": [
+      "{name}",
+      "Ash",
+      "Blood",
+      "Cinder",
+      "Crystal",
+      "Dagger",
+      "Death",
+      "Demon",
+      "Devil",
+      "Doom",
+      "Fear",
+      "Fire",
+      "Ghost",
+      "Giant",
+      "Goblin",
+      "God",
+      "Gold",
+      "Hope",
+      "Knave",
+      "Knight",
+      "Muck",
+      "Mud",
+      "Priest",
+      "Sailor",
+      "Silver",
+      "Skull",
+      "Smoke",
+      "Souls",
+      "Spear",
+      "Spirit",
+      "Stone",
+      "Thief",
+      "Troll",
+      "Warrior",
+      "Witch",
+      "Wizard"
+    ],
     "Terrain": {
-      "Forest": [ "Forest", "Wood", "Woods", "Thicket" ],
-      "Swamp": [ "Swamp", "Bog", "Mire", "Marsh", "Morass", "Quagmire" ],
-      "Lake": [ "Lake" ],
-      "River": [ "River", "Stream", "Creek" ],
-      "Bay": [ "Bay", "Harbor" ]
-    },
-    "Formats": ["The {adjective} {terrain}", "{terrain} {adjective}"]
+      "Forest": {
+        "SpecificTypes": [ "Forest", "Wood", "Thicket" ],
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "the {terrain} of the {noun}" ]
+      },
+      "Swamp": {
+        "SpecificTypes": [ "Swamp", "Bog", "Mire", "Marsh", "Morass", "Quagmire" ],
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ]
+      },
+      "Lake": {
+        "SpecificTypes": [ "Lake" ],
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ]
+      },
+      "River": {
+        "SpecificTypes": [ "River", "Stream", "Creek" ],
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ]
+      },
+      "Bay": {
+        "SpecificTypes": [ "Bay", "Harbor" ],
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "the {terrain} {adjective}", "{noun} {terrain}", "{terrain} {noun}", "the {noun}'s {terrain}" ]
+      }
+    }
   },
   "Geography": [
     {
-      "location": "along {name} Bay",
+      "location": "along {name} Bay"
     },
     {
       "location": "on the edge of Lake {name}"

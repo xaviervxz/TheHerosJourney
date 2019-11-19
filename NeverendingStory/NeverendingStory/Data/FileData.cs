@@ -25,11 +25,19 @@ namespace NeverendingStory.Data
     {
         public LocationNames Names { get; set; }
     }
+
     public class LocationNames
     {
         public string[] Adjectives { get; set; }
 
-        public Dictionary<LocationType, string[]> Terrain { get; set; }
+        public string[] Nouns { get; set; }
+
+        public Dictionary<LocationType, LocationTerrain> Terrain { get; set; }
+    }
+
+    public class LocationTerrain
+    {
+        public string[] SpecificTypes { get; set; }
 
         public string[] Formats { get; set; }
     }

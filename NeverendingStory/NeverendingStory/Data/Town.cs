@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace NeverendingStory.Data
+﻿namespace NeverendingStory.Data
 {
     public class Town : Location
     {
-        public LocationType Type => LocationType.Town;
+        public override LocationType Type => LocationType.Town;
 
         public Location MainGeologicalFeature { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Text.RegularExpressions;
 using NeverendingStory.Data;
@@ -7,11 +6,9 @@ using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using Names = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
-
     public static class Process
     {
-        public static string Message(string message, Story story, Names names)
+        public static string Message(string message, Story story, FileData fileData)
         {
             var replacements = Regex.Matches(message, "\\{.+?\\}");
 
@@ -37,6 +34,100 @@ namespace NeverendingStory.Functions
                 {
                     replacedMessage = replacedMessage.Replace("{possPronoun}", story.You.PossPronoun);
                 }
+                else if (key.StartsWith("location"))
+                {
+                    var keyPieces = key.ToLower().Split(':');
+                    string value = "";
+
+                    if (keyPieces.Length > 1)
+                    {
+                        string locationRelation = keyPieces[1];
+
+                        if (locationRelation == "current" && keyPieces.Length == 3)
+                        {
+                            string property = keyPieces[2];
+
+                            if (property == "name")
+                            {
+                                value = story.You.CurrentLocation.Name;
+                            }
+                            else if (property == "namewiththe")
+                            {
+                                value = story.You.CurrentLocation.NameWithThe;
+                            }
+                            else if (property == "type")
+                            {
+                                value = story.You.CurrentLocation.SpecificType;
+                            }
+                        }
+                        else if (locationRelation == "hometown" && keyPieces.Length >= 3)
+                        {
+                            string property = keyPieces[2];
+
+                            if (property == "feature" && keyPieces.Length == 4)
+                            {
+                                var subProperty = keyPieces[3];
+                                if (subProperty == "name")
+                                {
+                                    value = story.You.Hometown.MainGeologicalFeature.Name;
+                                }
+                                else if (subProperty == "namewiththe")
+                                {
+                                    value = story.You.Hometown.MainGeologicalFeature.NameWithThe;
+                                }
+                            }
+                            else if (property == "name")
+                            {
+                                value = story.You.Hometown.Name;
+                            }
+                            else if (property == "namewiththe")
+                            {
+                                value = story.You.Hometown.NameWithThe;
+                            }
+                        }
+                        else if (locationRelation == "nearby" && keyPieces.Length >= 3)
+                        {
+                            string property = keyPieces[2];
+
+                            string currentLocationName = story.You.CurrentLocation.Name;
+                            
+                            Location nearbyLocation = null;
+
+                            var nearbyLocationTuple = story.NearbyLocations
+                                .Find(l => l.Item1 == currentLocationName || l.Item2 == currentLocationName);
+                            if (nearbyLocationTuple != null)
+                            {
+                                nearbyLocation = story.Locations
+                                    .Where(l => l.Name != currentLocationName)
+                                    .FirstOrDefault(l => l.Name == nearbyLocationTuple.Item1 || l.Name == nearbyLocationTuple.Item2);
+                            }
+
+                            if (nearbyLocation == null)
+                            {
+                                nearbyLocation = Pick.Location(LocationType.Forest, story.Locations, fileData);
+
+                                story.NearbyLocations.Add(Tuple.Create(story.You.CurrentLocation.Name, nearbyLocation.Name));
+                            }
+
+                            // IF THE LOCATION IS NAMED, STORE IT IN NAMED LOCATIONS.
+                            if (keyPieces.Length == 4)
+                            {
+                                story.NamedLocations[keyPieces[3]] = nearbyLocation;
+                            }
+
+                            if (property == "name")
+                            {
+                                value = nearbyLocation.Name;
+                            }
+                            else if (property == "namewiththe")
+                            {
+                                value = nearbyLocation.NameWithThe;
+                            }
+                        }
+                    }
+
+                    replacedMessage = replacedMessage.Replace("{" + key + "}", value);
+                }
                 else if (key.StartsWith("character"))
                 {
                     var keyPieces = key.ToLower().Split(':');
@@ -51,7 +142,7 @@ namespace NeverendingStory.Functions
 
                     if (isValidRole && !namedCharacterExists)
                     {
-                        character = Pick.Character(roleEnum, story.Characters, names);
+                        character = Pick.Character(roleEnum, story.Characters, fileData.PeopleNames);
                     }
 
                     string property = keyPieces[2];
@@ -87,6 +178,7 @@ namespace NeverendingStory.Functions
                         {
                             value = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(value);
                         }
+                        // IF THE CHARACTER IS NAMED, STORE IT IN NAMED CHARACTER.
                         else
                         {
                             story.NamedCharacters[keyPieces[3]] = character;
@@ -129,6 +221,13 @@ namespace NeverendingStory.Functions
                                 item.Name = commandOptions[2];
                                 item.Description = commandOptions[3];
                             }
+                        }
+                        else if (commandOptions[0] == "GOTO" && commandOptions.Length >= 2)
+                        {
+                            Location newLocation;
+                            bool namedLocationExists = story.NamedLocations.TryGetValue(commandOptions[1], out newLocation);
+
+                            story.You.CurrentLocation = newLocation;
                         }
                     }
                 }

@@ -162,40 +162,65 @@ namespace NeverendingStory.Functions
             return character;
         }
 
+        public static Town Town(
+            IList<Location> locations,
+            FileData data)
+        {
+            var location = locations.FirstOrDefault(c => c.Type == LocationType.Town);
+
+            if (location == null)
+            {
+                string name = "Lakeville";
+
+                location = new Town
+                {
+                    Name = name,
+                    MainGeologicalFeature = Pick.Location(LocationType.Lake, locations, data),
+                    MainIndustry = Industry.Fishing
+                };
+
+                locations.Add(location);
+            }
+
+            return location as Town;
+        }
+
         public static Location Location(
             LocationType type,
             IList<Location> locations,
-            LocationData data)
+            FileData data)
         {
             var location = locations.FirstOrDefault(c => c.Type == type);
 
             if (location == null)
             {
-                if (type == LocationType.Town)
+                string terrain = data.LocationData.Names.Terrain[type].SpecificTypes.Random();
+                string adjective = data.LocationData.Names.Adjectives.Random();
+                string noun = data.LocationData.Names.Nouns.Random();
+                string personName = Pick.Random(data.PeopleNames[PeopleNameOrigin.Westron][new[] { Sex.Female, Sex.Male }.Random()].ToArray());
+                string format = data.LocationData.Names.Terrain[type].Formats.Random();
+
+                string name = format
+                    .Replace("{terrain}", terrain)
+                    .Replace("{adjective}", adjective)
+                    .Replace("{noun}", noun)
+                    .Replace("{name}", personName);
+
+                const string the = "the ";
+                bool hasThe = false;
+                if (name.StartsWith(the))
                 {
-                    string name = "Lakeville";
-
-                    location = new Town
-                    {
-                        Name = name,
-                        MainGeologicalFeature = Pick.Location(LocationType.Lake, locations, data),
-                        MainIndustry = Industry.Fishing
-                    };
+                    name = name.Substring(the.Length);
+                    hasThe = true;
                 }
-                else
+
+                location = new Location
                 {
-                    string terrain = data.Names.Terrain[type].Random();
-                    string adjective = data.Names.Adjectives.Random();
-                    string format = data.Names.Formats.Random();
-
-                    string name = format.Replace("{terrain}", terrain).Replace("{adjective}", adjective);
-
-                    location = new Location
-                    {
-                        Name = name,
-                        Type = type
-                    };
-                }
+                    Name = name,
+                    HasThe = hasThe,
+                    SpecificType = terrain.ToLower(),
+                    Type = type
+                };
 
                 locations.Add(location);
             }

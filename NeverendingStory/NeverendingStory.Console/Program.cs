@@ -89,12 +89,27 @@ namespace NeverendingStory.Console
             var fileData = LoadFromFile.Data();
             var story = new Story();
             story.You = Pick.Character(Relationship.Self, story.Characters, fileData.PeopleNames);
-            story.You.Hometown = Pick.Location(LocationType.Town, story.Locations, fileData.LocationData);
+            story.You.Hometown = Pick.Town(story.Locations, fileData);
+            story.You.CurrentLocation = story.You.Hometown;
+
+            //{
+            //    // PICK A BUNCH OF LOCATION NAMES.
+            //    for (int i = 0; i < 50; i += 1)
+            //    {
+            //        var location = Pick.Location(LocationType.River, new List<Location>(), fileData);
+            //        WriteMessage(location.Name);
+            //    }
+            //}
 
             // DISPLAY INTRODUCTION
             // PICK PLAYER'S NAME
             WriteDashes();
             WriteMessage("Welcome to the Neverending Story!");
+#if DEBUG
+            WriteDashes();
+            story.You.Name = "Alex";
+            story.You.Sex = Sex.Male;
+#else
             WriteMessage("Type your name and press Enter.");
             story.You.Name = ReadInput();
             WriteDashes();
@@ -129,6 +144,7 @@ namespace NeverendingStory.Console
             WriteDashes();
             WriteMessage("Hello, " + story.You.Name + ", you want " + instinct.ToLower() + ".");
             WriteDashes();
+#endif
 
             // ----------------
             // MAIN GAME LOOP
@@ -171,7 +187,7 @@ namespace NeverendingStory.Console
                 }
 
                 // PROCESS AND DISPLAY MAIN MESSAGE
-                string message = Process.Message(currentScene.Message, story, fileData.PeopleNames);
+                string message = Process.Message(currentScene.Message, story, fileData);
                 WriteMessage(message);
 
                 // IF THERE ARE NO CHOICES AVAILABLE IN THIS SCENE,
@@ -185,9 +201,9 @@ namespace NeverendingStory.Console
                 // IF THERE ARE CHOICES AVAILABLE IN THIS SCENE,
                 // PROCESS AND DISPLAY THEM.
                 WriteDashes();
-                string choice1 = Process.Message(currentScene.Choice1, story, fileData.PeopleNames);
+                string choice1 = Process.Message(currentScene.Choice1, story, fileData);
                 WriteMessage("1) " + choice1);
-                string choice2 = Process.Message(currentScene.Choice2, story, fileData.PeopleNames);
+                string choice2 = Process.Message(currentScene.Choice2, story, fileData);
                 WriteMessage("2) " + choice2);
 
                 if (!shownHelp)
@@ -230,7 +246,7 @@ inventory or i - view your inventory (your collected items)
                 else if (input == "1")
                 {
                     string rawOutro = currentScene.Outro1;
-                    string outro = Process.Message(rawOutro, story, fileData.PeopleNames);
+                    string outro = Process.Message(rawOutro, story, fileData);
 
                     WriteMessage(outro);
                     WriteMessage("");
@@ -240,7 +256,7 @@ inventory or i - view your inventory (your collected items)
                 else if (input == "2")
                 {
                     string rawOutro = currentScene.Outro2;
-                    string outro = Process.Message(rawOutro, story, fileData.PeopleNames);
+                    string outro = Process.Message(rawOutro, story, fileData);
 
                     WriteMessage(outro);
                     WriteMessage("");
