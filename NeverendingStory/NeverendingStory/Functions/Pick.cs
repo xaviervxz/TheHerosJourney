@@ -12,6 +12,11 @@ namespace NeverendingStory.Functions
         private static readonly Random rng = new Random();
         public static T Random<T>(this IEnumerable<T> list)
         {
+            if (list == null)
+            {
+                return default;
+            }
+
             var array = list.ToArray();
 
             if (array.Length == 0)
@@ -140,11 +145,14 @@ namespace NeverendingStory.Functions
             // RANDOMLY PICK A NEW SCENE
             var scene = scenes
                 .Where(s => SceneCanBeUsedHere(s, story.CurrentStage))
-                // The idea of this next line is that the Scenes would be
+
+                // The idea of this next three lines is that the Scenes would be
                 // select randomly from those scenes that have the most
                 // conditions (i.e. requires Baron and Ranger would be 2).
-                // How would I implement that?
-                //.OrderByDescending(s => s.Conditions.Length)
+                .GroupBy(s => s.Conditions.Split('&').Length)
+                .OrderByDescending(s => s.Key)
+                .FirstOrDefault()
+                
                 .Random();
 
             if (scene == null && story.CurrentStage != JourneyStage.FreedomToLive)
@@ -177,41 +185,58 @@ namespace NeverendingStory.Functions
         }
 
         public static Town Town(
-            IList<Location> locations,
+            List<Location> locations,
             FileData data)
         {
             Town town = locations.FirstOrDefault(c => c.Type == LocationType.Town) as Town;
 
             if (town == null)
             {
-                string name = "Lakeville";
-
+                // CREATE THE TOWN OBJECT
                 town = new Town
                 {
-                    Name = name,
                     MainIndustry = Industry.Fishing
                 };
 
+                // GENERATE A MAIN GEOLOGICAL FEATURE
                 var geologicalFeature = data.LocationData.MainGeologicalFeatures.Random();
+
+                var featureLocations = new List<Location>();
+                foreach (var type in geologicalFeature.Types)
+                {
+                    var location = Pick.Location(type, locations.Except(featureLocations).ToList(), data);
+
+                    featureLocations.Add(location);
+                }
+                locations.AddRange(featureLocations.Except(locations));
+
                 town.MainGeologicalFeature = new GeologicalFeature
                 {
-                    Locations = geologicalFeature.Types.Select(t => Pick.Location(t, locations, data)).ToArray(),
-                    RelativePosition = geologicalFeature.RelativePosition,
+                    Locations = featureLocations.ToArray(),
+                    RelativePosition = geologicalFeature.RelativePosition
                 };
 
                 if (town.MainGeologicalFeature.Locations.Length > 0)
                 {
                     town.MainGeologicalFeature.RelativePosition = town.MainGeologicalFeature.RelativePosition
-                        .Replace("{name}", town.MainGeologicalFeature.Locations[0].Name)
-                        .Replace("{name1}", town.MainGeologicalFeature.Locations[0].Name);
+                        .Replace("{name}", town.MainGeologicalFeature.Locations[0].NameWithThe)
+                        .Replace("{name1}", town.MainGeologicalFeature.Locations[0].NameWithThe);
 
                     if (town.MainGeologicalFeature.Locations.Length > 1)
                     {
                         town.MainGeologicalFeature.RelativePosition = town.MainGeologicalFeature.RelativePosition
-                            .Replace("{name2}", town.MainGeologicalFeature.Locations[1].Name);
+                            .Replace("{name2}", town.MainGeologicalFeature.Locations[1].NameWithThe);
                     }
                 }
 
+                // PICK AN INDUSTRY
+                town.MainIndustry = data.LocationData.Industries.Keys.Random();
+                town.MainIndustryData = data.LocationData.Industries[town.MainIndustry];
+
+                // NAME THE TOWN
+                town.Name = "Lakeville";
+
+                // ADD THE TOWN TO THE LIST OF LOCATIONS
                 locations.Add(town);
             }
 

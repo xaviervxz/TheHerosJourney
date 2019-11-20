@@ -113,7 +113,7 @@
       },
       "Bay": {
         "SpecificTypes": [ "Bay", "Harbor" ],
-        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "the {terrain} {adjective}", "{noun} {terrain}", "{terrain} {noun}", "the {noun}'s {terrain}" ]
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "the {terrain} {adjective}", "{noun} {terrain}", "the {noun}'s {terrain}" ]
       },
       "Fortress": {
         "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
@@ -125,10 +125,13 @@
       }
     }
   },
+  "Towns": {
+
+  },
   "MainGeologicalFeatures": [
     {
       "Types": [ "Bay" ],
-      "RelativePosition": "along {name}"
+      "RelativePosition": "on {name}"
     },
     {
       "Types": [ "Lake" ],
@@ -136,7 +139,7 @@
     },
     {
       "Types": [ "River" ],
-      "RelativePosition": "on {name}"
+      "RelativePosition": "along {name}"
     },
     {
       "Types": [ "River" ],
@@ -147,7 +150,7 @@
       "RelativePosition": "where {name1} runs into {name2}"
     },
     {
-      "Types": [ "River", "River" ],
+      "Types": [ "River", "Sea" ],
       "RelativePosition": "along {name1} where it runs into {name2}"
     },
     {
@@ -162,5 +165,31 @@
     //  "Types": [ "Bay" ],
     //  "RelativePosition": "that lies between Lake/River {name1} and the {name2} Road"
     //}
-  ]
+  ],
+  "Industries": {
+    "Fishing": {
+      "WorkGer": "fishing",
+      "Workplace": "on the fishing boats",
+      "Goods": "fish",
+      "Purpose": "to feed",
+      "GoodDay": "The fish are biting, just like they always are this time of year. It's a good haul.",
+      "GoodDayFinal": "The lake is peaceful and calm, and the fish are biting just like they always have."
+    },
+    "Wheat": {
+      "WorkGer": "working in the fields",
+      "Workplace": "in the wheat fields",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
+      "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
+    },
+    "Coal": {
+      "WorkGer": "mining",
+      "Workplace": "in the coal mines",
+      "Goods": "coal",
+      "Purpose": "to trade to other villages for food and supplies, which provides for",
+      "GoodDay": "In the mines, you run into a new vein of coal. Everyone's very excited. You all begin to excavate the new vein.",
+      "GoodDayFinal": "The mining goes quickly, and the coal is flowing fast. Trade at all your normal places is good, as always"
+    }
+  }
 }

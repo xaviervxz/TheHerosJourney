@@ -195,6 +195,77 @@ namespace NeverendingStory.Functions
                     }
 
                 }
+                else if (primaryKey == "industry")
+                {
+                    string locationRelation = keyPieces[1];
+
+                    Town town = null;
+                    string property = "";
+
+                    if (locationRelation == "current" && keyPieces.Length == 3)
+                    {
+                        town = story.You.CurrentLocation as Town;
+                        property = keyPieces[2];
+                    }
+                    else if (locationRelation == "hometown" && keyPieces.Length == 3)
+                    {
+                        town = story.You.Hometown;
+                        property = keyPieces[2];
+                    }
+                    else
+                    {
+                        string rawLocationType = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(locationRelation);
+                        bool locationTypeExists = Enum.TryParse(rawLocationType, out LocationType locationType);
+
+                        if (locationTypeExists)
+                        {
+                            town = Pick.Town(story.Locations, fileData);
+                        }
+                        else
+                        {
+                            bool namedLocationExists = story.NamedLocations.TryGetValue(locationRelation, out Location location);
+                            town = location as Town;
+                        }
+
+                        if (town != null && keyPieces.Length == 3)
+                        {
+                            property = keyPieces[2];
+                        }
+                    }
+
+                    switch (property)
+                    {
+                        case "workplace":
+                            replacementValue = town.MainIndustryData.Workplace;
+                            break;
+                        case "workger":
+                            replacementValue = town.MainIndustryData.WorkGer;
+                            break;
+                        case "goods":
+                            replacementValue = town.MainIndustryData.Goods;
+                            break;
+                        case "purpose":
+                            replacementValue = town.MainIndustryData.Purpose;
+                            break;
+                        case "goodday":
+                            replacementValue = town.MainIndustryData.GoodDay;
+                            break;
+                        case "gooddayfinal":
+                            replacementValue = town.MainIndustryData.GoodDayFinal;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (keyPieces.Length == 4)
+                    {
+                        if (keyPieces[3] == "cap")
+                        {
+                            replacementValue = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(replacementValue);
+                        }
+                    }
+
+                }
                 else if (primaryKey == "character")
                 {
                     string role = keyPieces[1];

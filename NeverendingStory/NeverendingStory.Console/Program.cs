@@ -96,8 +96,8 @@ namespace NeverendingStory.Console
             //    // PICK A BUNCH OF LOCATION NAMES.
             //    for (int i = 0; i < 50; i += 1)
             //    {
-            //        var location = Pick.Location(LocationType.Fortress, new List<Location>(), fileData);
-            //        WriteMessage(location.NameWithThe);
+            //        var location = Pick.Town(new List<Location>(), fileData);
+            //        WriteMessage(location.MainGeologicalFeature.RelativePosition);
             //    }
             //}
 

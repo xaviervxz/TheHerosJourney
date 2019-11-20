@@ -26,6 +26,8 @@ namespace NeverendingStory.Data
         public LocationNames Names { get; set; }
 
         public MainGeologicalFeature[] MainGeologicalFeatures { get; set; }
+
+        public Dictionary<Industry, IndustryData> Industries { get; set; }
     }
 
     public class LocationNames

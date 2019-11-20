@@ -6,8 +6,9 @@
 
         public GeologicalFeature MainGeologicalFeature { get; set; }
 
-
         public Industry MainIndustry { get; set; }
+
+        public IndustryData MainIndustryData { get; set; }
 
         public Location[] NearbyLocations { get; set; }
     }
@@ -19,23 +20,38 @@
         public string RelativePosition { get; set; }
     }
 
+    public class IndustryData
+    {
+        public string Workplace { get; set; }
+
+        public string WorkGer { get; set; }
+        
+        public string Goods { get; set; }
+
+        public string Purpose { get; set; }
+        
+        public string GoodDay { get; set; }
+
+        public string GoodDayFinal { get; set; }
+    }
+
     public enum Industry
     {
-        IronOreMining,
-        CopperOreMining,
-        GoldMining,
-        SilverMining,
-        ClayMining,
-        GraniteMining,
-        QuartzMining,
-        SaltMining,
-        PeatMining,
-        CoalMining,
+        IronOre,
+        CopperOre,
+        Gold,
+        Silver,
+        Clay,
+        Granite,
+        Quartz,
+        Salt,
+        Peat,
+        Coal,
         HardwoodLumber,
-        BarleyFarming,
-        OatFarming,
-        BeanFarming,
-        CornFarming,
+        Barley,
+        Oat,
+        Bean,
+        Corn,
         NutsAndOlives,
         Rice,
         Wheat,
