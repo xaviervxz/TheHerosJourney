@@ -2,11 +2,11 @@
 
 namespace NeverendingStory.Data
 {
-    using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
+    using CharacterData = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
     public class FileData
     {
-        public PeopleNames PeopleNames { get; set; }
+        public CharacterData CharacterData { get; set; }
 
         public LocationData LocationData { get; set; }
 

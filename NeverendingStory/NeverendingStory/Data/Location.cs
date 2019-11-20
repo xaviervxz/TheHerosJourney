@@ -20,6 +20,7 @@
         Lake,
         River,
         Bay,
-        Town
+        Town,
+        Fortress
     }
 }

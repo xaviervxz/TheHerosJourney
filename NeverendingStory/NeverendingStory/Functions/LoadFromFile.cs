@@ -33,13 +33,13 @@ namespace NeverendingStory.Functions
             // **************************
 
             // Get the file path of the JSON file.
-            string peopleNamesFilePath = GetDataFilePath("PeopleNames.json");
+            string peopleNamesFilePath = GetDataFilePath("CharacterData.json");
 
             // Read the JSON file.
             string peopleNamesFileContents = File.ReadAllText(peopleNamesFilePath);
 
             // Deserialize the JSON file.
-            fileData.PeopleNames = JsonConvert.DeserializeObject<PeopleNames>(peopleNamesFileContents);
+            fileData.CharacterData = JsonConvert.DeserializeObject<PeopleNames>(peopleNamesFileContents);
 
             // **************************
             // LOADING LOCATION DATA

@@ -110,6 +110,10 @@
       "Bay": {
         "SpecificTypes": [ "Bay", "Harbor" ],
         "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "the {terrain} {adjective}", "{noun} {terrain}", "{terrain} {noun}", "the {noun}'s {terrain}" ]
+      },
+      "Fortress": {
+        "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "the {noun} {terrain}" ]
       }
     }
   },

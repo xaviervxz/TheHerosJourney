@@ -57,8 +57,8 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="LocationData.json" />
-    <None Include="PeopleNames.json" />
-    <None Include="Scenes.csv" />
+    <None Include="CharacterData.json" />
+    <None Include="Scenes.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NeverendingStory\NeverendingStory.csproj">

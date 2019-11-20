@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
+    using CharacterData = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
     public static class Pick
     {
@@ -158,7 +158,7 @@ namespace NeverendingStory.Functions
         public static Character Character(
             Relationship relationship,
             IList<Character> characters,
-            PeopleNames names)
+            CharacterData names)
         {
             var character = characters.FirstOrDefault(c => c.Relationship == relationship);
 
@@ -211,7 +211,7 @@ namespace NeverendingStory.Functions
                 string terrain = data.LocationData.Names.Terrain[type].SpecificTypes.Random();
                 string adjective = data.LocationData.Names.Adjectives.Random();
                 string noun = data.LocationData.Names.Nouns.Random();
-                string personName = Pick.Random(data.PeopleNames[PeopleNameOrigin.Westron][new[] { Sex.Female, Sex.Male }.Random()].ToArray());
+                string personName = Pick.Random(data.CharacterData[PeopleNameOrigin.Westron][new[] { Sex.Female, Sex.Male }.Random()].ToArray());
                 string format = data.LocationData.Names.Terrain[type].Formats.Random();
 
                 string name = format

@@ -136,20 +136,24 @@ namespace NeverendingStory.Functions
                             story.NearbyLocations.Add(Tuple.Create(story.You.CurrentLocation.Name, nearbyLocation.Name));
                         }
 
-                        // IF THE LOCATION IS NAMED, STORE IT IN NAMED LOCATIONS.
-                        if (keyPieces.Length == 4)
-                        {
-                            story.NamedLocations[keyPieces[3]] = nearbyLocation;
-                        }
-
                         location = nearbyLocation;
                         property = keyPieces[2];
                     }
                     else
                     {
-                        bool namedLocationExists = story.NamedLocations.TryGetValue(locationRelation, out location);
+                        string rawLocationType = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(locationRelation);
+                        bool locationTypeExists = Enum.TryParse(rawLocationType, out LocationType locationType);
 
-                        if (namedLocationExists && keyPieces.Length >= 3)
+                        if (locationTypeExists)
+                        {
+                            location = Pick.Location(locationType, story.Locations, fileData);
+                        }
+                        else
+                        {
+                            bool namedLocationExists = story.NamedLocations.TryGetValue(locationRelation, out location);
+                        }
+
+                        if (location != null && keyPieces.Length >= 3)
                         {
                             property = keyPieces[2];
                         }
@@ -171,6 +175,19 @@ namespace NeverendingStory.Functions
                             break;
                     }
 
+                    if (keyPieces.Length == 4)
+                    {
+                        if (keyPieces[3] == "cap")
+                        {
+                            replacementValue = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(replacementValue);
+                        }
+                        // IF THE LOCATION IS NAMED, STORE IT IN NAMED LOCATIONS.
+                        else
+                        {
+                            story.NamedLocations[keyPieces[3]] = location;
+                        }
+                    }
+
                 }
                 else if (primaryKey == "character")
                 {
@@ -182,7 +199,7 @@ namespace NeverendingStory.Functions
 
                     if (isValidRole && !namedCharacterExists)
                     {
-                        character = Pick.Character(roleEnum, story.Characters, fileData.PeopleNames);
+                        character = Pick.Character(roleEnum, story.Characters, fileData.CharacterData);
                     }
 
                     string property = keyPieces[2];

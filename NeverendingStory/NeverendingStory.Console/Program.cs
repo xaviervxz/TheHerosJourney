@@ -88,7 +88,7 @@ namespace NeverendingStory.Console
             // LOAD DATA FROM FILES AND CREATE EMPTY STORY
             var fileData = LoadFromFile.Data();
             var story = new Story();
-            story.You = Pick.Character(Relationship.Self, story.Characters, fileData.PeopleNames);
+            story.You = Pick.Character(Relationship.Self, story.Characters, fileData.CharacterData);
             story.You.Hometown = Pick.Town(story.Locations, fileData);
             story.You.CurrentLocation = story.You.Hometown;
 
@@ -96,8 +96,8 @@ namespace NeverendingStory.Console
             //    // PICK A BUNCH OF LOCATION NAMES.
             //    for (int i = 0; i < 50; i += 1)
             //    {
-            //        var location = Pick.Location(LocationType.River, new List<Location>(), fileData);
-            //        WriteMessage(location.Name);
+            //        var location = Pick.Location(LocationType.Fortress, new List<Location>(), fileData);
+            //        WriteMessage(location.NameWithThe);
             //    }
             //}
 
