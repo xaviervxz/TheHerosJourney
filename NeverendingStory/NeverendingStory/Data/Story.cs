@@ -36,11 +36,17 @@ namespace NeverendingStory.Data
 
         public List<Location> Locations { get; } = new List<Location>();
 
-        public List<Tuple<string, string>> NearbyLocations { get; } = new List<Tuple<string, string>>();
-
         /// <summary>
         /// Contains references to characters in the Characters list.
         /// </summary>
         public Dictionary<string, Location> NamedLocations { get; } = new Dictionary<string, Location>();
+
+        public List<Tuple<string, string>> NearbyLocations { get; } = new List<Tuple<string, string>>();
+
+        // ***********
+        // FLAGS
+        // ***********
+
+        public Dictionary<string, string> Flags { get; } = new Dictionary<string, string>();
     }
 }

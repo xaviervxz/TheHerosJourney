@@ -91,7 +91,7 @@ namespace NeverendingStory.Functions
 
                 bool sceneMatches = s.Stage == currentStage;
 
-                var conditions = s.Conditions.Split('|');
+                var conditions = s.Conditions.Split('&');
                 bool AreMet(string condition)
                 {
                     var conditionPieces = condition.Split(':');
@@ -113,6 +113,20 @@ namespace NeverendingStory.Functions
                         bool hasNamedCharacter = story.NamedCharacters.ContainsKey(conditionPieces[1]);
 
                         return hasNamedCharacter;
+                    }
+
+                    if (conditionPieces[0] == "location" && conditionPieces.Length == 3 && conditionPieces[1] == "current")
+                    {
+                        bool isInLocation = story.You.CurrentLocation.Type.ToString().ToLower() == conditionPieces[2];
+
+                        return isInLocation;
+                    }
+
+                    bool doesFlagExist = story.Flags.TryGetValue(conditionPieces[0], out string value);
+
+                    if (doesFlagExist && conditionPieces.Length >= 2)
+                    {
+                        return value == conditionPieces[1];
                     }
 
                     return false;

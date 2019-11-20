@@ -18,180 +18,14 @@ namespace NeverendingStory.Functions
             {
                 var key = replacement.Value.Substring(1, replacement.Value.Length - 2);
 
-                if (key == "name")
-                {
-                    replacedMessage = replacedMessage.Replace("{name}", story.You.Name);
-                }
-                else if (key == "subPronoun")
-                {
-                    replacedMessage = replacedMessage.Replace("{subPronoun}", story.You.SubPronoun);
-                }
-                else if (key == "objPronoun")
-                {
-                    replacedMessage = replacedMessage.Replace("{objPronoun}", story.You.ObjPronoun);
-                }
-                else if (key == "possPronoun")
-                {
-                    replacedMessage = replacedMessage.Replace("{possPronoun}", story.You.PossPronoun);
-                }
-                else if (key.StartsWith("location"))
-                {
-                    var keyPieces = key.ToLower().Split(':');
-                    string value = "";
+                var keyPieces = key.ToLower().Split(':');
+                var primaryKey = keyPieces[0];
 
-                    if (keyPieces.Length > 1)
-                    {
-                        string locationRelation = keyPieces[1];
+                string replacementValue = "";
 
-                        if (locationRelation == "current" && keyPieces.Length == 3)
-                        {
-                            string property = keyPieces[2];
-
-                            if (property == "name")
-                            {
-                                value = story.You.CurrentLocation.Name;
-                            }
-                            else if (property == "namewiththe")
-                            {
-                                value = story.You.CurrentLocation.NameWithThe;
-                            }
-                            else if (property == "type")
-                            {
-                                value = story.You.CurrentLocation.SpecificType;
-                            }
-                        }
-                        else if (locationRelation == "hometown" && keyPieces.Length >= 3)
-                        {
-                            string property = keyPieces[2];
-
-                            if (property == "feature" && keyPieces.Length == 4)
-                            {
-                                var subProperty = keyPieces[3];
-                                if (subProperty == "name")
-                                {
-                                    value = story.You.Hometown.MainGeologicalFeature.Name;
-                                }
-                                else if (subProperty == "namewiththe")
-                                {
-                                    value = story.You.Hometown.MainGeologicalFeature.NameWithThe;
-                                }
-                            }
-                            else if (property == "name")
-                            {
-                                value = story.You.Hometown.Name;
-                            }
-                            else if (property == "namewiththe")
-                            {
-                                value = story.You.Hometown.NameWithThe;
-                            }
-                        }
-                        else if (locationRelation == "nearby" && keyPieces.Length >= 3)
-                        {
-                            string property = keyPieces[2];
-
-                            string currentLocationName = story.You.CurrentLocation.Name;
-                            
-                            Location nearbyLocation = null;
-
-                            var nearbyLocationTuple = story.NearbyLocations
-                                .Find(l => l.Item1 == currentLocationName || l.Item2 == currentLocationName);
-                            if (nearbyLocationTuple != null)
-                            {
-                                nearbyLocation = story.Locations
-                                    .Where(l => l.Name != currentLocationName)
-                                    .FirstOrDefault(l => l.Name == nearbyLocationTuple.Item1 || l.Name == nearbyLocationTuple.Item2);
-                            }
-
-                            if (nearbyLocation == null)
-                            {
-                                nearbyLocation = Pick.Location(LocationType.Forest, story.Locations, fileData);
-
-                                story.NearbyLocations.Add(Tuple.Create(story.You.CurrentLocation.Name, nearbyLocation.Name));
-                            }
-
-                            // IF THE LOCATION IS NAMED, STORE IT IN NAMED LOCATIONS.
-                            if (keyPieces.Length == 4)
-                            {
-                                story.NamedLocations[keyPieces[3]] = nearbyLocation;
-                            }
-
-                            if (property == "name")
-                            {
-                                value = nearbyLocation.Name;
-                            }
-                            else if (property == "namewiththe")
-                            {
-                                value = nearbyLocation.NameWithThe;
-                            }
-                        }
-                    }
-
-                    replacedMessage = replacedMessage.Replace("{" + key + "}", value);
-                }
-                else if (key.StartsWith("character"))
-                {
-                    var keyPieces = key.ToLower().Split(':');
-
-                    string role = keyPieces[1];
-                    Relationship roleEnum;
-
-                    bool isValidRole = Enum.TryParse(role, true, out roleEnum);
-
-                    Character character;
-                    bool namedCharacterExists = story.NamedCharacters.TryGetValue(role, out character);
-
-                    if (isValidRole && !namedCharacterExists)
-                    {
-                        character = Pick.Character(roleEnum, story.Characters, fileData.PeopleNames);
-                    }
-
-                    string property = keyPieces[2];
-                    string value;
-                    switch (property)
-                    {
-                        case "name":
-                            value = character.Name;
-                            break;
-                        case "subpronoun":
-                            value = character.SubPronoun;
-                            break;
-                        case "objpronoun":
-                            value = character.ObjPronoun;
-                            break;
-                        case "posspronoun":
-                            value = character.PossPronoun;
-                            break;
-                        case "sexage":
-                            value = character.SexAge;
-                            break;
-                        case "baron":
-                            value = character.Baron;
-                            break;
-                        default:
-                            value = "";
-                            break;
-                    }
-
-                    if (keyPieces.Length == 4)
-                    {
-                        if (keyPieces[3] == "cap")
-                        {
-                            value = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(value);
-                        }
-                        // IF THE CHARACTER IS NAMED, STORE IT IN NAMED CHARACTER.
-                        else
-                        {
-                            story.NamedCharacters[keyPieces[3]] = character;
-                        }
-                    }
-
-                    replacedMessage = replacedMessage.Replace("{" + key + "}", value);
-                }
-                else if (key.StartsWith("|") && key.EndsWith("|"))
+                if (key.StartsWith("|") && key.EndsWith("|"))
                 {
                     var command = key.Substring(1, key.Length - 2);
-
-                    replacedMessage = replacedMessage.Replace("{" + key + "}", "");
 
                     var commandOptions = command.Split(':');
 
@@ -229,8 +63,161 @@ namespace NeverendingStory.Functions
 
                             story.You.CurrentLocation = newLocation;
                         }
+                        else if (commandOptions[0] == "SET" && commandOptions.Length == 3)
+                        {
+                            string flagKey = commandOptions[1];
+                            string flagValue = commandOptions[2];
+
+                            story.Flags[flagKey] = flagValue;
+                        }
                     }
                 }
+                else if (keyPieces.Length == 1)
+                {
+                    if (key == "name")
+                    {
+                        replacementValue = story.You.Name;
+                    }
+                    else if (key == "subPronoun")
+                    {
+                        replacementValue = story.You.SubPronoun;
+                    }
+                    else if (key == "objPronoun")
+                    {
+                        replacementValue = story.You.ObjPronoun;
+                    }
+                    else if (key == "possPronoun")
+                    {
+                        replacementValue = story.You.PossPronoun;
+                    }
+                }
+                else if (primaryKey == "location")
+                {
+                    string locationRelation = keyPieces[1];
+
+                    Location location = null;
+                    string property = "";
+
+                    if (locationRelation == "current" && keyPieces.Length == 3)
+                    {
+                        location = story.You.CurrentLocation;
+                        property = keyPieces[2];
+                    }
+                    else if (locationRelation == "hometown" && keyPieces.Length >= 3)
+                    {
+                        location = story.You.Hometown;
+                        property = keyPieces[2];
+
+                        if (property == "feature" && keyPieces.Length == 4)
+                        {
+                            location = story.You.Hometown.MainGeologicalFeature;
+                            property = keyPieces[3];
+                        }
+                    }
+                    else if (locationRelation == "nearby" && keyPieces.Length >= 3)
+                    {
+                        property = keyPieces[2];
+
+                        // FIND A NEARBY LOCATION TO THE CURRENT LOCATION
+                        Location nearbyLocation = null;
+
+                        string currentLocationName = story.You.CurrentLocation.Name;
+                        var nearbyLocationTuple = story.NearbyLocations
+                            .Find(l => l.Item1 == currentLocationName || l.Item2 == currentLocationName);
+                        if (nearbyLocationTuple != null)
+                        {
+                            nearbyLocation = story.Locations
+                                .Where(l => l.Name != currentLocationName)
+                                .FirstOrDefault(l => l.Name == nearbyLocationTuple.Item1 || l.Name == nearbyLocationTuple.Item2);
+                        }
+
+                        if (nearbyLocation == null)
+                        {
+                            nearbyLocation = Pick.Location(LocationType.Forest, story.Locations, fileData);
+
+                            story.NearbyLocations.Add(Tuple.Create(story.You.CurrentLocation.Name, nearbyLocation.Name));
+                        }
+
+                        // IF THE LOCATION IS NAMED, STORE IT IN NAMED LOCATIONS.
+                        if (keyPieces.Length == 4)
+                        {
+                            story.NamedLocations[keyPieces[3]] = nearbyLocation;
+                        }
+
+                        location = nearbyLocation;
+                    }
+
+                    switch (property)
+                    {
+                        case "name":
+                            replacementValue = location.Name;
+                            break;
+                        case "namewiththe":
+                            replacementValue = location.NameWithThe;
+                            break;
+                        case "type":
+                            replacementValue = location.SpecificType;
+                            break;
+                        default:
+                            replacementValue = "";
+                            break;
+                    }
+
+                }
+                else if (primaryKey == "character")
+                {
+                    string role = keyPieces[1];
+
+                    bool isValidRole = Enum.TryParse(role, true, out Relationship roleEnum);
+
+                    bool namedCharacterExists = story.NamedCharacters.TryGetValue(role, out Character character);
+
+                    if (isValidRole && !namedCharacterExists)
+                    {
+                        character = Pick.Character(roleEnum, story.Characters, fileData.PeopleNames);
+                    }
+
+                    string property = keyPieces[2];
+                    switch (property)
+                    {
+                        case "name":
+                            replacementValue = character.Name;
+                            break;
+                        case "subpronoun":
+                            replacementValue = character.SubPronoun;
+                            break;
+                        case "objpronoun":
+                            replacementValue = character.ObjPronoun;
+                            break;
+                        case "posspronoun":
+                            replacementValue = character.PossPronoun;
+                            break;
+                        case "sexage":
+                            replacementValue = character.SexAge;
+                            break;
+                        case "baron":
+                            replacementValue = character.Baron;
+                            break;
+                        default:
+                            replacementValue = "";
+                            break;
+                    }
+
+                    if (keyPieces.Length == 4)
+                    {
+                        if (keyPieces[3] == "cap")
+                        {
+                            replacementValue = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(replacementValue);
+                        }
+                        // IF THE CHARACTER IS NAMED, STORE IT IN NAMED CHARACTER.
+                        else
+                        {
+                            story.NamedCharacters[keyPieces[3]] = character;
+                        }
+                    }
+                }
+
+                replacedMessage = replacedMessage.Replace("{" + key + "}", replacementValue);
             }
 
             return replacedMessage;
