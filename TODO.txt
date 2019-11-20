@@ -1,5 +1,3 @@
-Select scenes with the longest conditions first
-
 Pick names for random starting towns (not just Lakeville)
 
 Randomly generate a pet for the kid (dog/cat/etc., probably walks on the ground) and a name for their pet.

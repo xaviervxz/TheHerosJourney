@@ -4,7 +4,7 @@
     {
         public override LocationType Type => LocationType.Town;
 
-        public GeologicalFeature MainGeologicalFeature { get; set; }
+        public Feature MainFeature { get; set; }
 
         public Industry MainIndustry { get; set; }
 
@@ -13,7 +13,7 @@
         public Location[] NearbyLocations { get; set; }
     }
 
-    public class GeologicalFeature
+    public class Feature
     {
         public Location[] Locations { get; set; }
 

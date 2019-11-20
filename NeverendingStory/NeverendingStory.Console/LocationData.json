@@ -113,7 +113,7 @@
       },
       "Bay": {
         "SpecificTypes": [ "Bay", "Harbor" ],
-        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "the {terrain} {adjective}", "{noun} {terrain}", "the {noun}'s {terrain}" ]
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "{noun} {terrain}", "the {noun}'s {terrain}" ]
       },
       "Fortress": {
         "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
@@ -125,47 +125,81 @@
       }
     }
   },
-  "Towns": {
-
-  },
-  "MainGeologicalFeatures": [
+  "Towns": [
     {
+      "Name": "Lakeville",
+      "MainFeature": "LakeTown",
+      "Industry": "Fishing"
+    },
+    {
+      "Name": "Coalwood",
+      "MainFeature": "RiverTown",
+      "Industry": "Coal"
+    },
+    {
+      "Name": "Silver Bay",
+      "MainFeature": "BayTown",
+      "Industry": "Wheat"
+    },
+    {
+      "Name": "Rafter",
+      "MainFeature": "DeltaTown",
+      "Industry": "Fishing"
+    },
+    {
+      "Name": "Diamond Village",
+      "MainFeature": "RiverMouthTown",
+      "Industry": "Coal"
+    },
+    {
+      "Name": "Rivervale",
+      "MainFeature": "RiverConfluenceTown",
+      "Industry": "Wheat"
+    },
+    {
+      "Name": "Coal Springs",
+      "MainFeature": "SpringTown",
+      "Industry": "Coal"
+    }
+  ],
+  "MainFeatures": {
+    "BayTown": {
       "Types": [ "Bay" ],
       "RelativePosition": "on {name}"
     },
-    {
+    "LakeTown": {
       "Types": [ "Lake" ],
       "RelativePosition": "on the edge of {name}"
     },
-    {
+    "RiverTown": {
       "Types": [ "River" ],
       "RelativePosition": "along {name}"
     },
-    {
+    "RiverMouthTown": {
       "Types": [ "River" ],
       "RelativePosition": "at the mouth of {name}"
     },
-    {
+    "RiverConfluenceTown": {
       "Types": [ "River", "River" ],
       "RelativePosition": "where {name1} runs into {name2}"
     },
-    {
+    "DeltaTown": {
       "Types": [ "River", "Sea" ],
       "RelativePosition": "along {name1} where it runs into {name2}"
     },
-    {
+    "SpringTown": {
       "Types": [ "Springs" ],
       "RelativePosition": "next to {name}"
     }
     //,{
-    //  "Types": [ "Bay" ],
+    //  "Types": [ "Road", "Road" ],
     //  "RelativePosition": "that lies where the {name1} Road meets the {name2} Road"
     //},
     //{
-    //  "Types": [ "Bay" ],
+    //  "Types": [ "Road", "River" ],
     //  "RelativePosition": "that lies between Lake/River {name1} and the {name2} Road"
     //}
-  ],
+  },
   "Industries": {
     "Fishing": {
       "WorkGer": "fishing",

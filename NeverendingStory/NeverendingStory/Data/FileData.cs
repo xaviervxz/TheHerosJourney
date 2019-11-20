@@ -25,7 +25,9 @@ namespace NeverendingStory.Data
     {
         public LocationNames Names { get; set; }
 
-        public MainGeologicalFeature[] MainGeologicalFeatures { get; set; }
+        public TownTemplate[] Towns { get; set; }
+
+        public Dictionary<string, MainFeature> MainFeatures { get; set; }
 
         public Dictionary<Industry, IndustryData> Industries { get; set; }
     }
@@ -39,6 +41,15 @@ namespace NeverendingStory.Data
         public Dictionary<LocationType, LocationTerrain> Terrain { get; set; }
     }
 
+    public class TownTemplate
+    {
+        public string Name { get; set; }
+
+        public string MainFeature { get; set; }
+
+        public Industry Industry { get; set; }
+    }
+
     public class LocationTerrain
     {
         public string[] SpecificTypes { get; set; }
@@ -46,7 +57,7 @@ namespace NeverendingStory.Data
         public string[] Formats { get; set; }
     }
 
-    public class MainGeologicalFeature
+    public class MainFeature
     {
         public LocationType[] Types { get; set; }
 

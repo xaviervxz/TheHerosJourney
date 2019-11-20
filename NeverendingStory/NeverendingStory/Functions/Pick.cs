@@ -192,17 +192,20 @@ namespace NeverendingStory.Functions
 
             if (town == null)
             {
-                // CREATE THE TOWN OBJECT
+                // PICK A RANDOM TOWN
+                var townTemplate = data.LocationData.Towns.Random();
+
+                // CREATE THE TOWN WITH ITS NAME
                 town = new Town
                 {
-                    MainIndustry = Industry.Fishing
+                    Name = townTemplate.Name
                 };
 
-                // GENERATE A MAIN GEOLOGICAL FEATURE
-                var geologicalFeature = data.LocationData.MainGeologicalFeatures.Random();
+                // GENERATE A MAIN FEATURE
+                var feature = data.LocationData.MainFeatures[townTemplate.MainFeature];
 
                 var featureLocations = new List<Location>();
-                foreach (var type in geologicalFeature.Types)
+                foreach (var type in feature.Types)
                 {
                     var location = Pick.Location(type, locations.Except(featureLocations).ToList(), data);
 
@@ -210,31 +213,28 @@ namespace NeverendingStory.Functions
                 }
                 locations.AddRange(featureLocations.Except(locations));
 
-                town.MainGeologicalFeature = new GeologicalFeature
+                town.MainFeature = new Feature
                 {
                     Locations = featureLocations.ToArray(),
-                    RelativePosition = geologicalFeature.RelativePosition
+                    RelativePosition = feature.RelativePosition
                 };
 
-                if (town.MainGeologicalFeature.Locations.Length > 0)
+                if (town.MainFeature.Locations.Length > 0)
                 {
-                    town.MainGeologicalFeature.RelativePosition = town.MainGeologicalFeature.RelativePosition
-                        .Replace("{name}", town.MainGeologicalFeature.Locations[0].NameWithThe)
-                        .Replace("{name1}", town.MainGeologicalFeature.Locations[0].NameWithThe);
+                    town.MainFeature.RelativePosition = town.MainFeature.RelativePosition
+                        .Replace("{name}", town.MainFeature.Locations[0].NameWithThe)
+                        .Replace("{name1}", town.MainFeature.Locations[0].NameWithThe);
 
-                    if (town.MainGeologicalFeature.Locations.Length > 1)
+                    if (town.MainFeature.Locations.Length > 1)
                     {
-                        town.MainGeologicalFeature.RelativePosition = town.MainGeologicalFeature.RelativePosition
-                            .Replace("{name2}", town.MainGeologicalFeature.Locations[1].NameWithThe);
+                        town.MainFeature.RelativePosition = town.MainFeature.RelativePosition
+                            .Replace("{name2}", town.MainFeature.Locations[1].NameWithThe);
                     }
                 }
 
                 // PICK AN INDUSTRY
-                town.MainIndustry = data.LocationData.Industries.Keys.Random();
+                town.MainIndustry = townTemplate.Industry;
                 town.MainIndustryData = data.LocationData.Industries[town.MainIndustry];
-
-                // NAME THE TOWN
-                town.Name = "Lakeville";
 
                 // ADD THE TOWN TO THE LIST OF LOCATIONS
                 locations.Add(town);

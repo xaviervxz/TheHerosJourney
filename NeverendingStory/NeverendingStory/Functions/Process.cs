@@ -117,7 +117,7 @@ namespace NeverendingStory.Functions
 
                             if (property == "relativeposition")
                             {
-                                replacementValue = story.You.Hometown.MainGeologicalFeature.RelativePosition;
+                                replacementValue = story.You.Hometown.MainFeature.RelativePosition;
                             }
                         }
                     }

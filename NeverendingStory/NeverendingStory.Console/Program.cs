@@ -97,7 +97,7 @@ namespace NeverendingStory.Console
             //    for (int i = 0; i < 50; i += 1)
             //    {
             //        var location = Pick.Town(new List<Location>(), fileData);
-            //        WriteMessage(location.MainGeologicalFeature.RelativePosition);
+            //        WriteMessage(location.MainFeature.RelativePosition);
             //    }
             //}
 
