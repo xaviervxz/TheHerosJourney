@@ -24,6 +24,8 @@ namespace NeverendingStory.Data
     public class LocationData
     {
         public LocationNames Names { get; set; }
+
+        public MainGeologicalFeature[] MainGeologicalFeatures { get; set; }
     }
 
     public class LocationNames
@@ -40,5 +42,12 @@ namespace NeverendingStory.Data
         public string[] SpecificTypes { get; set; }
 
         public string[] Formats { get; set; }
+    }
+
+    public class MainGeologicalFeature
+    {
+        public LocationType[] Types { get; set; }
+
+        public string RelativePosition { get; set; }
     }
 }

@@ -180,23 +180,42 @@ namespace NeverendingStory.Functions
             IList<Location> locations,
             FileData data)
         {
-            var location = locations.FirstOrDefault(c => c.Type == LocationType.Town);
+            Town town = locations.FirstOrDefault(c => c.Type == LocationType.Town) as Town;
 
-            if (location == null)
+            if (town == null)
             {
                 string name = "Lakeville";
 
-                location = new Town
+                town = new Town
                 {
                     Name = name,
-                    MainGeologicalFeature = Pick.Location(LocationType.Lake, locations, data),
                     MainIndustry = Industry.Fishing
                 };
 
-                locations.Add(location);
+                var geologicalFeature = data.LocationData.MainGeologicalFeatures.Random();
+                town.MainGeologicalFeature = new GeologicalFeature
+                {
+                    Locations = geologicalFeature.Types.Select(t => Pick.Location(t, locations, data)).ToArray(),
+                    RelativePosition = geologicalFeature.RelativePosition,
+                };
+
+                if (town.MainGeologicalFeature.Locations.Length > 0)
+                {
+                    town.MainGeologicalFeature.RelativePosition = town.MainGeologicalFeature.RelativePosition
+                        .Replace("{name}", town.MainGeologicalFeature.Locations[0].Name)
+                        .Replace("{name1}", town.MainGeologicalFeature.Locations[0].Name);
+
+                    if (town.MainGeologicalFeature.Locations.Length > 1)
+                    {
+                        town.MainGeologicalFeature.RelativePosition = town.MainGeologicalFeature.RelativePosition
+                            .Replace("{name2}", town.MainGeologicalFeature.Locations[1].Name);
+                    }
+                }
+
+                locations.Add(town);
             }
 
-            return location as Town;
+            return town as Town;
         }
 
         public static Location Location(

@@ -113,8 +113,12 @@ namespace NeverendingStory.Functions
 
                         if (property == "feature" && keyPieces.Length == 4)
                         {
-                            location = story.You.Hometown.MainGeologicalFeature;
                             property = keyPieces[3];
+
+                            if (property == "relativeposition")
+                            {
+                                replacementValue = story.You.Hometown.MainGeologicalFeature.RelativePosition;
+                            }
                         }
                     }
                     else if (locationRelation == "nearby" && keyPieces.Length >= 3)
@@ -174,7 +178,6 @@ namespace NeverendingStory.Functions
                             replacementValue = location.SpecificType;
                             break;
                         default:
-                            replacementValue = "";
                             break;
                     }
 

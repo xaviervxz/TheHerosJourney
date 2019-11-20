@@ -18,8 +18,10 @@
         Forest,
         Swamp,
         Lake,
+        Springs,
         River,
         Bay,
+        Sea,
         Town,
         Fortress
     }

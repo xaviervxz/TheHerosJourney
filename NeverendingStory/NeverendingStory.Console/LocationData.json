@@ -103,6 +103,10 @@
         "SpecificTypes": [ "Lake" ],
         "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ]
       },
+      "Springs": {
+        "SpecificTypes": [ "Springs" ],
+        "Formats": [ "the {adjective} {terrain}", "the {noun} {terrain}" ]
+      },
       "River": {
         "SpecificTypes": [ "River", "Stream", "Creek" ],
         "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ]
@@ -114,36 +118,49 @@
       "Fortress": {
         "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
         "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "the {noun} {terrain}" ]
+      },
+      "Sea": {
+        "SpecificTypes": [ "Sea", "Seas", "Ocean", "Ocean" ],
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "the {noun} {terrain}" ]
       }
     }
   },
-  "Geography": [
+  "MainGeologicalFeatures": [
     {
-      "location": "along {name} Bay"
+      "Types": [ "Bay" ],
+      "RelativePosition": "along {name}"
     },
     {
-      "location": "on the edge of Lake {name}"
+      "Types": [ "Lake" ],
+      "RelativePosition": "on the edge of {name}"
     },
     {
-      "location": "on the {name} River"
+      "Types": [ "River" ],
+      "RelativePosition": "on {name}"
     },
     {
-      "location": "at the mouth of the River {name}"
+      "Types": [ "River" ],
+      "RelativePosition": "at the mouth of {name}"
     },
     {
-      "location": "where the River {name1} runs into the {name2} Sea"
+      "Types": [ "River", "River" ],
+      "RelativePosition": "where {name1} runs into {name2}"
     },
     {
-      "location": "along the {name1} River where it runs into the {name2} River"
+      "Types": [ "River", "River" ],
+      "RelativePosition": "along {name1} where it runs into {name2}"
     },
     {
-      "location": "next to the {name} Springs"
-    },
-    {
-      "location": "that lies where the {name1} Road meets the {name2} Road"
-    },
-    {
-      "location": "that lies between Lake/River {name1} and the {name2} Road"
+      "Types": [ "Springs" ],
+      "RelativePosition": "next to {name}"
     }
+    //,{
+    //  "Types": [ "Bay" ],
+    //  "RelativePosition": "that lies where the {name1} Road meets the {name2} Road"
+    //},
+    //{
+    //  "Types": [ "Bay" ],
+    //  "RelativePosition": "that lies between Lake/River {name1} and the {name2} Road"
+    //}
   ]
 }

@@ -4,11 +4,19 @@
     {
         public override LocationType Type => LocationType.Town;
 
-        public Location MainGeologicalFeature { get; set; }
+        public GeologicalFeature MainGeologicalFeature { get; set; }
+
 
         public Industry MainIndustry { get; set; }
 
         public Location[] NearbyLocations { get; set; }
+    }
+
+    public class GeologicalFeature
+    {
+        public Location[] Locations { get; set; }
+
+        public string RelativePosition { get; set; }
     }
 
     public enum Industry
