@@ -44,6 +44,9 @@ namespace NeverendingStory.Functions
                                 Description = commandOptions[3]
                             };
 
+                            item.Description = item.Description.Replace("[", "{").Replace("]", "}").Replace("-", ":");
+                            item.Description = Process.Message(item.Description, story, fileData);
+
                             story.You.Inventory.Add(item);
                         }
                         else if (commandOptions[0] == "RENAME" && commandOptions.Length == 4)

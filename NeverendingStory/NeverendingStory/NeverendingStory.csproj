@@ -61,7 +61,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Animal.cs" />
     <Compile Include="Data\Character.cs" />
     <Compile Include="Data\FileData.cs" />
     <Compile Include="Data\Instincts.cs" />
