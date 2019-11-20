@@ -7,7 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeverendingStory", "Neveren
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeverendingStory.Console", "NeverendingStory.Console\NeverendingStory.Console.csproj", "{5F3EE541-B339-422D-A3FE-90E12042A187}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeverendingStory.Test", "NeverendingStory.Test\NeverendingStory.Test.csproj", "{E8A7DF50-8DC6-4568-BF56-E56D9676A3BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeverendingStory.Test", "NeverendingStory.Test\NeverendingStory.Test.csproj", "{E8A7DF50-8DC6-4568-BF56-E56D9676A3BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3AE9F091-592E-49FD-B275-FB18DDFF4926}"
+	ProjectSection(SolutionItems) = preProject
+		..\TODO.txt = ..\TODO.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

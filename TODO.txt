@@ -1,0 +1,2 @@
+Randomly generate a "Fortress" type name to replace "the Tower".
+Randomly generate a pet for the kid (dog/cat/etc., probably walks on the ground) and a name for their pet.

@@ -116,8 +116,6 @@ namespace NeverendingStory.Functions
                     }
                     else if (locationRelation == "nearby" && keyPieces.Length >= 3)
                     {
-                        property = keyPieces[2];
-
                         // FIND A NEARBY LOCATION TO THE CURRENT LOCATION
                         Location nearbyLocation = null;
 
@@ -145,6 +143,16 @@ namespace NeverendingStory.Functions
                         }
 
                         location = nearbyLocation;
+                        property = keyPieces[2];
+                    }
+                    else
+                    {
+                        bool namedLocationExists = story.NamedLocations.TryGetValue(locationRelation, out location);
+
+                        if (namedLocationExists && keyPieces.Length >= 3)
+                        {
+                            property = keyPieces[2];
+                        }
                     }
 
                     switch (property)
