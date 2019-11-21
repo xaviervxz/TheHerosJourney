@@ -49,6 +49,15 @@ namespace NeverendingStory.Functions
 
                             story.You.Inventory.Add(item);
                         }
+                        else if (commandOptions[0] == "REMOVE" && commandOptions.Length == 2)
+                        {
+                            var item = story.You.Inventory.FirstOrDefault(i => i.Identifier == commandOptions[1]);
+
+                            if (item != null)
+                            {
+                                story.You.Inventory.Remove(item);
+                            }
+                        }
                         else if (commandOptions[0] == "RENAME" && commandOptions.Length == 4)
                         {
                             var item = story.You.Inventory.FirstOrDefault(i => i.Identifier == commandOptions[1]);

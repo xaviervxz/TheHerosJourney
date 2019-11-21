@@ -6,7 +6,6 @@ using System.Linq;
 namespace NeverendingStory.Functions
 {
     using CharacterData = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
-
     public static class Pick
     {
         private static readonly Random rng = new Random();
@@ -113,6 +112,13 @@ namespace NeverendingStory.Functions
                         return haveItem;
                     }
 
+                    if (conditionPieces[0] == "noitem" && conditionPieces.Length == 2)
+                    {
+                        bool doesNotHaveItem = story.You.Inventory.All(i => i.Identifier != conditionPieces[1]);
+
+                        return doesNotHaveItem;
+                    }
+
                     if (conditionPieces[0] == "character" && conditionPieces.Length == 2)
                     {
                         bool hasNamedCharacter = story.NamedCharacters.ContainsKey(conditionPieces[1]);
@@ -149,9 +155,9 @@ namespace NeverendingStory.Functions
                 // The idea of this next three lines is that the Scenes would be
                 // select randomly from those scenes that have the most
                 // conditions (i.e. requires Baron and Ranger would be 2).
-                .GroupBy(s => s.Conditions.Split('&').Length)
-                .OrderByDescending(s => s.Key)
-                .FirstOrDefault()
+                //.GroupBy(s => s.Conditions.Split('&').Length)
+                //.OrderByDescending(s => s.Key)
+                //.FirstOrDefault()
                 
                 .Random();
 
