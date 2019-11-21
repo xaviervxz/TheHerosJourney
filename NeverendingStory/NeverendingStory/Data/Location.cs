@@ -17,6 +17,9 @@
     {
         Forest,
         Swamp,
+        Mountain,
+        Desert,
+        Plains,
         Lake,
         Springs,
         River,

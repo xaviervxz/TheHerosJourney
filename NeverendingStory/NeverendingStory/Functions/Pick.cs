@@ -28,6 +28,22 @@ namespace NeverendingStory.Functions
             return array[randomIndex];
         }
 
+        public static T WeightedRandom<T>(this IEnumerable<T> list, Func<T, int> weightingFunction)
+        {
+            var weightedList = new List<T>();
+
+            foreach (var item in list)
+            {
+                int weight = weightingFunction(item);
+
+                weightedList.AddRange(Enumerable.Repeat(item, weight));
+            }
+
+            var randomWeightedItem = weightedList.Random();
+
+            return randomWeightedItem;
+        }
+
         public static Scene NextScene(Scene[] scenes, Story story)
         {
             if (story.NextSceneIdentifier != null)
@@ -98,6 +114,16 @@ namespace NeverendingStory.Functions
                 var conditions = s.Conditions.Split('&');
                 bool AreMet(string condition)
                 {
+                    // IF THIS CONDITION CONTAINS MULTIPLE, ORed CONDITIONS,
+                    // RETURN TRUE IF ANY OF THOSE ARE TRUE.
+                    {
+                        var separateConditions = condition.Split('|');
+                        if (separateConditions.Length > 1)
+                        {
+                            return separateConditions.Any(AreMet);
+                        }
+                    }
+
                     var conditionPieces = condition.Split(':');
 
                     if (conditionPieces.Length == 0 || string.IsNullOrWhiteSpace(conditionPieces[0]))
@@ -214,7 +240,7 @@ namespace NeverendingStory.Functions
                 //.OrderByDescending(s => s.Key)
                 //.FirstOrDefault()
                 
-                .Random();
+                .WeightedRandom(s => s.Conditions.Split('&').Length);
 
             if (scene == null && story.CurrentStage != JourneyStage.FreedomToLive)
             {

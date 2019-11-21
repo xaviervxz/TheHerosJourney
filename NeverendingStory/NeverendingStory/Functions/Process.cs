@@ -184,7 +184,9 @@ namespace NeverendingStory.Functions
 
                         if (nearbyLocation == null)
                         {
-                            nearbyLocation = Pick.Location(LocationType.Forest, story.Locations, fileData);
+                            var validNearbyLocations = new[] { LocationType.Forest, LocationType.Swamp, LocationType.Mountain, LocationType.Plains };
+
+                            nearbyLocation = Pick.Location(validNearbyLocations.Random(), story.Locations, fileData);
 
                             story.NearbyLocations.Add(Tuple.Create(story.You.CurrentLocation.Name, nearbyLocation.Name));
                         }
@@ -222,6 +224,12 @@ namespace NeverendingStory.Functions
                             break;
                         case "type":
                             replacementValue = location.SpecificType;
+                            break;
+                        case "covers":
+                            replacementValue = fileData.LocationData.Names.Terrain[location.Type].Covers;
+                            break;
+                        case "cover":
+                            replacementValue = fileData.LocationData.Names.Terrain[location.Type].Cover;
                             break;
                         default:
                             break;

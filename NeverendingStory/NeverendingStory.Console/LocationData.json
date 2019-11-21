@@ -93,35 +93,69 @@
     "Terrain": {
       "Forest": {
         "SpecificTypes": [ "Forest", "Wood", "Thicket" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "the {terrain} of the {noun}" ]
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "the {terrain} of the {noun}" ],
+        "Covers": "trees",
+        "Cover": "tree"
       },
       "Swamp": {
         "SpecificTypes": [ "Swamp", "Bog", "Mire", "Marsh", "Morass", "Quagmire" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ]
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ],
+        "Covers": "trees",
+        "Cover": "tree"
+      },
+      "Mountain": {
+        "SpecificTypes": [ "Mountains", "Peaks", "Range" ],
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of the {noun}" ],
+        "Covers": "rocks",
+        "Cover": "rock"
+      },
+      "Desert": {
+        "SpecificTypes": [ "Desert", "Waste" ],
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of the {noun}", "{noun} {terrain}" ],
+        "Covers": "dunes",
+        "Cover": "dune"
+      },
+      "Plains": {
+        "SpecificTypes": [ "Plains", "Flats" ],
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ],
+        "Covers": "waving grass",
+        "Cover": "waving grass"
       },
       "Lake": {
         "SpecificTypes": [ "Lake" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ]
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ],
+        "Covers": "brush",
+        "Cover": "brush"
       },
       "Springs": {
         "SpecificTypes": [ "Springs" ],
-        "Formats": [ "the {adjective} {terrain}", "the {noun} {terrain}" ]
+        "Formats": [ "the {adjective} {terrain}", "the {noun} {terrain}" ],
+        "Covers": "brush",
+        "Cover": "brush"
       },
       "River": {
         "SpecificTypes": [ "River", "Stream", "Creek" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ]
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ],
+        "Covers": "reeds",
+        "Cover": "bunch of reeds"
       },
       "Bay": {
         "SpecificTypes": [ "Bay", "Harbor" ],
-        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "{noun} {terrain}", "the {noun}'s {terrain}" ]
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "{noun} {terrain}", "the {noun}'s {terrain}" ],
+        "Covers": "trees",
+        "Cover": "tree"
       },
       "Fortress": {
         "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
-        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "the {noun} {terrain}" ]
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "the {noun} {terrain}" ],
+        "Covers": "next corner",
+        "Cover": "nearby alcove"
       },
       "Sea": {
         "SpecificTypes": [ "Sea", "Seas", "Ocean", "Ocean" ],
-        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "the {noun} {terrain}" ]
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "the {noun} {terrain}" ],
+        "Covers": "waves",
+        "Cover": "wave"
       }
     }
   },
@@ -222,7 +256,7 @@
       "Workplace": "in the coal mines",
       "Goods": "coal",
       "Purpose": "to trade to other villages for food and supplies, which provides for",
-      "GoodDay": "In the mines, you run into a new vein of coal. Everyone's very excited. You all begin to excavate the new vein.",
+      "GoodDay": "In the mines, you run into a new vein of coal. Everyone's very excited. You all prepare to excavate the new vein.",
       "GoodDayFinal": "The mining goes quickly, and the coal is flowing fast. Trade at all your normal places is good, as always"
     }
   }
