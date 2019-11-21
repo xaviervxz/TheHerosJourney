@@ -8,6 +8,11 @@ namespace NeverendingStory.Functions
 {
     public static class Process
     {
+        public static string ToTitleCase(this string text)
+        {
+            return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(text);
+        }
+
         public static string Message(string message, Story story, FileData fileData)
         {
             var replacements = Regex.Matches(message, "\\{.+?\\}");
@@ -73,14 +78,41 @@ namespace NeverendingStory.Functions
                             Location newLocation;
                             bool namedLocationExists = story.NamedLocations.TryGetValue(commandOptions[1], out newLocation);
 
-                            story.You.CurrentLocation = newLocation;
+                            if (namedLocationExists)
+                            {
+                                story.You.CurrentLocation = newLocation;
+                            }
+                            else if (commandOptions[1] == "hometown")
+                            {
+                                story.You.CurrentLocation = story.You.Hometown;
+                            }
+                            else if (commandOptions[1] == "goal")
+                            {
+                                story.You.CurrentLocation = story.You.Goal;
+                            }
                         }
                         else if (commandOptions[0] == "SET" && commandOptions.Length == 3)
                         {
                             string flagKey = commandOptions[1];
                             string flagValue = commandOptions[2];
 
-                            story.Flags[flagKey] = flagValue;
+                            if (flagKey == "goal")
+                            {
+                                if (flagValue == "hometown")
+                                {
+                                    story.You.Goal = story.You.Hometown;
+                                }
+                                else
+                                {
+                                    story.NamedLocations.TryGetValue(flagValue, out Location goalLocation);
+
+                                    story.You.Goal = goalLocation;
+                                }
+                            }
+                            else
+                            {
+                                story.Flags[flagKey] = flagValue;
+                            }
                         }
                     }
                 }
@@ -110,9 +142,14 @@ namespace NeverendingStory.Functions
                     Location location = null;
                     string property = "";
 
-                    if (locationRelation == "current" && keyPieces.Length == 3)
+                    if (locationRelation == "current" && keyPieces.Length >= 3)
                     {
                         location = story.You.CurrentLocation;
+                        property = keyPieces[2];
+                    }
+                    else if (locationRelation == "goal" && keyPieces.Length >= 3)
+                    {
+                        location = story.You.Goal;
                         property = keyPieces[2];
                     }
                     else if (locationRelation == "hometown" && keyPieces.Length >= 3)
@@ -157,7 +194,7 @@ namespace NeverendingStory.Functions
                     }
                     else
                     {
-                        string rawLocationType = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(locationRelation);
+                        string rawLocationType = locationRelation.ToTitleCase();
                         bool locationTypeExists = Enum.TryParse(rawLocationType, out LocationType locationType);
 
                         if (locationTypeExists)
@@ -194,10 +231,10 @@ namespace NeverendingStory.Functions
                     {
                         if (keyPieces[3] == "cap")
                         {
-                            replacementValue = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(replacementValue);
+                            replacementValue = replacementValue.ToTitleCase();
                         }
                         // IF THE LOCATION IS NAMED, STORE IT IN NAMED LOCATIONS.
-                        else
+                        else if (property != "relativeposition")
                         {
                             story.NamedLocations[keyPieces[3]] = location;
                         }
@@ -223,7 +260,7 @@ namespace NeverendingStory.Functions
                     }
                     else
                     {
-                        string rawLocationType = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(locationRelation);
+                        string rawLocationType = locationRelation.ToTitleCase();
                         bool locationTypeExists = Enum.TryParse(rawLocationType, out LocationType locationType);
 
                         if (locationTypeExists)
@@ -270,7 +307,7 @@ namespace NeverendingStory.Functions
                     {
                         if (keyPieces[3] == "cap")
                         {
-                            replacementValue = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(replacementValue);
+                            replacementValue = replacementValue.ToTitleCase();
                         }
                     }
 
@@ -318,7 +355,7 @@ namespace NeverendingStory.Functions
                     {
                         if (keyPieces[3] == "cap")
                         {
-                            replacementValue = Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(replacementValue);
+                            replacementValue = replacementValue.ToTitleCase();
                         }
                         // IF THE CHARACTER IS NAMED, STORE IT IN NAMED CHARACTER.
                         else

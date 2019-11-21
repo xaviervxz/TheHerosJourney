@@ -37,9 +37,7 @@ namespace NeverendingStory.Data
 
         public Location CurrentLocation { get; set; }
 
-        // SET THIS GOAL WITH A COMMAND {|SET:goal:*****|},
-        // USE IT LIKE THIS: {location:goal:*****}
-        //public Location Goal { get; set; }
+        public Location Goal { get; set; }
     }
     public enum Sex
     {

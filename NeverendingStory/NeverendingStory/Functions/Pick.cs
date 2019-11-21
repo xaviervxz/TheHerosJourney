@@ -126,11 +126,67 @@ namespace NeverendingStory.Functions
                         return hasNamedCharacter;
                     }
 
-                    if (conditionPieces[0] == "location" && conditionPieces.Length == 3 && conditionPieces[1] == "current")
+                    if (conditionPieces[0] == "location" && conditionPieces.Length == 3)
                     {
-                        bool isInLocation = story.You.CurrentLocation.Type.ToString().ToLower() == conditionPieces[2];
+                        Location location;
+
+                        // GET THE LOCATION WE'RE LOOKING AT
+                        if (conditionPieces[1] == "current")
+                        {
+                            location = story.You.CurrentLocation;
+                        }
+                        else
+                        {
+                            story.NamedLocations.TryGetValue(conditionPieces[1], out location);
+                        }
+
+                        // FIGURE OUT WHAT WE WANT TO KNOW ABOUT THAT LOCATION
+                        bool isInLocation = false;
+
+                        bool isLocationType = Enum.TryParse(conditionPieces[2].ToTitleCase(), out LocationType locationType);
+
+                        if (isLocationType)
+                        {
+                            isInLocation = location.Type == locationType;
+                        }
+                        else
+                        {
+                            if (conditionPieces[2] == "hometown")
+                            {
+                                isInLocation = location == story.You.Hometown;
+                            }
+                            else if (conditionPieces[2] == "goal")
+                            {
+                                isInLocation = location == story.You.Goal;
+                            }
+                            else
+                            {
+                                story.NamedLocations.TryGetValue(conditionPieces[2], out Location namedLocation);
+
+                                isInLocation = location == namedLocation;
+                            }
+                        }
 
                         return isInLocation;
+                    }
+
+                    if (conditionPieces[0] == "goal" && conditionPieces.Length == 2)
+                    {
+                        bool goalIsAsDescribed = false;
+
+                        if (conditionPieces[1] == "hometown")
+                        {
+                            goalIsAsDescribed = story.You.Goal == story.You.Hometown;
+                        }
+                        else
+                        {
+                            if (story.NamedLocations.TryGetValue(conditionPieces[1], out Location namedLocation))
+                            {
+                                goalIsAsDescribed = story.You.Goal == namedLocation;
+                            }
+                        }
+
+                        return goalIsAsDescribed;
                     }
 
                     bool doesFlagExist = story.Flags.TryGetValue(conditionPieces[0], out string value);
@@ -142,9 +198,8 @@ namespace NeverendingStory.Functions
 
                     return false;
                 }
-                bool sceneConditionsAreMet = conditions.All(AreMet);
 
-                return sceneConditionsAreMet && sceneMatches && sceneIsFilledOut && !s.Done && !s.IsSubStage;
+                return sceneMatches && sceneIsFilledOut && !s.Done && !s.IsSubStage && conditions.All(AreMet);
             }
 
             
