@@ -18,7 +18,7 @@ namespace NeverendingStory.Functions
             {
                 string jsonFileDirectory = Directory.GetCurrentDirectory();
 #if DEBUG
-                jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.FullName;
+                jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.Parent.FullName;
                 //jsonFileDirectory = Path.Combine(Directory.GetParent(jsonFileDirectory).Parent.Parent.Parent.FullName, "NeverendingStory.Console");
 #endif
                 string filePath = Path.Combine(jsonFileDirectory, fileName);
