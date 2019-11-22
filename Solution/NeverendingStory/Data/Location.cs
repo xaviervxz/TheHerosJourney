@@ -11,6 +11,13 @@
         public virtual LocationType Type { get; set; }
 
         public string SpecificType { get; set; }
+
+#if DEBUG
+        public override string ToString()
+        {
+            return Name;
+        }
+#endif
     }
 
     public enum LocationType

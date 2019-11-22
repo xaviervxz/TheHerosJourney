@@ -167,32 +167,52 @@ namespace NeverendingStory.Functions
                             }
                         }
                     }
-                    else if (locationRelation == "nearby" && keyPieces.Length >= 3)
+                    else if (locationRelation == "nearby" && keyPieces.Length >= 5)
                     {
                         // FIND A NEARBY LOCATION TO THE CURRENT LOCATION
                         Location nearbyLocation = null;
 
+                        // Get the valid location types.
+                        var rawValidTypes = keyPieces[2].Split('|');
+                        var validTypes = rawValidTypes
+                            .Select(vt =>
+                            {
+                                if (Enum.TryParse(vt.ToTitleCase(), out LocationType type))
+                                {
+                                    return type;
+                                }
+
+                                return (LocationType?)null;
+                            })
+                            .Where(t => t != null)
+                            .Select(t => (LocationType) t)
+                            .ToArray();
+                        if (validTypes.Length == 0)
+                        {
+                            validTypes = Enum.GetValues(typeof(LocationType)).Cast<LocationType>().ToArray();
+                        }
+
+                        // 
                         string currentLocationName = story.You.CurrentLocation.Name;
                         var nearbyLocationTuple = story.NearbyLocations
                             .Find(l => l.Item1 == currentLocationName || l.Item2 == currentLocationName);
                         if (nearbyLocationTuple != null)
                         {
                             nearbyLocation = story.Locations
-                                .Where(l => l.Name != currentLocationName)
+                                .Where(l => l.Name != currentLocationName && validTypes.Contains(l.Type))
                                 .FirstOrDefault(l => l.Name == nearbyLocationTuple.Item1 || l.Name == nearbyLocationTuple.Item2);
                         }
 
+                        // IF NO NEARBY LOCATION EXISTS, CREATE/PICK A NEW ONE.
                         if (nearbyLocation == null)
                         {
-                            var validNearbyLocations = new[] { LocationType.Forest, LocationType.Swamp, LocationType.Mountain, LocationType.Plains };
-
-                            nearbyLocation = Pick.Location(validNearbyLocations.Random(), story.Locations, fileData);
+                            nearbyLocation = Pick.Location(validTypes.Random(), story.Locations, fileData);
 
                             story.NearbyLocations.Add(Tuple.Create(story.You.CurrentLocation.Name, nearbyLocation.Name));
                         }
 
                         location = nearbyLocation;
-                        property = keyPieces[2];
+                        property = keyPieces[4];
                     }
                     else
                     {
@@ -235,7 +255,7 @@ namespace NeverendingStory.Functions
                             break;
                     }
 
-                    if (keyPieces.Length == 4)
+                    if (keyPieces.Length >= 4)
                     {
                         if (keyPieces[3] == "cap")
                         {

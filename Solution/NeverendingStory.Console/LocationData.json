@@ -106,7 +106,7 @@
         "Cover": "tree"
       },
       "Mountain": {
-        "SpecificTypes": [ "Mountains", "Peaks", "Range" ],
+        "SpecificTypes": [ "Mountains", "Peaks" ],
         "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}" ],
         "Covers": "rocks",
         "Cover": "rock"
@@ -227,6 +227,16 @@
       "Name": "Catch Cod",
       "MainFeature": "BayTown",
       "Industry": "Fishing"
+    },
+    {
+      "Name": "Quakshmiville",
+      "MainFeature": "RiverTown",
+      "Industry": "Oats"
+    },
+    {
+      "Name": "Quakshmiville",
+      "MainFeature": "RiverTown",
+      "Industry": "CabbageAndBeets"
     }
   ],
   "MainFeatures": {
@@ -278,8 +288,17 @@
       "GoodDayFinal": "The lake is peaceful and calm, and the fish are biting just like they always have."
     },
     "Wheat": {
-      "WorkGer": "working in the fields",
+      "WorkGer": "working in the wheat fields",
       "Workplace": "in the wheat fields",
+      "GoodsGer": "growing",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
+      "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
+    },
+    "Oats": {
+      "WorkGer": "working in the oat fields",
+      "Workplace": "in the oat fields",
       "GoodsGer": "growing",
       "Goods": "food",
       "Purpose": "to feed",
