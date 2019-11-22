@@ -92,14 +92,15 @@ namespace NeverendingStory.Console
             story.You.Hometown = Pick.Town(story.Locations, fileData);
             story.You.CurrentLocation = story.You.Hometown;
 
-            //{
-            //    // PICK A BUNCH OF LOCATION NAMES.
-            //    for (int i = 0; i < 50; i += 1)
-            //    {
-            //        var location = Pick.Town(new List<Location>(), fileData);
-            //        WriteMessage(location.MainFeature.RelativePosition);
-            //    }
-            //}
+            {
+                // PICK A BUNCH OF LOCATION NAMES.
+                for (int i = 0; i < 50; i += 1)
+                {
+                    var validLocationTypes = new[] { LocationType.Forest, LocationType.Swamp, LocationType.Spring, LocationType.Sea, LocationType.Mountain, LocationType.Plains, LocationType.River, LocationType.Lake, LocationType.Desert, LocationType.Bay, LocationType.Fortress };
+                    var location = Pick.Location(validLocationTypes.Random(), new List<Location>(), fileData);
+                    WriteMessage(location.NameWithThe);
+                }
+            }
 
             // DISPLAY INTRODUCTION
             // PICK PLAYER'S NAME

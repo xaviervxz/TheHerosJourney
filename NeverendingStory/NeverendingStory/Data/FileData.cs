@@ -38,6 +38,8 @@ namespace NeverendingStory.Data
 
         public string[] Nouns { get; set; }
 
+        public string[] TheNouns { get; set; }
+
         public Dictionary<LocationType, LocationTerrain> Terrain { get; set; }
     }
 

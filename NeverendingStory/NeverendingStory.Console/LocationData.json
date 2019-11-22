@@ -56,34 +56,36 @@
       "{name}",
       "Ash",
       "Blood",
-      "Cinder",
-      "Crystal",
-      "Dagger",
       "Death",
-      "Demon",
-      "Devil",
       "Doom",
       "Fear",
       "Fire",
-      "Ghost",
-      "Giant",
-      "Goblin",
       "God",
       "Gold",
       "Hope",
-      "Knave",
-      "Knight",
       "Muck",
       "Mud",
-      "Priest",
-      "Sailor",
       "Silver",
-      "Skull",
       "Smoke",
       "Souls",
-      "Spear",
       "Spirit",
-      "Stone",
+      "Stone"
+    ],
+    "TheNouns": [
+      "Crystal",
+      "Cinder",
+      "Dagger",
+      "Demon",
+      "Devil",
+      "Giant",
+      "Ghost",
+      "Goblin",
+      "Knave",
+      "Knight",
+      "Priest",
+      "Sailor",
+      "Skull",
+      "Spear",
       "Thief",
       "Troll",
       "Warrior",
@@ -93,31 +95,31 @@
     "Terrain": {
       "Forest": {
         "SpecificTypes": [ "Forest", "Wood", "Thicket" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "the {terrain} of the {noun}" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}", "the {terrain} of {nounwiththe}" ],
         "Covers": "trees",
         "Cover": "tree"
       },
       "Swamp": {
         "SpecificTypes": [ "Swamp", "Bog", "Mire", "Marsh", "Morass", "Quagmire" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
         "Covers": "trees",
         "Cover": "tree"
       },
       "Mountain": {
         "SpecificTypes": [ "Mountains", "Peaks", "Range" ],
-        "Formats": [ "the {adjective} {terrain}", "the {terrain} of the {noun}" ],
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}" ],
         "Covers": "rocks",
         "Cover": "rock"
       },
       "Desert": {
         "SpecificTypes": [ "Desert", "Waste" ],
-        "Formats": [ "the {adjective} {terrain}", "the {terrain} of the {noun}", "{noun} {terrain}" ],
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}", "{nounwiththe} {terrain}" ],
         "Covers": "dunes",
         "Cover": "dune"
       },
       "Plains": {
         "SpecificTypes": [ "Plains", "Flats" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
         "Covers": "waving grass",
         "Cover": "waving grass"
       },
@@ -127,33 +129,33 @@
         "Covers": "brush",
         "Cover": "brush"
       },
-      "Springs": {
+      "Spring": {
         "SpecificTypes": [ "Springs" ],
-        "Formats": [ "the {adjective} {terrain}", "the {noun} {terrain}" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
         "Covers": "brush",
         "Cover": "brush"
       },
       "River": {
         "SpecificTypes": [ "River", "Stream", "Creek" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
         "Covers": "reeds",
         "Cover": "bunch of reeds"
       },
       "Bay": {
         "SpecificTypes": [ "Bay", "Harbor" ],
-        "Formats": [ "the {adjective} {terrain}", "{terrain} of the {noun}", "{noun} {terrain}", "the {noun}'s {terrain}" ],
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of {nounwiththe}", "{nounwiththe} {terrain}", "{nounwiththe}'s {terrain}" ],
         "Covers": "trees",
         "Cover": "tree"
       },
       "Fortress": {
         "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
-        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "the {noun} {terrain}" ],
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "{nounwiththe} {terrain}" ],
         "Covers": "next corner",
         "Cover": "nearby alcove"
       },
       "Sea": {
         "SpecificTypes": [ "Sea", "Seas", "Ocean", "Ocean" ],
-        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "the {noun} {terrain}" ],
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
         "Covers": "waves",
         "Cover": "wave"
       }
@@ -222,7 +224,7 @@
       "RelativePosition": "along {name1} where it runs into {name2}"
     },
     "SpringTown": {
-      "Types": [ "Springs" ],
+      "Types": [ "Spring" ],
       "RelativePosition": "next to {name}"
     }
     //,{

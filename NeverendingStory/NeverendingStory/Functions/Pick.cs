@@ -341,17 +341,21 @@ namespace NeverendingStory.Functions
             {
                 string terrain = data.LocationData.Names.Terrain[type].SpecificTypes.Random();
                 string adjective = data.LocationData.Names.Adjectives.Random();
-                string noun = data.LocationData.Names.Nouns.Random();
+                string noun = data.LocationData.Names.Nouns.Concat(data.LocationData.Names.TheNouns).Random();
                 string personName = Pick.Random(data.CharacterData[PeopleNameOrigin.Westron][new[] { Sex.Female, Sex.Male }.Random()].ToArray());
                 string format = data.LocationData.Names.Terrain[type].Formats.Random();
+
+                bool nounHasThe = data.LocationData.Names.TheNouns.Contains(noun);
+
+                const string the = "the ";
 
                 string name = format
                     .Replace("{terrain}", terrain)
                     .Replace("{adjective}", adjective)
                     .Replace("{noun}", noun)
+                    .Replace("{nounwiththe}", (nounHasThe ? the : "") + noun)
                     .Replace("{name}", personName);
 
-                const string the = "the ";
                 bool hasThe = false;
                 if (name.StartsWith(the))
                 {

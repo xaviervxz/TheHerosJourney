@@ -21,7 +21,7 @@
         Desert,
         Plains,
         Lake,
-        Springs,
+        Spring,
         River,
         Bay,
         Sea,
