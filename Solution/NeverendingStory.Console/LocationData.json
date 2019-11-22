@@ -95,75 +95,51 @@
     "Terrain": {
       "Forest": {
         "SpecificTypes": [ "Forest", "Wood", "Thicket" ],
-        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}", "the {terrain} of {nounwiththe}" ],
-        "Covers": "trees",
-        "Cover": "tree"
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}", "the {terrain} of {nounwiththe}" ]
       },
       "Swamp": {
         "SpecificTypes": [ "Swamp", "Bog", "Mire", "Marsh", "Morass", "Quagmire" ],
-        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
-        "Covers": "trees",
-        "Cover": "tree"
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "Mountain": {
         "SpecificTypes": [ "Mountains", "Peaks" ],
-        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}" ],
-        "Covers": "rocks",
-        "Cover": "rock"
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}" ]
       },
       "Desert": {
         "SpecificTypes": [ "Desert", "Waste" ],
-        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}", "{nounwiththe} {terrain}" ],
-        "Covers": "dunes",
-        "Cover": "dune"
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}", "{nounwiththe} {terrain}" ]
       },
       "Plains": {
         "SpecificTypes": [ "Plains", "Flats" ],
-        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
-        "Covers": "waving grass",
-        "Cover": "waving grass"
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "Lake": {
         "SpecificTypes": [ "Lake" ],
-        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ],
-        "Covers": "brush",
-        "Cover": "brush"
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ]
       },
       "Spring": {
         "SpecificTypes": [ "Springs" ],
-        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
-        "Covers": "brush",
-        "Cover": "brush"
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "River": {
         "SpecificTypes": [ "River", "Stream", "Creek" ],
-        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
-        "Covers": "reeds",
-        "Cover": "bunch of reeds"
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "Bay": {
         "SpecificTypes": [ "Bay", "Harbor" ],
-        "Formats": [ "the {adjective} {terrain}", "{terrain} of {nounwiththe}", "{noun} {terrain}", "{nounwiththe} {terrain}", "{nounwiththe}'s {terrain}" ],
-        "Covers": "trees",
-        "Cover": "tree"
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of {nounwiththe}", "{noun} {terrain}", "{nounwiththe} {terrain}", "{nounwiththe}'s {terrain}" ]
       },
       "Fortress": {
         "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
-        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "{nounwiththe} {terrain}" ],
-        "Covers": "next corner",
-        "Cover": "nearby alcove"
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "{nounwiththe} {terrain}" ]
       },
       "Sea": {
         "SpecificTypes": [ "Sea", "Ocean" ],
-        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
-        "Covers": "waves",
-        "Cover": "wave"
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "Road": {
         "SpecificTypes": [ "Road", "Road", "Way", "Path" ],
-        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
-        "Covers": "trees along the roadside",
-        "Cover": "signpost"
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       }
     }
   },

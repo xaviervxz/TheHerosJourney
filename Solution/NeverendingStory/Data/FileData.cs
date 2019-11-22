@@ -57,10 +57,6 @@ namespace NeverendingStory.Data
         public string[] SpecificTypes { get; set; }
 
         public string[] Formats { get; set; }
-
-        public string Covers { get; set; }
-
-        public string Cover { get; set; }
     }
 
     public class MainFeature

@@ -110,11 +110,11 @@ namespace NeverendingStory.Console
             // PICK PLAYER'S NAME
             WriteDashes();
             WriteMessage("Welcome to the Neverending Story!");
-//#if DEBUG
-//            WriteDashes();
-//            story.You.Name = "Alex";
-//            story.You.Sex = Sex.Male;
-//#else
+#if DEBUG
+            WriteDashes();
+            story.You.Name = "Alex";
+            story.You.Sex = Sex.Male;
+#else
             WriteMessage("Type your character name and press Enter.");
             story.You.Name = ReadInput();
             WriteDashes();
@@ -149,7 +149,7 @@ namespace NeverendingStory.Console
             //WriteDashes();
             //WriteMessage("Hello, " + story.You.Name + ", you want " + instinct.ToLower() + ".");
             //WriteDashes();
-//#endif
+#endif
 
             // ----------------
             // MAIN GAME LOOP

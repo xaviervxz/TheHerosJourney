@@ -139,42 +139,13 @@ namespace NeverendingStory.Functions
                 }
                 else if (primaryKey == "location")
                 {
-                    string locationRelation = keyPieces[1];
-
-                    Location location = null;
-                    string property = "";
-
-                    if (locationRelation == "current" && keyPieces.Length >= 3)
+                    // PICK AND NAME A NEW LOCATION.
+                    if (keyPieces[1] == "pick")
                     {
-                        location = story.You.CurrentLocation;
-                        property = keyPieces[2];
-                    }
-                    else if (locationRelation == "goal" && keyPieces.Length >= 3)
-                    {
-                        location = story.You.Goal;
-                        property = keyPieces[2];
-                    }
-                    else if (locationRelation == "hometown" && keyPieces.Length >= 3)
-                    {
-                        location = story.You.Hometown;
-                        property = keyPieces[2];
+                        //     0       1        2        3          4
+                        // {location:pick:forest|swamp:current:pathtobaron}
 
-                        if (property == "feature" && keyPieces.Length == 4)
-                        {
-                            property = keyPieces[3];
-
-                            if (property == "relativeposition")
-                            {
-                                replacementValue = story.You.Hometown.MainFeature.RelativePosition;
-                            }
-                        }
-                    }
-                    else if (locationRelation == "nearby" && keyPieces.Length >= 5)
-                    {
-                        // FIND A NEARBY LOCATION TO THE CURRENT LOCATION
-                        Location nearbyLocation = null;
-
-                        // Get the valid location types.
+                        // GET LIST OF VALID LOCATION TYPES.
                         var rawValidTypes = keyPieces[2].Split('|');
                         var validTypes = rawValidTypes
                             .Select(vt =>
@@ -187,21 +158,38 @@ namespace NeverendingStory.Functions
                                 return (LocationType?)null;
                             })
                             .Where(t => t != null)
-                            .Select(t => (LocationType) t)
+                            .Select(t => (LocationType)t)
                             .ToArray();
                         if (validTypes.Length == 0)
                         {
                             validTypes = Enum.GetValues(typeof(LocationType)).Cast<LocationType>().ToArray();
                         }
 
-                        // 
-                        string currentLocationName = story.You.CurrentLocation.Name;
+                        // WHAT LOCATION SHOULD THIS NEW LOCATION BE NEAR?
+                        var nearbyLocationKey = keyPieces[3];
+                        Location centerLocation = null;
+                        if (nearbyLocationKey == "current")
+                        {
+                            centerLocation = story.You.CurrentLocation;
+                        }
+                        else if (nearbyLocationKey == "hometown")
+                        {
+                            centerLocation = story.You.Hometown;
+                        }
+                        else
+                        {
+                            story.NamedLocations.TryGetValue(nearbyLocationKey, out centerLocation);
+                        }
+
+                        // FIND LOCATION NEARBY THE CHOSEN "CENTER" THAT MATCHES.
+                        Location nearbyLocation = null;
+                        string centerLocationName = centerLocation.Name;
                         var nearbyLocationTuple = story.NearbyLocations
-                            .Find(l => l.Item1 == currentLocationName || l.Item2 == currentLocationName);
+                            .Find(l => l.Item1 == centerLocationName || l.Item2 == centerLocationName);
                         if (nearbyLocationTuple != null)
                         {
                             nearbyLocation = story.Locations
-                                .Where(l => l.Name != currentLocationName && validTypes.Contains(l.Type))
+                                .Where(l => l.Name != centerLocationName && validTypes.Contains(l.Type))
                                 .FirstOrDefault(l => l.Name == nearbyLocationTuple.Item1 || l.Name == nearbyLocationTuple.Item2);
                         }
 
@@ -210,66 +198,76 @@ namespace NeverendingStory.Functions
                         {
                             nearbyLocation = Pick.Location(validTypes.Random(), story.Locations, fileData);
 
-                            story.NearbyLocations.Add(Tuple.Create(story.You.CurrentLocation.Name, nearbyLocation.Name));
+                            story.NearbyLocations.Add(Tuple.Create(centerLocation.Name, nearbyLocation.Name));
                         }
 
-                        location = nearbyLocation;
-                        property = keyPieces[4];
-                    }
-                    else
-                    {
-                        string rawLocationType = locationRelation.ToTitleCase();
-                        bool locationTypeExists = Enum.TryParse(rawLocationType, out LocationType locationType);
+                        // STORE THE LOCATION IN NAMED LOCATIONS.
+                        story.NamedLocations[keyPieces[4]] = nearbyLocation;
 
-                        if (locationTypeExists)
+                        replacementValue = "";
+                    }
+                    else if (keyPieces.Length >= 3)
+                    {
+                        string locationRelation = keyPieces[1];
+
+                        Location location = null;
+                        string property = "";
+
+                        if (locationRelation == "current")
                         {
-                            location = Pick.Location(locationType, story.Locations, fileData);
+                            location = story.You.CurrentLocation;
+                            property = keyPieces[2];
+                        }
+                        else if (locationRelation == "goal")
+                        {
+                            location = story.You.Goal;
+                            property = keyPieces[2];
+                        }
+                        else if (locationRelation == "hometown")
+                        {
+                            location = story.You.Hometown;
+                            property = keyPieces[2];
+
+                            if (property == "feature" && keyPieces.Length == 4)
+                            {
+                                property = keyPieces[3];
+
+                                if (property == "relativeposition")
+                                {
+                                    replacementValue = story.You.Hometown.MainFeature.RelativePosition;
+                                }
+                            }
                         }
                         else
                         {
                             bool namedLocationExists = story.NamedLocations.TryGetValue(locationRelation, out location);
+
+                            if (location != null)
+                            {
+                                property = keyPieces[2];
+                            }
                         }
 
-                        if (location != null && keyPieces.Length >= 3)
+                        switch (property)
                         {
-                            property = keyPieces[2];
+                            case "name":
+                                replacementValue = location.Name;
+                                break;
+                            case "namewiththe":
+                                replacementValue = location.NameWithThe;
+                                break;
+                            case "type":
+                                replacementValue = location.SpecificType;
+                                break;
+                            default:
+                                break;
                         }
-                    }
 
-                    switch (property)
-                    {
-                        case "name":
-                            replacementValue = location.Name;
-                            break;
-                        case "namewiththe":
-                            replacementValue = location.NameWithThe;
-                            break;
-                        case "type":
-                            replacementValue = location.SpecificType;
-                            break;
-                        case "covers":
-                            replacementValue = fileData.LocationData.Names.Terrain[location.Type].Covers;
-                            break;
-                        case "cover":
-                            replacementValue = fileData.LocationData.Names.Terrain[location.Type].Cover;
-                            break;
-                        default:
-                            break;
-                    }
-
-                    if (keyPieces.Length >= 4)
-                    {
-                        if (keyPieces[3] == "cap")
+                        if (keyPieces.Length >= 4 && keyPieces[3] == "cap")
                         {
                             replacementValue = replacementValue.ToTitleCase();
                         }
-                        // IF THE LOCATION IS NAMED, STORE IT IN NAMED LOCATIONS.
-                        else if (property != "relativeposition")
-                        {
-                            story.NamedLocations[keyPieces[3]] = location;
-                        }
                     }
-
                 }
                 else if (primaryKey == "industry")
                 {

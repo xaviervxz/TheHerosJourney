@@ -11,6 +11,7 @@ namespace NeverendingStory.Data
 
         public int CurrentStageNumber { get; set; } = 0;
 
+
         public string NextSceneIdentifier { get; set; } = null;
 
 

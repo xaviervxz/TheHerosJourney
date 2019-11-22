@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove=".~lock.Scenes.xlsx#" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NeverendingStory\NeverendingStory.csproj" />
   </ItemGroup>
 
