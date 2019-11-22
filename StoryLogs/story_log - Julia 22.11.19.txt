@@ -1,0 +1,119 @@
+--------
+Welcome to the Neverending Story!
+Type your character name and press Enter.
+Sir Benedict
+--------
+Male or female? (M/F)
+M
+--------
+Sir Benedict, you live in Sunn Marsh, a small village on the edge of Fear Lake. You work in the rice flats every day, growing enough rice to feed your small village.
+
+One day, a messenger rides into town. "Citizens of Sunn Marsh, the Baroness Scarlet lays claim to your city. You are now under her rule and will pay taxes and fealty to her."
+
+What do you do?
+--------
+1) Leave Sunn Marsh to tell the Baroness that she doesn't own you
+2) Go to work like always and see if anything changes
+(Type "help" and hit Enter to learn how to play.)
+1
+--------
+You set out for the Baroness's home, Fortress Goblin. You know the way, which leads through the nearby Skull Quagmire.
+
+Deep in the Skull Quagmire, a man emerges from behind the trees. He's wearing rough clothing.
+
+"My name's Josius," he says. "Sunn Marsh's not the first village that Baroness Scarlet's taken control of. She'll stop at nothing until the whole region is under her control. We can't let that happen.
+
+"If you want to stop her and get back Sunn Marsh, you'll have to make it to Fortress Goblin."
+--------
+1) Ask Josius for his help
+2) Set off for Fortress Goblin (you know the way)
+2
+--------
+You walk further into the quagmire, headed for Fortress Goblin. "Good luck with the Baroness," Josius calls after you.
+
+You travel through the Skull Quagmire for several days.
+
+Late in the day, you hear a voice calling out through the quagmire. You hide immediately, but then realize the voice seems to be that of a young boy. You can see him walking alone, calling out for his cat. What do you do?
+--------
+1) Reveal yourself and offer to help
+2) Wait until he's gone and continue
+1
+--------
+You step out from hiding, startling the boy briefly. He seems thrilled to have the help. He tells you his name is Robb, and his cat's name is Sniffles.
+
+Together, it takes you a few hours to find Sniffles. Robb thanks you profusely for your help. Then, you continue on your way to Fortress Goblin.
+
+As the sun sets, you see a small hut ahead of you, nestled between the trees. You pause, considering whether or not to investigate, but before you can decide, a group of men and women dressed like Josius steps out from behind the trees, surrounding you.
+
+"What are YOU doing here?" one of them asks you.
+--------
+1) Ask them what THEY are doing here
+2) Tell them you're here to free Sunn Marsh from Baroness Scarlet
+2
+--------
+"We're on the same side then! Have you met our friend Josius? He's out somewhere, fighting against the Baroness's influence."
+
+You spend the night with the resistance fighters. The Baroness's men, they tell you, are only working for her because she pays them handsomely. If you can find a way to stop the Baroness's men from being paid, most of her influence over the region will be gone.
+
+They have plans to attack one of the Baroness's outposts tomorrow, which should draw most of her men away from Fortress Goblin, allowing you to get inside more easily.
+
+In the morning, you set off for Fortress Goblin again.
+
+As you head towards Fortress Goblin, late that day, on your left, you see a large patch of berry bushes, overflowing with red berries. Your food is running low, and you feel hungry.
+--------
+1) Gather and enjoy some berries
+2) Avoid the patch and press on
+1
+--------
+You gather and eat some of the berries. They are delicious.
+
+You begin to feel sleepy, and soon fall asleep in the middle of the berry patch. When you wake up, the sun is high in the sky. You have no idea how long you've been asleep; it could have been days!
+
+You finally arrive at the base of Fortress Goblin. Staying out of view of any of the Baroness's men, you look for a way in. There's a patrol of guards circling Fortress Goblin. You think you can find a way in between them, but it would be tough. What do you do?
+--------
+1) Sneak past the guards
+2) Take out one of the guards silently, then sneak inside
+1
+--------
+You have to wait until nightfall to sneak in. The cover of dark covers your movements, and you sneak in through a gap in the patrol you've found.
+
+Inside Fortress Goblin, you look around for the treasury. While you're looking, you hear voices.
+
+The Baroness is walking down the hall with one of her men. You find a place to hide, and you can hear them talking.
+
+"...if they resist, remind them that, if the kingdoms from the north attack, they will not be able to defend themselves. Under our rule, we will provide them with protection against invasion. What is that safety worth to them?..."
+
+The voices fade away as they turn a corner and are gone.
+
+Searching in Fortress Goblin, you finally find the treasury. You take out the lone guard, and go inside. Several heavy chests of gold are inside. You dump them out the window into a lake outside Fortress Goblin. The Baroness's gold is gone.
+
+You leave Fortress Goblin.
+
+As you leave, Baroness Scarlet spots you leaving. "After him!" she shouts to her men, and they begin to chase after you. You sprint into the fortress as fast as you can.
+
+The Baroness's men are chasing you through the Skull Quagmire on your way back to Sunn Marsh. If they catch you, there's no telling what they might do to you. To avoid notice, you...
+--------
+1) Spend your nights well-hidden, in a hole or under heavy brush
+2) Travel through the night to stay ahead of them
+2
+--------
+You push on through the night. You're exhausted by the time you reach Sunn Marsh, but you are ahead of the Baroness's men.
+
+You finally return to Sunn Marsh. The people have been under the rule of the Baroness's men since you left, who have done nothing but drink and destroy property that isn't theirs. The men pursuing you are close behind, maybe a day or so.
+
+You organize a secret meeting at night to rally the people together. You lead the people in a revolt against the Baroness's standing force in Sunn Marsh. Drunk and caught off guard by armed civilians, they're not sure what to do. A few of them are killed before they retreat, leaving the town forever.
+
+The next day, the men who were pursuing you arrive. Sunn Marsh's finest easily chases them off. There is strength in numbers, and they knew what to expect, thanks to you.
+
+Sunn Marsh is now free! Your fellow citizens are eagerly offering you a position of leadership: they want to make you the  of Sunn Marsh. What do you do? 
+--------
+1) Go back to your old job, working in the rice flats
+2) Take the new job as  of Sunn Marsh
+2
+--------
+Under your leadership, Sunn Marsh is led to a new age of prosperity. You establish trade with other villages that were under Baroness Scarlet's control. Sunn Marsh thrives, and your people remain free and happy.
+
+--------
+THE END
+--------
+(Press Enter to exit.)

@@ -118,21 +118,23 @@ namespace NeverendingStory.Functions
                 }
                 else if (keyPieces.Length == 1)
                 {
-                    if (key == "name")
+                    switch (key)
                     {
-                        replacementValue = story.You.Name;
-                    }
-                    else if (key == "subPronoun")
-                    {
-                        replacementValue = story.You.SubPronoun;
-                    }
-                    else if (key == "objPronoun")
-                    {
-                        replacementValue = story.You.ObjPronoun;
-                    }
-                    else if (key == "possPronoun")
-                    {
-                        replacementValue = story.You.PossPronoun;
+                        case "name":
+                            replacementValue = story.You.Name;
+                            break;
+                        case "subPronoun":
+                            replacementValue = story.You.SubPronoun;
+                            break;
+                        case "objPronoun":
+                            replacementValue = story.You.ObjPronoun;
+                            break;
+                        case "possPronoun":
+                            replacementValue = story.You.PossPronoun;
+                            break;
+                        case "chief":
+                            replacementValue = story.You.Chief;
+                            break;
                     }
                 }
                 else if (primaryKey == "location")
@@ -403,6 +405,19 @@ namespace NeverendingStory.Functions
             }
 
             return replacedMessage;
+        }
+
+        public static string AlmanacFor(Story story)
+        {
+            var characterLines = story.NamedCharacters.Values
+                .Select(i => "* " + i.Name).ToArray();
+            var locationLines = story.NamedLocations.Values
+                .Concat(new[] { story.You.Hometown })
+                .Select(i => "* " + i.Name).ToArray();
+
+            var almanac = string.Join(Environment.NewLine, characterLines.Concat(locationLines));
+
+            return almanac;
         }
 
         public static string InventoryOf(Character character)

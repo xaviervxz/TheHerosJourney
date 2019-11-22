@@ -1,0 +1,179 @@
+--------
+Welcome to the Neverending Story!
+Type your character name and press Enter.
+Finn
+--------
+Male or female? (M/F)
+F
+--------
+Finn, you live in Coal Springs, a small village next to the Giant Springs. You work in the coal mines every day, bringing up enough coal to trade for food and supplies, which provides for your small village.
+
+One day, a messenger rides into town. "Citizens of Coal Springs, the Baron Alyn lays claim to your city. You are now under his rule and will pay taxes and fealty to him."
+
+What do you do?
+--------
+1) Leave Coal Springs to tell the Baron that he doesn't own you
+2) Go to work like always and see if anything changes
+(Type "help" and hit Enter to learn how to play.)
+1
+--------
+You set out for the Baron's home, Mud Castle. You know the way, which leads through the nearby Devil Thicket.
+
+Deep in the Devil Thicket, a man emerges from behind the trees. He's wearing rough clothing.
+
+"My name's Xander," he says. "Coal Springs's not the first village that Baron Alyn's taken control of. He'll stop at nothing until the whole region is under his control. We can't let that happen.
+
+"If you want to stop him and get back Coal Springs, you'll have to make it to Mud Castle."
+--------
+1) Ask Xander for his help
+2) Set off for Mud Castle (you know the way)
+1
+--------
+"I'm sorry, I can't go near the Baron's Castle myself. He and his goons'll be looking for me. But here, you take this." He hands you piece of rolled cloth. "It might be useful." With that, Xander disappears into the thicket. 
+
+The cloth, once unrolled, looks like some sort of map of a secret entrance into the Baron's Castle. You roll it up again and put it in your pack.
+
+You travel through the Devil Thicket for several days.
+
+A wide river blocks your path to Mud Castle. The water is deep and moving fast.
+--------
+1) Wade through the rushing water
+2) Look for another way around
+1
+--------
+You wade through the rushing water. It comes up to your armpits. You hold your pack above your head.
+
+It takes every ounce of your strength, but you make it across. On the other side, you're soaked to the bone and exhausted. You rest for an hour while your clothes dry.
+
+Once you're ready, you continue on your way to Mud Castle.
+
+Your path lies through a thick thicket, overgrown and difficult to travel through.
+
+After a day or so, you hear footsteps crashing through the brush. They're getting nearer.
+--------
+1) Hide in the brush and wait
+2) Seek out the footsteps
+1
+--------
+You find a clump of bushes to hide inside. As the footsteps get closer, you see two dozen of the Baron's armed men tramping through the underbrush.
+
+You hold your breath, but one of them stumbles just too close to you.
+
+"What do we have here?" he says. He grabs you roughly by the shoulder and jerks you to your feet. "Well, well, well, the Baron will be THRILLED to meet you!" Cheers erupt.
+
+Two more men grab your arms and bind them. You're taken to a camp in the woods an hour away. The Baron's men tie you to a tree and spend the night drinking and making coarse jokes.
+
+Most of them have fallen asleep, but there is still one awake, on guard, staring into the fire. He isn't looking directly at you, you could try to escape while he isn't looking. What do you do?
+--------
+1) Wiggle out of your bonds and sneak into the night
+2) Wait until morning for a chance to escape
+1
+--------
+It takes you over an hour, but you eventually feel the bonds loosening enough that you can slip out of them. The lone guard is still staring into the fire, poking at it with his sword and humming.
+
+You grab your pack silently and disappear into the night, using the stars to head in the direction of Mud Castle.
+
+Late in the day, you hear a voice calling out through the thicket. You hide immediately, but then realize the voice seems to be that of a young girl. You can see her walking alone, calling out for her cat. What do you do?
+--------
+1) Reveal yourself and offer to help
+2) Wait until she's gone and continue
+1
+--------
+You step out from hiding, startling the girl briefly. She seems thrilled to have the help. She tells you her name is Rilie, and her cat's name is Sniffles.
+
+Together, it takes you a few hours to find Sniffles. Rilie thanks you profusely for your help. Then, you continue on your way to Mud Castle.
+
+The next day, a small creature runs across your path. You almost step on it.
+
+You squat down to look at it. It seems like some sort of squirrel, but it's eyes are ruby red. It sits still, staring at you, alert.
+--------
+1) Give it some of your food
+2) Ignore it
+2
+--------
+The squirrel watches you as you leave, then scampers off.
+
+You're being careful, but you don't notice a well-concealed pit before it's too late. You step through the thin covering of leaves and ferns and fall right through to the bottom, landing with a crunch.
+
+Your leg hurts. You look up: the pit's sides are sheer hard dirt, about 15 feet deep. There are no roots, nothing down there with you besides dirt and whatever you have with you.
+--------
+1) Try to climb out
+2) Call for help
+2
+--------
+Your voice rings out into the thicket. No one answers.
+
+After a few minutes, you hear skittering and see the squirrel peek its head into view. Then it disappears.
+
+A minute later, a vine woven from ferns and grasses drops down into the pit with you. The squirrel reappears, it's red eyes flashing, before it disappears again.
+
+You climb easily out of the pit. The squirrel is nowhere to be seen.
+
+As the sun sets, you see a small hut ahead of you, nestled between the trees. You pause, considering whether or not to investigate, but before you can decide, a group of men and women dressed like Xander steps out from behind the trees, surrounding you.
+
+"What are YOU doing here?" one of them asks you.
+--------
+1) Ask them what THEY are doing here
+2) Tell them you're here to free Coal Springs from Baron Alyn
+1
+--------
+"We're fighting against the Baron's influence, to free the villages he's conquered from his control." You share that you're trying to do the same thing.
+
+You spend the night with the resistance fighters. The Baron's men, they tell you, are only working for him because he pays them handsomely. If you can find a way to stop the Baron's men from being paid, most of his influence over the region will be gone.
+
+They have plans to attack one of the Baron's outposts tomorrow, which should draw most of his men away from Mud Castle, allowing you to get inside more easily.
+
+In the morning, you set off for Mud Castle again.
+
+As you head towards Mud Castle, late that day, on your left, you see a large patch of berry bushes, overflowing with red berries. Your food is running low, and you feel hungry.
+--------
+1) Gather and enjoy some berries
+2) Avoid the patch and press on
+2
+--------
+Your stomach growls, but you continue on your way. As your food supply dwindles, your limbs grow weaker.
+
+You finally arrive at the base of Mud Castle. Staying out of view of any of the Baron's men, you find the hidden path into Mud Castle on Xander's map. The hidden path leads underground, and comes out into a tall, well-decorated corridor inside Mud Castle.
+
+The Baron is walking down the hall with one of his men. You find a place to hide, and you can hear them talking.
+
+"...if they resist, remind them that, if the kingdoms from the north attack, they will not be able to defend themselves. Under our rule, we will provide them with protection against invasion. What is that safety worth to them?..."
+
+The voices fade away as they turn a corner and are gone.
+
+Searching in Mud Castle, you finally find the treasury. You take out the lone guard, and go inside. Several heavy chests of gold are inside. You dump them out the window into a lake outside Mud Castle. The Baron's gold is gone.
+
+You leave Mud Castle.
+
+As you leave, Baron Alyn spots you leaving. "After her!" he shouts to his men, and they begin to chase after you. You sprint into the castle as fast as you can.
+
+The Baron's men are chasing you through the Devil Thicket on your way back to Coal Springs. If they catch you, there's no telling what they might do to you. To avoid notice, you...
+--------
+1) Spend your nights well-hidden, in a hole or under heavy brush
+2) Travel through the night to stay ahead of them
+1
+--------
+Your nights are uncomfortable. You wake up each morning covered in dirt or leaves or both.
+
+One night, you're woken in the middle of the night by the sound of men's footsteps. The Baron's men are searching the Devil Thicket for you. They almost find your hiding spot, but you hear skittering in the trees, and the Baron's men go off to investigate the sound. You see a flash of red in the trees, possibly two eyes looking at you, and then it's gone.
+
+You keep going, and you manage to stay ahead of the Baron's men.
+
+You finally return to Coal Springs. The people have been under the rule of the Baron's men since you left, who have done nothing but drink and destroy property that isn't theirs. The men pursuing you are close behind, maybe a day or so.
+
+You organize a secret meeting at night to rally the people together. You lead the people in a revolt against the Baron's standing force in Coal Springs. Drunk and caught off guard by armed civilians, they're not sure what to do. A few of them are killed before they retreat, leaving the town forever.
+
+The next day, the men who were pursuing you arrive. Coal Springs's finest easily chases them off. There is strength in numbers, and they knew what to expect, thanks to you.
+
+Coal Springs is now free! Your fellow citizens are eagerly offering you a position of leadership: they want to make you the  of Coal Springs. What do you do? 
+--------
+1) Go back to your old job, mining coal
+2) Take the new job as  of Coal Springs
+1
+--------
+The mining goes quickly, and the coal is flowing fast. Trade at all your normal places is good, as always. Coal Springs's freedom allows things to go back to the way that they were. But you know that, if ever another Baron tried to take control of Coal Springs again, you and your neighbors would be ready for them.
+
+--------
+THE END
+--------
+(Press Enter to exit.)

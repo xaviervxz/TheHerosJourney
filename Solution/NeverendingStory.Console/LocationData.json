@@ -270,11 +270,15 @@
     },
     "CrossroadTown": {
       "Types": [ "Road", "Road" ],
-      "RelativePosition": "that lies where {name1} meets {name2}"
+      "RelativePosition": "at the crossroads of {name1} and {name2}"
     },
     "RoadAndRiverTown": {
       "Types": [ "Road", "River" ],
-      "RelativePosition": "that lies between {name1} and {name2}"
+      "RelativePosition": "between the well-travelled {name1} and {name2}"
+    },
+    "RoadAndLakeTown": {
+      "Types": [ "Road", "Lake" ],
+      "RelativePosition": "between the well-travelled {name1} and {name2}"
     }
   },
   "Industries": {
@@ -329,8 +333,8 @@
       "GoodsGer": "bringing up",
       "Goods": "coal",
       "Purpose": "to trade for food and supplies, which provides for",
-      "GoodDay": "In the mines, you run into a new vein of coal. Everyone's very excited. You all prepare to excavate the new vein.",
-      "GoodDayFinal": "The mining goes quickly, and the coal is flowing fast. Trade at all your normal places is good, as always."
+      "GoodDay": "The mining is safe and efficient, and your buckets fill with coal. Coal fetches a good price at the markets this week.",
+      "GoodDayFinal": "In the mines, you run into a new vein of coal. Everyone's very excited. You all prepare to excavate the new vein."
     },
     "Granite": {
       "WorkGer": "mining granite",

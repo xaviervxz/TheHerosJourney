@@ -110,12 +110,12 @@ namespace NeverendingStory.Console
             // PICK PLAYER'S NAME
             WriteDashes();
             WriteMessage("Welcome to the Neverending Story!");
-#if DEBUG
-            WriteDashes();
-            story.You.Name = "Alex";
-            story.You.Sex = Sex.Male;
-#else
-            WriteMessage("Type your name and press Enter.");
+//#if DEBUG
+//            WriteDashes();
+//            story.You.Name = "Alex";
+//            story.You.Sex = Sex.Male;
+//#else
+            WriteMessage("Type your character name and press Enter.");
             story.You.Name = ReadInput();
             WriteDashes();
 
@@ -132,10 +132,10 @@ namespace NeverendingStory.Console
             WriteDashes();
 
             // ASSIGN INSTINCT
-            WriteMessage(story.You.Name + @", which one best describes what you want to do?
-1) " + Instinct.ToAvoidNotice + @"
-2) " + Instinct.ToReclaimWhatWasTaken);
-            string instinct = ReadInput();
+            //            WriteMessage(story.You.Name + @", which one best describes what you want to do?
+            //1) " + Instinct.ToAvoidNotice + @"
+            //2) " + Instinct.ToReclaimWhatWasTaken);
+            string instinct = "2";// ReadInput();
             switch (instinct)
             {
                 case "1":
@@ -146,10 +146,10 @@ namespace NeverendingStory.Console
                     instinct = Instinct.ToReclaimWhatWasTaken;
                     break;
             }
-            WriteDashes();
-            WriteMessage("Hello, " + story.You.Name + ", you want " + instinct.ToLower() + ".");
-            WriteDashes();
-#endif
+            //WriteDashes();
+            //WriteMessage("Hello, " + story.You.Name + ", you want " + instinct.ToLower() + ".");
+            //WriteDashes();
+//#endif
 
             // ----------------
             // MAIN GAME LOOP
@@ -244,6 +244,16 @@ inventory or i - view your inventory (your collected items)
 
                     WriteMessage("You're carrying:");
                     WriteMessage(inventoryMessage);
+                    WriteDashes();
+
+                    getNewScene = false;
+                }
+                else if (input == "almanac" || input == "a")
+                {
+                    string almanacMessage = Process.AlmanacFor(story);
+
+                    WriteMessage("Here are people you've met and places you've been or heard of:");
+                    WriteMessage(almanacMessage);
                     WriteDashes();
 
                     getNewScene = false;
