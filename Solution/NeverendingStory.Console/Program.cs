@@ -92,19 +92,19 @@ namespace NeverendingStory.Console
             story.You.Hometown = Pick.Town(story.Locations, fileData);
             story.You.CurrentLocation = story.You.Hometown;
 
-            {
-                // PICK A BUNCH OF LOCATION NAMES.
-                for (int i = 0; i < 50; i += 1)
-                {
-                    //var validLocationTypes = new[] { LocationType.Forest, LocationType.Swamp, LocationType.Spring, LocationType.Sea, LocationType.Mountain, LocationType.Plains, LocationType.River, LocationType.Lake, LocationType.Desert, LocationType.Bay, LocationType.Fortress };
-                    //var validLocationTypes = new[] { LocationType.Road };
-                    //var location = Pick.Location(validLocationTypes.Random(), new List<Location>(), fileData);
-                    //WriteMessage(location.NameWithThe);
+            //{
+            //    // PICK A BUNCH OF LOCATION NAMES.
+            //    for (int i = 0; i < 50; i += 1)
+            //    {
+            //        //var validLocationTypes = new[] { LocationType.Forest, LocationType.Swamp, LocationType.Spring, LocationType.Sea, LocationType.Mountain, LocationType.Plains, LocationType.River, LocationType.Lake, LocationType.Desert, LocationType.Bay, LocationType.Fortress };
+            //        //var validLocationTypes = new[] { LocationType.Road };
+            //        //var location = Pick.Location(validLocationTypes.Random(), new List<Location>(), fileData);
+            //        //WriteMessage(location.NameWithThe);
 
-                    var location = Pick.Town(new List<Location>(), fileData);
-                    WriteMessage(location.MainFeature.RelativePosition);
-                }
-            }
+            //        var location = Pick.Town(new List<Location>(), fileData);
+            //        WriteMessage(location.MainFeature.RelativePosition);
+            //    }
+            //}
 
             // DISPLAY INTRODUCTION
             // PICK PLAYER'S NAME
