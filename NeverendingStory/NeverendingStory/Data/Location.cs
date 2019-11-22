@@ -15,16 +15,24 @@
 
     public enum LocationType
     {
+        // BIG TRAVELABLE AREAS
         Forest,
         Swamp,
         Mountain,
         Desert,
         Plains,
-        Lake,
-        Spring,
+
+        // NARROW CONNECTORS
         River,
+        Road,
+
+        // LARGE CONNECTING AREAS
         Bay,
         Sea,
+
+        // SMALL LOCATIONS
+        Spring,
+        Lake,
         Town,
         Fortress
     }

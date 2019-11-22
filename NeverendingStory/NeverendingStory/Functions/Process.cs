@@ -289,11 +289,14 @@ namespace NeverendingStory.Functions
 
                     switch (property)
                     {
+                        case "workger":
+                            replacementValue = town.MainIndustryData.WorkGer;
+                            break;
                         case "workplace":
                             replacementValue = town.MainIndustryData.Workplace;
                             break;
-                        case "workger":
-                            replacementValue = town.MainIndustryData.WorkGer;
+                        case "goodsger":
+                            replacementValue = town.MainIndustryData.GoodsGer;
                             break;
                         case "goods":
                             replacementValue = town.MainIndustryData.Goods;
@@ -353,6 +356,9 @@ namespace NeverendingStory.Functions
                             break;
                         case "baron":
                             replacementValue = character.Baron;
+                            break;
+                        case "chief":
+                            replacementValue = character.Chief;
                             break;
                         default:
                             replacementValue = "";

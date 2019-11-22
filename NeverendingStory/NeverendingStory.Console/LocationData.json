@@ -143,7 +143,7 @@
       },
       "Bay": {
         "SpecificTypes": [ "Bay", "Harbor" ],
-        "Formats": [ "the {adjective} {terrain}", "{terrain} of {nounwiththe}", "{nounwiththe} {terrain}", "{nounwiththe}'s {terrain}" ],
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of {nounwiththe}", "{noun} {terrain}", "{nounwiththe} {terrain}", "{nounwiththe}'s {terrain}" ],
         "Covers": "trees",
         "Cover": "tree"
       },
@@ -154,10 +154,16 @@
         "Cover": "nearby alcove"
       },
       "Sea": {
-        "SpecificTypes": [ "Sea", "Seas", "Ocean", "Ocean" ],
+        "SpecificTypes": [ "Sea", "Ocean" ],
         "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
         "Covers": "waves",
         "Cover": "wave"
+      },
+      "Road": {
+        "SpecificTypes": [ "Road", "Road", "Way", "Path" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ],
+        "Covers": "trees along the roadside",
+        "Cover": "signpost"
       }
     }
   },
@@ -183,7 +189,7 @@
       "Industry": "Fishing"
     },
     {
-      "Name": "Diamond Village",
+      "Name": "Diamond Town",
       "MainFeature": "RiverMouthTown",
       "Industry": "Coal"
     },
@@ -196,6 +202,31 @@
       "Name": "Coal Springs",
       "MainFeature": "SpringTown",
       "Industry": "Coal"
+    },
+    {
+      "Name": "Cattle Crossing",
+      "MainFeature": "CrossroadTown",
+      "Industry": "Cattle"
+    },
+    {
+      "Name": "Bekageville",
+      "MainFeature": "RiverTown",
+      "Industry": "CabbageAndBeets"
+    },
+    {
+      "Name": "Sunn Marsh",
+      "MainFeature": "LakeTown",
+      "Industry": "Rice"
+    },
+    {
+      "Name": "Helmark",
+      "MainFeature": "RiverMouthTown",
+      "Industry": "Granite"
+    },
+    {
+      "Name": "Catch Cod",
+      "MainFeature": "BayTown",
+      "Industry": "Fishing"
     }
   ],
   "MainFeatures": {
@@ -226,20 +257,21 @@
     "SpringTown": {
       "Types": [ "Spring" ],
       "RelativePosition": "next to {name}"
+    },
+    "CrossroadTown": {
+      "Types": [ "Road", "Road" ],
+      "RelativePosition": "that lies where {name1} meets {name2}"
+    },
+    "RoadAndRiverTown": {
+      "Types": [ "Road", "River" ],
+      "RelativePosition": "that lies between {name1} and {name2}"
     }
-    //,{
-    //  "Types": [ "Road", "Road" ],
-    //  "RelativePosition": "that lies where the {name1} Road meets the {name2} Road"
-    //},
-    //{
-    //  "Types": [ "Road", "River" ],
-    //  "RelativePosition": "that lies between Lake/River {name1} and the {name2} Road"
-    //}
   },
   "Industries": {
     "Fishing": {
       "WorkGer": "fishing",
       "Workplace": "on the fishing boats",
+      "GoodsGer": "bringing back",
       "Goods": "fish",
       "Purpose": "to feed",
       "GoodDay": "The fish are biting, just like they always are this time of year. It's a good haul.",
@@ -248,18 +280,56 @@
     "Wheat": {
       "WorkGer": "working in the fields",
       "Workplace": "in the wheat fields",
+      "GoodsGer": "growing",
       "Goods": "food",
       "Purpose": "to feed",
       "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
       "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
     },
+    "Rice": {
+      "WorkGer": "working in the rice flats",
+      "Workplace": "in the rice flats",
+      "GoodsGer": "growing",
+      "Goods": "rice",
+      "Purpose": "to feed",
+      "GoodDay": "Wading through the flats, you're heartened to see that the rice crop is coming along nicely. The sun warms your back.",
+      "GoodDayFinal": "The rice flats are doing well. The water levels are high, the sun is shining, and the harvest will be excellent this year."
+    },
+    "CabbageAndBeets": {
+      "WorkGer": "working in the fields",
+      "Workplace": "in the fields",
+      "GoodsGer": "growing",
+      "Goods": "cabbages and beets",
+      "Purpose": "to feed",
+      "GoodDay": "The sun is shining and the crops are doing well. You weed the cabbages and beets and allow them all to grow large and healthy.",
+      "GoodDayFinal": "The cabbage season is coming up fast, and the harvest looks like it will be very good. Everyone's feeling good about the work in the fields."
+    },
     "Coal": {
-      "WorkGer": "mining",
+      "WorkGer": "mining coal",
       "Workplace": "in the coal mines",
+      "GoodsGer": "bringing up",
       "Goods": "coal",
-      "Purpose": "to trade to other villages for food and supplies, which provides for",
+      "Purpose": "to trade for food and supplies, which provides for",
       "GoodDay": "In the mines, you run into a new vein of coal. Everyone's very excited. You all prepare to excavate the new vein.",
-      "GoodDayFinal": "The mining goes quickly, and the coal is flowing fast. Trade at all your normal places is good, as always"
+      "GoodDayFinal": "The mining goes quickly, and the coal is flowing fast. Trade at all your normal places is good, as always."
+    },
+    "Granite": {
+      "WorkGer": "mining granite",
+      "Workplace": "at the granite quarry",
+      "GoodsGer": "extracting",
+      "Goods": "granite",
+      "Purpose": "to build your village and trade for food and supplies, which provides for",
+      "GoodDay": "In the quarry, work goes quickly and efficiently. Quality granite is extracted, and you know it will get a good price in the markets.",
+      "GoodDayFinal": "Granite extraction continues without any interruptions or accidents. Everyone is happy to see the fine stone being mined from the quarry."
+    },
+    "Cattle": {
+      "WorkGer": "working in the fields",
+      "Workplace": "in the fields",
+      "GoodsGer": "looking after",
+      "Goods": "cattle",
+      "Purpose": "to provide food and leather for",
+      "GoodDay": "The sun is shining today and you find fresh grass for the cattle the graze. The cattle are very happy.",
+      "GoodDayFinal": "The cattle are thriving, and they graze happily as they often do under the warm sun. A new calf was born this week."
     }
   }
 }

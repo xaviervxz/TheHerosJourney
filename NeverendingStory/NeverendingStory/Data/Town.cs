@@ -22,10 +22,12 @@
 
     public class IndustryData
     {
-        public string Workplace { get; set; }
-
         public string WorkGer { get; set; }
+
+        public string Workplace { get; set; }
         
+        public string GoodsGer { get; set; }
+
         public string Goods { get; set; }
 
         public string Purpose { get; set; }

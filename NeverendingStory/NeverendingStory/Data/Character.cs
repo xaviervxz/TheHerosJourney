@@ -22,6 +22,8 @@ namespace NeverendingStory.Data
 
         public string Baron => Sex == Sex.Female ? "Baroness" : "Baron";
 
+        public string Chief => Sex == Sex.Female ? "Chieftess" : "Chief";
+
         public string Name { get; set; }
 
         public Relationship Relationship { get; set; }
