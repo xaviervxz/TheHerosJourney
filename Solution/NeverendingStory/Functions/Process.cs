@@ -174,13 +174,14 @@ namespace NeverendingStory.Functions
                             break;
                     }
                 }
-                else if (primaryKey == "almanac" && keyPieces.Length == 3)
+                else if (primaryKey == "almanac" && keyPieces.Length >= 3)
                 {
                     // STORE THE LOCATION IN THE ALMANAC.
                     string almanacTitle = subMessage(keyPieces[1], story, fileData);
                     string almanacDescription = subMessage(keyPieces[2], story, fileData);
 
-                    if (story.Almanac.TryGetValue(almanacTitle, out string existingDescription))
+                    if (story.Almanac.TryGetValue(almanacTitle, out string existingDescription)
+                        && !(keyPieces.Length == 4 && keyPieces[3] == "reset"))
                     {
                         if (existingDescription.Contains(almanacDescription))
                         {

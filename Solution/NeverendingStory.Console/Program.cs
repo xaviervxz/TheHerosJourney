@@ -291,7 +291,7 @@ exit - exit the story");
                 }
                 else
                 {
-                    WriteMessage("(Please enter \"1\" or \"2\" to choose an action.)");
+                    WriteMessage("(Please enter \"1\" or \"2\" to make a choice.)");
 
                     getNewScene = false;
                 }

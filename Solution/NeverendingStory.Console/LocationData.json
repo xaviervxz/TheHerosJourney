@@ -245,7 +245,7 @@
     },
     "SpringTown": {
       "Types": [ "Spring" ],
-      "RelativePosition": "next to {name}"
+      "RelativePosition": "built around {name}"
     },
     "CrossroadTown": {
       "Types": [ "Road", "Road" ],
