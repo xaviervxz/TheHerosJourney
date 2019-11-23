@@ -213,6 +213,16 @@
       "Name": "Quakshmiville",
       "MainFeature": "RiverTown",
       "Industry": "CabbageAndBeets"
+    },
+    {
+      "Name": "Giornovah",
+      "MainFeature": "CrossroadTown",
+      "Industry": "NutsAndOlives"
+    },
+    {
+      "Name": "Giornovah",
+      "MainFeature": "CrossroadTown",
+      "Industry": "FruitTrees"
     }
   ],
   "MainFeatures": {
@@ -302,6 +312,24 @@
       "Purpose": "to feed",
       "GoodDay": "The sun is shining and the crops are doing well. You weed the cabbages and beets and allow them all to grow large and healthy.",
       "GoodDayFinal": "The cabbage season is coming up fast, and the harvest looks like it will be very good. Everyone's feeling good about the work in the fields."
+    },
+    "NutsAndOlives": {
+      "WorkGer": "tending to the orchards",
+      "Workplace": "in the orchards",
+      "GoodsGer": "growing",
+      "Goods": "nuts and olives",
+      "Purpose": "to feed",
+      "GoodDay": "A new kind of weed has infested the olive orchards. You get to work clearing it out, and by the end of the week it's completely gone. The olive trees are safe now.",
+      "GoodDayFinal": "Nuts are filling the storehouses, and olive oil is being pressed. You've never seen a better crop."
+    },
+    "FruitTrees": {
+      "WorkGer": "tending to the orchards",
+      "Workplace": "in the orchards",
+      "GoodsGer": "growing",
+      "Goods": "fruit",
+      "Purpose": "to make wine and feed",
+      "GoodDay": "A new kind of weed has infested one of the fruit orchards. You get to work clearing it out, and by the end of the week it's completely gone. The fruit trees are safe now.",
+      "GoodDayFinal": "Baskets are filling and preserves are being made. The orchards have produced plenty."
     },
     "Coal": {
       "WorkGer": "mining coal",
