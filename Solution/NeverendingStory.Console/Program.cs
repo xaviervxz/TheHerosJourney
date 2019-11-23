@@ -238,9 +238,10 @@ namespace NeverendingStory.Console
                 else if (input == "help" || input == "?")
                 {
                     WriteMessage(@"help or ? - show this help dialog
-exit - exit the program
-inventory or i - view your inventory (your collected items)
-1 or 2 - choose an action");
+i or inventory - see the items you're carrying
+a or almanac - see the people and places you know
+1 or 2 - make a choice
+exit - exit the story");
                     WriteDashes();
 
                     getNewScene = false;
