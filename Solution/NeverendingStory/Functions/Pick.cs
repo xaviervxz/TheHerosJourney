@@ -151,9 +151,16 @@ namespace NeverendingStory.Functions
 
                     if (conditionPieces[0] == "character" && conditionPieces.Length == 2)
                     {
-                        bool hasNamedCharacter = story.NamedCharacters.ContainsKey(conditionPieces[1]);
+                        bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
 
-                        return hasNamedCharacter;
+                        return namedCharacterExists;
+                    }
+
+                    if (conditionPieces[0] == "nocharacter" && conditionPieces.Length == 2)
+                    {
+                        bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
+
+                        return !namedCharacterExists;
                     }
 
                     if (conditionPieces[0] == "location" && conditionPieces.Length == 3)

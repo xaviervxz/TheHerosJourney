@@ -192,15 +192,17 @@ namespace NeverendingStory.Console
                         gameRunning = false;
                         continue;
                     }
+                    else
+                    {
+                        // PROCESS AND DISPLAY MAIN MESSAGE
+                        string message = Process.Message(currentScene.Message, story, fileData);
+                        WriteMessage(message);
+                    }
                 }
                 else
                 {
                     getNewScene = true;
                 }
-
-                // PROCESS AND DISPLAY MAIN MESSAGE
-                string message = Process.Message(currentScene.Message, story, fileData);
-                WriteMessage(message);
 
                 // IF THERE ARE NO CHOICES AVAILABLE IN THIS SCENE,
                 // SKIP TO THE NEXT SCENE.
@@ -213,10 +215,14 @@ namespace NeverendingStory.Console
                 // IF THERE ARE CHOICES AVAILABLE IN THIS SCENE,
                 // PROCESS AND DISPLAY THEM.
                 WriteDashes();
-                string choice1 = Process.Message(currentScene.Choice1, story, fileData);
-                WriteMessage("1) " + choice1);
-                string choice2 = Process.Message(currentScene.Choice2, story, fileData);
-                WriteMessage("2) " + choice2);
+                {
+                    string choice1 = Process.Message(currentScene.Choice1, story, fileData);
+                    WriteMessage("1) " + choice1);
+                }
+                {
+                    string choice2 = Process.Message(currentScene.Choice2, story, fileData);
+                    WriteMessage("2) " + choice2);
+                }
 
                 if (!shownHelp)
                 {
@@ -242,7 +248,6 @@ i or inventory - see the items you're carrying
 a or almanac - see the people and places you know
 1 or 2 - make a choice
 exit - exit the story");
-                    WriteDashes();
 
                     getNewScene = false;
                 }
@@ -252,7 +257,6 @@ exit - exit the story");
 
                     WriteMessage("You're carrying:");
                     WriteMessage(inventoryMessage);
-                    WriteDashes();
 
                     getNewScene = false;
                 }
@@ -262,7 +266,6 @@ exit - exit the story");
 
                     WriteMessage("Here are people you've met and places you've been or heard of:");
                     WriteMessage(almanacMessage);
-                    WriteDashes();
 
                     getNewScene = false;
                 }
