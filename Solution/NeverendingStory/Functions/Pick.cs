@@ -88,15 +88,19 @@ namespace NeverendingStory.Functions
                     {
                         return JourneyStage.FreedomToLive;
                     }
-                    else if (story.CurrentStageNumber > 0)
-                    {
-                        nextStage = s.CurrentStage + 1;
-                    }
-                    else
+                    // IF THE CURRENTSTAGENUMBER IS EQUAL TO ZERO,
+                    // JUST STAY ON THE CURRENT STAGE.
+                    else if (story.CurrentStageNumber == 0)
                     {
                         s.CurrentStageNumber = 1;
 
-                        nextStage = s.CurrentStage;
+                        nextStage = s.CurrentStage; 
+                    }
+                    // THIS IS THE DEFAULT OPTION.
+                    // JUST MOVE TO THE NEXT STAGE.
+                    else
+                    {
+                        nextStage = s.CurrentStage + 1;
                     }
 
                     return nextStage;
@@ -216,13 +220,12 @@ namespace NeverendingStory.Functions
                     }
 
                     bool doesFlagExist = story.Flags.TryGetValue(conditionPieces[0], out string value);
-
-                    if (doesFlagExist && conditionPieces.Length >= 2)
+                    if (!doesFlagExist)
                     {
-                        return value == conditionPieces[1];
+                        value = "false";
                     }
 
-                    return false;
+                    return conditionPieces.Length >= 2 && value == conditionPieces[1];
                 }
 
                 return sceneMatches && sceneIsFilledOut && !s.Done && !s.IsSubStage && conditions.All(AreMet);
@@ -367,7 +370,7 @@ namespace NeverendingStory.Functions
                 {
                     Name = name,
                     HasThe = hasThe,
-                    SpecificType = terrain.ToLower(),
+                    SpecificType = data.LocationData.Names.Terrain[type].DescType ?? terrain.ToLower(),
                     Type = type
                 };
 

@@ -49,5 +49,18 @@ namespace NeverendingStory.Data
         // ***********
 
         public Dictionary<string, string> Flags { get; } = new Dictionary<string, string>();
+
+
+        // ***********
+        // ALMANAC
+        // ***********
+        public Dictionary<string, string> Almanac { get; } = new Dictionary<string, string>();
+
+#if DEBUG
+        public override string ToString()
+        {
+            return CurrentStage.ToString();
+        }
+#endif
     }
 }

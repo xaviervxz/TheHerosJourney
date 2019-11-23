@@ -26,5 +26,12 @@ namespace NeverendingStory.Data
 
         [Ignore]
         public bool Done { get; set; }
+
+#if DEBUG
+        public override string ToString()
+        {
+            return Identifier;
+        }
+#endif
     }
 }

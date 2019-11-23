@@ -90,6 +90,7 @@ namespace NeverendingStory.Console
             var story = new Story();
             story.You = Pick.Character(Relationship.Self, story.Characters, fileData.CharacterData);
             story.You.Hometown = Pick.Town(story.Locations, fileData);
+            story.Almanac[story.You.Hometown.NameWithThe] = "your hometown";
             story.You.CurrentLocation = story.You.Hometown;
 
             //{
@@ -175,6 +176,12 @@ namespace NeverendingStory.Console
                     {
                         WriteDashes();
                         WriteMessage("THE END");
+                        WriteDashes();
+                        WriteMessage("Your almanac of places and people you know:");
+                        WriteMessage(Process.AlmanacFor(story));
+                        WriteDashes();
+                        WriteMessage("Your inventory:");
+                        WriteMessage(Process.InventoryOf(story.You));
                         WriteDashes();
                         WriteMessage("(Press Enter to exit.)");
 

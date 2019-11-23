@@ -40,6 +40,13 @@ namespace NeverendingStory.Data
         public Location CurrentLocation { get; set; }
 
         public Location Goal { get; set; }
+
+#if DEBUG
+        public override string ToString()
+        {
+            return Name;
+        }
+#endif
     }
     public enum Sex
     {
@@ -50,11 +57,10 @@ namespace NeverendingStory.Data
     public enum Relationship
     {
         Self,
-        BestFriend,
+        Friend,
         Mentor,
         Antagonist,
-        Child,
-        Hermit
+        Child
     }
 
     public class Item

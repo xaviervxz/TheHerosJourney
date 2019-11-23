@@ -3,6 +3,7 @@ using System.Threading;
 using System.Text.RegularExpressions;
 using NeverendingStory.Data;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace NeverendingStory.Functions
 {
@@ -13,8 +14,45 @@ namespace NeverendingStory.Functions
             return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(text);
         }
 
+        public static T[] ParseToValidTypes<T>(this IEnumerable<string> rawTypes)
+            where T : struct
+        {
+            var validTypes = rawTypes
+                .Select(rt => rt.ParseToValidType<T>())
+                .Where(t => t != null)
+                .Select(t => (T)t)
+                .ToArray();
+
+            if (validTypes.Length == 0)
+            {
+                validTypes = Enum.GetValues(typeof(T)).Cast<T>().ToArray();
+            }
+
+            return validTypes;
+        }
+
+        public static T? ParseToValidType<T>(this string rawType)
+            where T : struct
+        {
+            if (Enum.TryParse(rawType.ToTitleCase(), out T type))
+            {
+                return type;
+            }
+
+            return null;
+        }
+
         public static string Message(string message, Story story, FileData fileData)
         {
+            static string subMessage(string subMessage, Story story, FileData fileData)
+            {
+                var replacedSubMessage = subMessage.Replace("[", "{").Replace("]", "}").Replace("-", ":");
+
+                string processedSubMessage = Process.Message(replacedSubMessage, story, fileData);
+
+                return processedSubMessage;
+            }
+
             var replacements = Regex.Matches(message, "\\{.+?\\}");
 
             string replacedMessage = message;
@@ -49,8 +87,7 @@ namespace NeverendingStory.Functions
                                 Description = commandOptions[3]
                             };
 
-                            item.Description = item.Description.Replace("[", "{").Replace("]", "}").Replace("-", ":");
-                            item.Description = Process.Message(item.Description, story, fileData);
+                            item.Description = subMessage(item.Description, story, fileData);
 
                             story.You.Inventory.Add(item);
                         }
@@ -137,33 +174,64 @@ namespace NeverendingStory.Functions
                             break;
                     }
                 }
+                else if (primaryKey == "almanac" && keyPieces.Length == 3)
+                {
+                    // STORE THE LOCATION IN THE ALMANAC.
+                    string almanacTitle = subMessage(keyPieces[1], story, fileData);
+                    string almanacDescription = subMessage(keyPieces[2], story, fileData);
+
+                    if (story.Almanac.TryGetValue(almanacTitle, out string existingDescription))
+                    {
+                        if (existingDescription.Contains(almanacDescription))
+                        {
+                            almanacDescription = existingDescription;
+                        }
+                        else
+                        {
+                            almanacDescription = existingDescription + ", " + almanacDescription;
+                        }
+                    }
+
+                    story.Almanac[almanacTitle] = almanacDescription;
+                }
                 else if (primaryKey == "location")
                 {
+                    static string locationProperty(Location location, string property, bool titleCase)
+                    {
+                        string value = "";
+
+                        switch (property)
+                        {
+                            case "name":
+                                value = location.Name;
+                                break;
+                            case "namewiththe":
+                                value = location.NameWithThe;
+                                break;
+                            case "type":
+                                value = location.SpecificType;
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (titleCase)
+                        {
+                            value = value.ToTitleCase();
+                        }
+
+                        return value;
+                    }
+
                     // PICK AND NAME A NEW LOCATION.
                     if (keyPieces[1] == "pick")
                     {
-                        //     0       1        2        3          4
-                        // {location:pick:forest|swamp:current:pathtobaron}
+                        //     0       1        2        3          4          5                               6
+                        // {location:pick:forest|swamp:current:pathtobaron:namewiththe:The home of [character|baron|baron] [character|baron|name].}
 
                         // GET LIST OF VALID LOCATION TYPES.
                         var rawValidTypes = keyPieces[2].Split('|');
-                        var validTypes = rawValidTypes
-                            .Select(vt =>
-                            {
-                                if (Enum.TryParse(vt.ToTitleCase(), out LocationType type))
-                                {
-                                    return type;
-                                }
-
-                                return (LocationType?)null;
-                            })
-                            .Where(t => t != null)
-                            .Select(t => (LocationType)t)
-                            .ToArray();
-                        if (validTypes.Length == 0)
-                        {
-                            validTypes = Enum.GetValues(typeof(LocationType)).Cast<LocationType>().ToArray();
-                        }
+                        var validTypes = rawValidTypes.ParseToValidTypes<LocationType>();
 
                         // WHAT LOCATION SHOULD THIS NEW LOCATION BE NEAR?
                         var nearbyLocationKey = keyPieces[3];
@@ -230,9 +298,7 @@ namespace NeverendingStory.Functions
 
                             if (property == "feature" && keyPieces.Length == 4)
                             {
-                                property = keyPieces[3];
-
-                                if (property == "relativeposition")
+                                if (keyPieces[3] == "relativeposition")
                                 {
                                     replacementValue = story.You.Hometown.MainFeature.RelativePosition;
                                 }
@@ -248,24 +314,9 @@ namespace NeverendingStory.Functions
                             }
                         }
 
-                        switch (property)
+                        if (property != "feature")
                         {
-                            case "name":
-                                replacementValue = location.Name;
-                                break;
-                            case "namewiththe":
-                                replacementValue = location.NameWithThe;
-                                break;
-                            case "type":
-                                replacementValue = location.SpecificType;
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if (keyPieces.Length >= 4 && keyPieces[3] == "cap")
-                        {
-                            replacementValue = replacementValue.ToTitleCase();
+                            replacementValue = locationProperty(location, property, keyPieces.Length >= 4 && keyPieces[3] == "cap");
                         }
                     }
                 }
@@ -345,57 +396,107 @@ namespace NeverendingStory.Functions
                 }
                 else if (primaryKey == "character")
                 {
-                    string role = keyPieces[1];
-
-                    bool isValidRole = Enum.TryParse(role, true, out Relationship roleEnum);
-
-                    bool namedCharacterExists = story.NamedCharacters.TryGetValue(role, out Character character);
-
-                    if (isValidRole && !namedCharacterExists)
+                    static string characterProperty(Character character, string property, bool titleCase)
                     {
-                        character = Pick.Character(roleEnum, story.Characters, fileData.CharacterData);
+                        if (character == null)
+                        {
+                            return "";
+                        }
+
+                        string value = "";
+
+                        switch (property)
+                        {
+                            case "name":
+                                value = character.Name;
+                                break;
+                            case "subpronoun":
+                                value = character.SubPronoun;
+                                break;
+                            case "objpronoun":
+                                value = character.ObjPronoun;
+                                break;
+                            case "posspronoun":
+                                value = character.PossPronoun;
+                                break;
+                            case "sexage":
+                                value = character.SexAge;
+                                break;
+                            case "baron":
+                                value = character.Baron;
+                                break;
+                            case "chief":
+                                value = character.Chief;
+                                break;
+                            default:
+                                value = "";
+                                break;
+                        }
+
+                        if (titleCase)
+                        {
+                            value = value.ToTitleCase();
+                        }
+
+                        return value;
                     }
 
-                    string property = keyPieces[2];
-                    switch (property)
+                    if (keyPieces[1] == "pick")
                     {
-                        case "name":
-                            replacementValue = character.Name;
-                            break;
-                        case "subpronoun":
-                            replacementValue = character.SubPronoun;
-                            break;
-                        case "objpronoun":
-                            replacementValue = character.ObjPronoun;
-                            break;
-                        case "posspronoun":
-                            replacementValue = character.PossPronoun;
-                            break;
-                        case "sexage":
-                            replacementValue = character.SexAge;
-                            break;
-                        case "baron":
-                            replacementValue = character.Baron;
-                            break;
-                        case "chief":
-                            replacementValue = character.Chief;
-                            break;
-                        default:
-                            replacementValue = "";
-                            break;
-                    }
+                        //      0      1       2         3        4
+                        // {character:pick:baronhome:antagonist:baron}
 
-                    if (keyPieces.Length == 4)
+                        string currentLocationName = keyPieces[2];
+                        if (!story.NamedLocations.TryGetValue(currentLocationName, out Location currentLocation))
+                        {
+                            switch (currentLocationName)
+                            {
+                                case "hometown":
+                                    currentLocation = story.You.Hometown;
+                                    break;
+                                case "current":
+                                    currentLocation = story.You.CurrentLocation;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+
+                        string role = keyPieces[3];
+                        var relationship = role.ParseToValidType<Relationship>();
+
+                        Character character = story.Characters
+                            .FirstOrDefault(c =>
+                                c.Relationship == relationship &&
+                                (c.CurrentLocation == currentLocation || currentLocation == null)
+                            );
+
+                        if (character == null && relationship != null)
+                        {
+                            // PICK A CHARACTER.
+                            character = Pick.Character(relationship.Value, story.Characters, fileData.CharacterData);
+
+                            character.CurrentLocation = currentLocation;
+                        }
+
+                        // STORE IT IN NAMED CHARACTER.
+                        story.NamedCharacters[keyPieces[4]] = character;
+                    }
+                    else
                     {
-                        if (keyPieces[3] == "cap")
+                        string role = keyPieces[1];
+
+                        bool isValidRole = Enum.TryParse(role, true, out Relationship roleEnum);
+
+                        bool namedCharacterExists = story.NamedCharacters.TryGetValue(role, out Character character);
+
+                        if (isValidRole && !namedCharacterExists)
                         {
-                            replacementValue = replacementValue.ToTitleCase();
                         }
-                        // IF THE CHARACTER IS NAMED, STORE IT IN NAMED CHARACTER.
-                        else
-                        {
-                            story.NamedCharacters[keyPieces[3]] = character;
-                        }
+
+                        string property = keyPieces[2];
+
+                        replacementValue = characterProperty(character, property, keyPieces.Length == 4 && keyPieces[3] == "cap");
                     }
                 }
 
@@ -407,13 +508,11 @@ namespace NeverendingStory.Functions
 
         public static string AlmanacFor(Story story)
         {
-            var characterLines = story.NamedCharacters.Values
-                .Select(i => "* " + i.Name).ToArray();
-            var locationLines = story.NamedLocations.Values
-                .Concat(new[] { story.You.Hometown })
-                .Select(i => "* " + i.Name).ToArray();
+            var almanacLines = story.Almanac
+                .Select(i => "* " + i.Key + " - " + i.Value)
+                .ToArray();
 
-            var almanac = string.Join(Environment.NewLine, characterLines.Concat(locationLines));
+            var almanac = string.Join(Environment.NewLine, almanacLines);
 
             return almanac;
         }

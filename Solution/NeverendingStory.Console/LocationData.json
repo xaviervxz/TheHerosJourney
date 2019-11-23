@@ -103,6 +103,7 @@
       },
       "Mountain": {
         "SpecificTypes": [ "Mountains", "Peaks" ],
+        "DescType": "mountain range",
         "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}" ]
       },
       "Desert": {
@@ -111,6 +112,7 @@
       },
       "Plains": {
         "SpecificTypes": [ "Plains", "Flats" ],
+        "DescType": "plain",
         "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "Lake": {
@@ -119,6 +121,7 @@
       },
       "Spring": {
         "SpecificTypes": [ "Springs" ],
+        "DescType": "spring",
         "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "River": {
@@ -207,22 +210,12 @@
     {
       "Name": "Quakshmiville",
       "MainFeature": "RiverTown",
-      "Industry": "Oats"
-    },
-    {
-      "Name": "Quakshmiville",
-      "MainFeature": "RiverTown",
       "Industry": "CabbageAndBeets"
     },
     {
       "Name": "Giornovah",
       "MainFeature": "CrossroadTown",
       "Industry": "NutsAndOlives"
-    },
-    {
-      "Name": "Giornovah",
-      "MainFeature": "CrossroadTown",
-      "Industry": "FruitTrees"
     }
   ],
   "MainFeatures": {
