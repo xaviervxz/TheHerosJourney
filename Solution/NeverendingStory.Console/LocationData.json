@@ -216,6 +216,16 @@
       "Name": "Giornovah",
       "MainFeature": "CrossroadTown",
       "Industry": "NutsAndOlives"
+    },
+    {
+      "Name": "Thorella",
+      "MainFeature": "SpringTown",
+      "Industry": "IronOre"
+    },
+    {
+      "Name": "Solomon's Fork",
+      "MainFeature": "RiverConfluenceTown",
+      "Industry": "Wheat"
     }
   ],
   "MainFeatures": {
@@ -332,6 +342,15 @@
       "Purpose": "to trade for food and supplies, which provides for",
       "GoodDay": "The mining is safe and efficient, and your buckets fill with coal. Coal fetches a good price at the markets this week.",
       "GoodDayFinal": "In the mines, you run into a new vein of coal. Everyone's very excited. You all prepare to excavate the new vein."
+    },
+    "IronOre": {
+      "WorkGer": "mining iron ore",
+      "Workplace": "in the iron mines",
+      "GoodsGer": "bringing up",
+      "Goods": "iron",
+      "Purpose": "to trade for food and supplies, which provides for",
+      "GoodDay": "The mining is safe and efficient, and your buckets fill with iron ore. Smelting it yields good quality iron this week.",
+      "GoodDayFinal": "In the mines, you run into a new vein of iron ore. Everyone's very excited. You all prepare to excavate the new vein."
     },
     "Granite": {
       "WorkGer": "mining granite",

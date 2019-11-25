@@ -61,7 +61,7 @@ namespace NeverendingStory.Functions
             {
                 var key = replacement.Value.Substring(1, replacement.Value.Length - 2);
 
-                var keyPieces = key.ToLower().Split(':');
+                var keyPieces = key.Split(':');
                 var primaryKey = keyPieces[0];
 
                 string replacementValue = "";
@@ -172,6 +172,16 @@ namespace NeverendingStory.Functions
                         case "chief":
                             replacementValue = story.You.Chief;
                             break;
+                    }
+                }
+                else if (primaryKey == "if")
+                {
+                    string condition = string.Join(':', keyPieces.Skip(1).Take(keyPieces.Length - 2));
+                    var conditionIsTrue = Condition.IsMet(story, condition);
+
+                    if (conditionIsTrue)
+                    {
+                        replacementValue = subMessage(keyPieces.Last(), story, fileData);
                     }
                 }
                 else if (primaryKey == "almanac" && keyPieces.Length >= 3)
@@ -406,7 +416,7 @@ namespace NeverendingStory.Functions
 
                         string value = "";
 
-                        switch (property)
+                        switch (property.ToLower())
                         {
                             case "name":
                                 value = character.Name;
@@ -493,6 +503,7 @@ namespace NeverendingStory.Functions
 
                         if (isValidRole && !namedCharacterExists)
                         {
+                            // TODO ????????
                         }
 
                         string property = keyPieces[2];

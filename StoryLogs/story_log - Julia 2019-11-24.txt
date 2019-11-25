@@ -1,0 +1,211 @@
+--------
+Welcome to the Neverending Story!
+--------
+Alex, you live in Sunn Marsh, a small village on the edge of Lake Giant. You work in the rice flats every day, growing enough rice to feed your small village.
+
+One day, a messenger rides into town. "Citizens of Sunn Marsh, the Baroness Brynn lays claim to your city. You are now under her rule and will pay taxes and fealty to her."
+
+What do you do?
+--------
+1) Leave Sunn Marsh to tell the Baroness that she doesn't own you
+2) Go to work like always and see if anything changes
+(Type "help" and hit Enter to learn how to play.)
+help
+--------
+help or ? - show this help dialog
+i or inventory - see the items you're carrying
+a or almanac - see the people and places you know
+1 or 2 - make a choice
+exit - exit the story
+--------
+1) Leave Sunn Marsh to tell the Baroness that she doesn't own you
+2) Go to work like always and see if anything changes
+i
+--------
+You're carrying:
+* Clothes - shirt, pants, shoes, and a cloak
+--------
+1) Leave Sunn Marsh to tell the Baroness that she doesn't own you
+2) Go to work like always and see if anything changes
+a
+--------
+Here are people you've met and places you've been or heard of:
+* Sunn Marsh - your hometown
+* Baroness Brynn - lays claim to Sunn Marsh
+--------
+1) Leave Sunn Marsh to tell the Baroness that she doesn't own you
+2) Go to work like always and see if anything changes
+2
+--------
+Wading through the flats, you're heartened to see that the rice crop is coming along nicely. The sun warms your back. 
+
+The next week, the Baroness's men arrive. They are soldiers, well-armed and uniformed, with the insignia of the Baroness on their jackets.
+
+They say they're here to collect taxes, but they take so much more than that. They eat food they don't pay for, destroy property that isn't theirs, and leer at young men and women.
+
+In the morning, your friend Bryan is missing. His family says that he was taken to Baroness Brynn's Burning Tower by her men. They don't know when, or if, he will return.
+--------
+1) Set out for the Burning Tower immediately
+2) Start a fight with the Baroness's men
+2
+--------
+You find a group of the Baroness's men in the tavern drinking. As one of them turns to you, your first blow lands squarely on his jaw. An all-out brawl breaks out. You give as good as you get, but in the end there are too many of them.
+
+"I'll take care of him," you hear a voice say.
+
+Rough hands carry you out of town to the base of the nearby Mountains of the Dagger. You pass out.
+
+You wake up the next day, looking up at the Mountains of the Dagger. A man sits against a nearby rock. He's wearing rough clothing. As you open your eyes, he says, "Hope you appreciate I saved your life. That was kind of a stupid fight to start, you know?
+
+"My name's Jasyn," he says. "Sunn Marsh's not the first village that Baroness Brynn's taken control of. She'll stop at nothing until the whole region is under her control. We can't let that happen.
+
+"If you want to stop her and get back Sunn Marsh, you'll have to make it to the Burning Tower."
+--------
+1) Ask Jasyn for his help
+2) Set off for the Burning Tower (you know the way)
+1
+--------
+"I'm sorry, I can't go near the Baroness's Tower myself. She and her goons'll be looking for me. But here, you take this." He hands you piece of rolled cloth. "It might be useful." With that, Jasyn disappears into the mountain range. 
+
+The cloth, once unrolled, looks like some sort of map of a secret entrance into the Baroness's Tower. You roll it up again and put it in your pack.
+
+You travel through the Mountains of the Dagger for several days.
+
+A fast-rushing river blocks your path to the Burning Tower. The water is deep and moving fast. You can see stepping stones barely visible under the surface of the water.
+--------
+1) Cross on the stepping stones
+2) Look for a better place to cross farther up
+1
+--------
+You step very carefully on each stone. Planting your feet solidly on each stone before stepping to the next one, you make it about halfway across the river. Suddenly, a stone that you were stepping on comes loose, careening down the raging river and taking you along with it.
+
+You get several bruises before you’re able to catch yourself, much further downstream, including a nasty bruise on your head. You drag yourself to the other side of the river. You’re sore all over, and can’t move for hours.
+
+Once you feel almost ready, you climb back up the river’s edge to the path and continue on your way to the Burning Tower.
+
+the mountain pass is rough here. in many places, you have to climb on all fours to make it over the enormous, jagged rocks.
+
+After a day or so, it begins to rain heavily. You take shelter in a nearby cave, making your bed in a small alcove. You go to sleep to wait out the rain.
+
+When you wake up, you hear something else moving in the cave. Opening your eyes, you see two enormous bears, sitting between your alcove and the door. It’s still raining outside. They seem to be laying down to sleep. What do you do?
+--------
+1) Try to scare them out of the cave so you can leave
+2) Wait until they go to sleep, then sneak out
+2
+--------
+It seems like it takes an eternity, but eventually, as it’s getting dark outside again, the two bears settle down, nestled up against each other. You wait until you’re absolutely sure they’re asleep. Then, very, very quietly, you gather your bedroll and sneak past them out of the cave. The rain has stopped by now, and the mountain range is quiet and dark.
+
+At night, you wonder how your friend Bryan is right now. It's been a long time since he was taken to the Burning Tower by the Baroness's men.
+--------
+1) Worry about what’s happened to Bryan
+2) Try to sleep
+1
+--------
+You stay up staring into the fire wondering whether or not Bryan is safe. It's late before you fall asleep. You’re tired the next morning.
+
+The next day, a small creature runs across your path. You almost step on it.
+
+You squat down to look at it. It seems like some sort of squirrel, but it's eyes are ruby red. It sits still, staring at you, alert.
+--------
+1) Give it some of your food
+2) Ignore it
+2
+--------
+The squirrel watches you as you leave, then scampers off.
+
+You're being careful, but you don't notice a well-concealed pit before it's too late. You step through the thin covering of foliage and fall right through to the bottom, landing with a crunch.
+
+Your leg hurts. You look up: the pit's sides are sheer hard dirt, about 15 feet deep. There are no roots, nothing down there with you besides dirt and whatever you have with you.
+--------
+1) Try to climb out
+2) Call for help
+2
+--------
+Your voice rings out into the mountain range. No one answers.
+
+After a few minutes, you hear skittering and see the squirrel peek its head into view. Then it disappears.
+
+A minute later, a vine woven from nearby plants and grasses drops down into the pit with you. The squirrel reappears, it's red eyes flashing, before it disappears again.
+
+You climb easily out of the pit. The squirrel is nowhere to be seen.
+
+As the sun sets, you see a small hut ahead of you, hiding between two huge rocks. You pause, considering whether or not to investigate, but before you can decide, a group of men and women dressed like Jasyn steps out from behind nearby boulders, surrounding you.
+
+"What are YOU doing here?" one of them asks you.
+--------
+1) Ask them what THEY are doing here
+2) Tell them you're here to free Sunn Marsh from Baroness Brynn
+2
+--------
+"We're on the same side then! Have you met our friend Jasyn? He's out there somewhere, fighting against the Baroness's influence."
+
+You spend the night with the resistance fighters. The Baroness's men, they tell you, are only working for her because she pays them handsomely. If you can find a way to stop the Baroness's men from being paid, most of her influence over the region will be gone.
+
+They have plans to attack one of the Baroness's outposts tomorrow, which should draw most of her men away from the Burning Tower, allowing you to get inside more easily.
+
+In the morning, you set off for the Burning Tower again.
+
+You finally arrive at the base of the Burning Tower. Staying out of view of any of the Baroness's men, you find the hidden path into the Burning Tower on Jasyn's map. The hidden path leads underground, and comes out into a tall, well-decorated corridor inside the Burning Tower. You look around for any sign of Bryan.
+
+The Baroness is walking down the hall with one of her men. You find a place to hide, and you can hear them talking.
+
+"...if they resist, remind them that, if the kingdoms from the north attack, they will not be able to defend themselves. Under our rule, we will provide them with protection against invasion. What is that safety worth to them?..."
+
+The voices fade away as they turn a corner and are gone.
+
+Descending into the dungeon, you find Bryan locked up with a bunch of other young people. It seems they've been locked up here for some future purpose of the Baroness. You set them all free.
+
+Searching in the Burning Tower, you finally find the treasury. You take out the lone guard, and go inside. Several heavy chests of gold are inside.
+
+Once the gold is gone, the Baroness will have nothing to pay her army with, and her hold over the region will eventually be gone. What do you do with the chests of gold?
+--------
+1) Dump them through the window for the guards outside
+2) Sneak them outside and make sure no one will find them
+1
+--------
+Propping a heavy chest on the windowsill, you open it and pour the coins out the window onto the ground several stories below. You hear voices below: the guards have noticed, and are fighting over the gold among themselves.
+
+As you keep pouring, the shouts of joy increase. It sounds like the Baroness had recruited men from the poorer villages she had conquered, promising them good pay in exchange for their service to her. Many of the guards below take as much gold as they can and run, returning to their homes and families.
+
+In a few minutes, the Baroness's gold is gone.
+
+You take a few gold coins for yourself from the last chest before you dump it. Just a few, not enough to slow you down.
+
+You leave the Burning Tower.
+
+As you leave, Baroness Brynn spots you. "After him!" she shouts to her men, and a few nearby begin to chase after you. You sprint into the mountain range as fast as you can.
+
+You finally return to Sunn Marsh. Since you left, the people have been under the rule of the Baroness's men, who have done nothing but drink and destroy property that isn't theirs.
+
+You organize a secret meeting at night to rally the people together. They are all ears, ready to hear your plan to rid Sunn Marsh of the Baroness’s men. What do you tell them?
+--------
+1) Drive them out with force
+2) Poison their drinks and food
+2
+--------
+That night, the Baroness’s men carouse and as they always do, demanding food from local businesses they never intend to pay for. But this time, in a coordinated effort by the people of Sunn Marsh, their food and drink is all poisoned. The next morning, not one of the Baroness’s men in Sunn Marsh is alive. The people of Sunn Marsh bury them outside of town. They will never bother anyone ever again.
+
+Sunn Marsh is now free! Your fellow citizens are eagerly offering you a position of leadership: they want to make you the Chief of Sunn Marsh. What do you do?
+--------
+1) Go back to your old job, working in the rice flats
+2) Take the new job as Chief of Sunn Marsh
+1
+--------
+The rice flats are doing well. The water levels are high, the sun is shining, and the harvest will be excellent this year. Sunn Marsh's freedom allows things to go back to the way that they were. But you know that, if ever another Baroness tried to take control of Sunn Marsh again, you and your neighbors would be ready for them.
+
+--------
+THE END
+--------
+Your almanac of places and people you know:
+* Sunn Marsh - your hometown
+* Baroness Brynn - lives in the Burning Tower
+* the Burning Tower - the home of Baroness Brynn
+* The Mountains Of The Dagger - a mountain range that lies near Sunn Marsh
+* Jasyn - a mysterious man somewhere in the Mountains of the Dagger, part of a group of resistance fighters
+--------
+Your inventory:
+* Clothes - shirt, pants, shoes, and a cloak
+* A cloth map - shows a hidden path into the Burning Tower
+* A few gold coins - from the Baroness's treasury chests
+--------
+(Press Enter to exit.)

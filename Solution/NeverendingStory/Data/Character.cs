@@ -28,12 +28,20 @@ namespace NeverendingStory.Data
 
         public Relationship Relationship { get; set; }
 
-        public List<Item> Inventory { get; set; } = new List<Item>{new Item
-        {
-            Identifier = "clothes",
-            Name = "Clothes",
-            Description = "shirt, pants, shoes, and a cloak"
-        }};
+        public List<Item> Inventory { get; set; } = new List<Item>{
+            new Item
+            {
+                Identifier = "clothes",
+                Name = "Clothes",
+                Description = "shirt, pants, shoes, and a cloak"
+            },
+            new Item
+            {
+                Identifier = "pack",
+                Name = "Travel pack",
+                Description = "food, bedroll, etc."
+            }
+        };
 
         public Town Hometown { get; set; }
 
