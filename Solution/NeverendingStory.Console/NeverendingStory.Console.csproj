@@ -1,12 +1,24 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove=".~lock.Scenes.xlsx#" />
+    <None Remove="CharacterData.json" />
+    <None Remove="LocationData.json" />
+    <None Remove="Scenes.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\CharacterData.json" />
+    <EmbeddedResource Include="Data\LocationData.json" />
+    <EmbeddedResource Include="Data\Scenes.xlsx" />
   </ItemGroup>
 
   <ItemGroup>

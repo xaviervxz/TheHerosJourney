@@ -86,7 +86,24 @@ namespace NeverendingStory.Console
             // ----------------
 
             // LOAD DATA FROM FILES AND CREATE EMPTY STORY
-            var fileData = LoadFromFile.Data();
+            FileData fileData;
+            try
+            {
+                fileData = LoadFromFile.Data();
+            }
+            catch (FileNotFoundException)
+            {
+                WriteDashes();
+                WriteMessage("Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
+                WriteMessage("First, make sure you're running the most current version.");
+                WriteMessage("Then, if you are and this still happens, contact the developer and tell him to fix it.");
+                WriteMessage("Thanks! <3");
+                WriteDashes();
+                WriteMessage("(Press Enter to exit the program.)");
+                ReadInput();
+                return;
+            }
+
             var story = new Story();
             story.You = Pick.Character(Relationship.Self, story.Characters, fileData.CharacterData);
             story.You.Hometown = Pick.Town(story.Locations, fileData);

@@ -1,11 +1,15 @@
 ﻿using NeverendingStory.Data;
+using NeverendingStory.Functions;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 
-namespace NeverendingStory.Functions
+namespace NeverendingStory.Console
 {
     using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
@@ -13,42 +17,55 @@ namespace NeverendingStory.Functions
     {
         public static FileData Data()
         {
-            string GetDataFilePath(string fileName)
+            static Stream GetDataResourceStream(string resourceName)
             {
-                string jsonFileDirectory = Directory.GetCurrentDirectory();
-#if DEBUG
-                jsonFileDirectory = Directory.GetParent(jsonFileDirectory).Parent.Parent.FullName;
-                //jsonFileDirectory = Path.Combine(Directory.GetParent(jsonFileDirectory).Parent.Parent.Parent.FullName, "NeverendingStory.Console");
-#endif
-                string filePath = Path.Combine(jsonFileDirectory, fileName);
+                string fullResourceName = $"NeverendingStory.Console.Data.{resourceName}";
+                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullResourceName);
+                return stream;
+            }
 
-                return filePath;
+            static string ReadAllText(Stream stream)
+            {
+                var lines = new List<string>();
+
+                using (var reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        lines.Add(line);
+                    }
+                }
+
+                string text = string.Join(Environment.NewLine, lines);
+
+                return text;
             }
 
             var fileData = new FileData();
 
             // **************************
-            // LOADING PEOPLE NAMES
+            // LOADING PEOPLE'S NAMES ETC.
             // **************************
 
             // Get the file path of the JSON file.
-            string peopleNamesFilePath = GetDataFilePath("CharacterData.json");
+            var characterDataStream = GetDataResourceStream("CharacterData.json");
 
             // Read the JSON file.
-            string peopleNamesFileContents = File.ReadAllText(peopleNamesFilePath);
+            string peopleNamesFileContents = ReadAllText(characterDataStream);
 
             // Deserialize the JSON file.
             fileData.CharacterData = JsonConvert.DeserializeObject<PeopleNames>(peopleNamesFileContents);
 
             // **************************
-            // LOADING LOCATION DATA
+            // LOADING LOCATION NAMES, INDUSTRIES, LAYOUTS, ETC.
             // **************************
 
             // Get the file path of the JSON file.
-            string locationDataFilePath = GetDataFilePath("LocationData.json");
+            var locationDataStream = GetDataResourceStream("LocationData.json");
 
             // Read the JSON file.
-            string locationDataFileContents = File.ReadAllText(locationDataFilePath);
+            string locationDataFileContents = ReadAllText(locationDataStream);
 
             // Deserialize the JSON file.
             fileData.LocationData = JsonConvert.DeserializeObject<LocationData>(locationDataFileContents);
@@ -59,12 +76,11 @@ namespace NeverendingStory.Functions
 
             // Get the file path of the Spreadsheet file.
             // TODO: Read from ODS file instead.
-            string scenesFilePath = GetDataFilePath("Scenes.xlsx");
+            var scenesStream = GetDataResourceStream("Scenes.xlsx");
 
-            using (var fileStream = new FileStream(scenesFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (var excelPackage = new OfficeOpenXml.ExcelPackage())
             {
-                excelPackage.Load(fileStream);
+                excelPackage.Load(scenesStream);
 
                 if (excelPackage.Workbook.Worksheets.Count != 0)
                 {
