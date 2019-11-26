@@ -130,18 +130,26 @@ namespace NeverendingStory.Console
             story.You.Sex = Sex.Male;
 #else
             WriteMessage("Type your character name and press Enter.");
-            story.You.Name = ReadInput();
+            {
+                string characterName = ReadInput();
+                if (!string.IsNullOrWhiteSpace(characterName))
+                {
+                    story.You.Name = characterName;
+                }
+            }
             WriteDashes();
 
             WriteMessage("Male or female? (M/F)");
-            string playerSex = ReadInput().ToLower();
-            if (playerSex == "m")
             {
-                story.You.Sex = Sex.Male;
-            }
-            else
-            {
-                story.You.Sex = Sex.Female;
+                string playerSex = ReadInput().ToLower();
+                if (playerSex == "m")
+                {
+                    story.You.Sex = Sex.Male;
+                }
+                else
+                {
+                    story.You.Sex = Sex.Female;
+                }
             }
             WriteDashes();
 
