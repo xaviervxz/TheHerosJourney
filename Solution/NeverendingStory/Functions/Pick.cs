@@ -142,6 +142,38 @@ namespace NeverendingStory.Functions
             return scene;
         }
 
+        public static Story Story(FileData fileData)
+        {
+            var story = new Story();
+
+            // CREATE THE PLAYER CHARACTER.
+            story.You = Pick.Character(Relationship.Self, story.Characters, fileData.CharacterData);
+
+            // CREATE THEIR HOMETOWN, START THEM THERE, AND ADD IT TO THE ALMANAC.
+            story.You.Hometown = Pick.Town(story.Locations, fileData);
+            story.You.CurrentLocation = story.You.Hometown;
+            story.Almanac[story.You.Hometown.NameWithThe] = "your hometown";
+
+            // GIVE THEM CLOTHES AND A TRAVEL PACK.
+            story.You.Inventory.AddRange(new[]
+            {
+                new Item
+                {
+                    Identifier = "clothes",
+                    Name = "Clothes",
+                    Description = "shirt, pants, shoes, and a cloak"
+                },
+                new Item
+                {
+                    Identifier = "pack",
+                    Name = "Travel pack",
+                    Description = "food, bedroll, etc."
+                }
+            });
+
+            return story;
+        }
+
         public static Character Character(
             Relationship relationship,
             IList<Character> characters,

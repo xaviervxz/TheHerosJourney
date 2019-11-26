@@ -28,20 +28,7 @@ namespace NeverendingStory.Data
 
         public Relationship Relationship { get; set; }
 
-        public List<Item> Inventory { get; set; } = new List<Item>{
-            new Item
-            {
-                Identifier = "clothes",
-                Name = "Clothes",
-                Description = "shirt, pants, shoes, and a cloak"
-            },
-            new Item
-            {
-                Identifier = "pack",
-                Name = "Travel pack",
-                Description = "food, bedroll, etc."
-            }
-        };
+        public List<Item> Inventory { get; } = new List<Item>();
 
         public Town Hometown { get; set; }
 
@@ -73,7 +60,7 @@ namespace NeverendingStory.Data
 
     public class Item
     {
-        public string Identifier { get; internal set; }
+        public string Identifier { get; set; }
 
         public string Name { get; set; }
 

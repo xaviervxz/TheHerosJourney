@@ -104,11 +104,7 @@ namespace NeverendingStory.Console
                 return;
             }
 
-            var story = new Story();
-            story.You = Pick.Character(Relationship.Self, story.Characters, fileData.CharacterData);
-            story.You.Hometown = Pick.Town(story.Locations, fileData);
-            story.Almanac[story.You.Hometown.NameWithThe] = "your hometown";
-            story.You.CurrentLocation = story.You.Hometown;
+            var story = Pick.Story(fileData);
 
             //{
             //    // PICK A BUNCH OF LOCATION NAMES.
