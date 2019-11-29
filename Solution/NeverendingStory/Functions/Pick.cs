@@ -177,7 +177,7 @@ namespace NeverendingStory.Functions
         public static Character Character(
             Relationship relationship,
             IList<Character> characters,
-            CharacterData names)
+            CharacterData characterData)
         {
             var character = characters.FirstOrDefault(c => c.Relationship == relationship);
 
@@ -187,7 +187,7 @@ namespace NeverendingStory.Functions
                 {
                     Relationship = relationship
                 };
-                character.Name = Pick.Random(names[PeopleNameOrigin.Westron][character.Sex].Except(characters.Select(c => c.Name)).ToArray());
+                character.Name = Pick.Random(characterData[PeopleNameOrigin.Westron][character.Sex].Except(characters.Select(c => c.Name)).ToArray());
 
                 characters.Add(character);
             }
@@ -251,14 +251,19 @@ namespace NeverendingStory.Functions
                 locations.Add(town);
             }
 
-            return town as Town;
+            return town;
         }
 
         public static Location Location(
             LocationType type,
-            IList<Location> locations,
+            List<Location> locations,
             FileData data)
         {
+            if (type == LocationType.Town)
+            {
+                return Pick.Town(locations, data);
+            }
+
             var location = locations.FirstOrDefault(c => c.Type == type);
 
             if (location == null)

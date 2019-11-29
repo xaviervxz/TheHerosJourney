@@ -328,4 +328,6 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
-/Solution/NeverendingStory.Console/.~lock.Scenes.xlsx#
+
+# Custom Additions
+/Solution/NeverendingStory.Console/Data/.~lock.Scenes.xlsx#

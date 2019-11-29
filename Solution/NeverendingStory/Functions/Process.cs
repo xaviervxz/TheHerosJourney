@@ -369,7 +369,7 @@ namespace NeverendingStory.Functions
                         }
                     }
 
-                    switch (property)
+                    switch (property.ToLower())
                     {
                         case "workger":
                             replacementValue = town.MainIndustryData.WorkGer;

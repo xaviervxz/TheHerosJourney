@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove=".~lock.Scenes.xlsx#" />
     <None Remove="CharacterData.json" />
+    <None Remove="Data\.~lock.Scenes.xlsx#" />
     <None Remove="LocationData.json" />
     <None Remove="Scenes.xlsx" />
   </ItemGroup>
