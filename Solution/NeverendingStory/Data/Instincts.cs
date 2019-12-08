@@ -3,6 +3,14 @@ namespace NeverendingStory.Data
 {
     public static class Instinct
     {
+        // IN USE
+
+        public const string ToReclaimWhatWasTaken = "To reclaim what was taken";
+        public const string ToAvoidNotice = "To avoid notice";
+
+
+        // NOT CURRENTLY IN USE
+
         public const string ToAvenge = "To avenge";
         public const string ToSpreadTheGoodWord = "To spread the good word";
         public const string ToReuniteWithALovedOne = "To reunite with a loved one";
@@ -56,10 +64,8 @@ namespace NeverendingStory.Data
         //public const string ToParty = "To party";
         public const string ToReturnHome = "To return home";
         public const string ToServe = "To serve";
-        public const string ToReclaimWhatWasTaken = "To reclaim what was taken";
         public const string ToDoWhatMustBeDone = "To do what must be done";
         public const string ToBeAChampion = "To be a champion";
-        public const string ToAvoidNotice = "To avoid notice";
         public const string ToHelpAFamilyMember = "To help a family member";
         public const string ToPerfectASkill = "To perfect a skill";
         public const string ToTravel = "To travel";
