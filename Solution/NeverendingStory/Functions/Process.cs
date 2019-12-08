@@ -517,25 +517,5 @@ namespace NeverendingStory.Functions
 
             return replacedMessage;
         }
-
-        public static string AlmanacFor(Story story)
-        {
-            var almanacLines = story.Almanac
-                .Select(i => "* " + i.Key + " - " + i.Value)
-                .ToArray();
-
-            var almanac = string.Join(Environment.NewLine, almanacLines);
-
-            return almanac;
-        }
-
-        public static string InventoryOf(Character character)
-        {
-            var inventoryLines = character.Inventory.Select(i => "* " + i.Name + " - " + i.Description);
-
-            var inventory = string.Join(Environment.NewLine, inventoryLines);
-
-            return inventory;
-        }
     }
 }
