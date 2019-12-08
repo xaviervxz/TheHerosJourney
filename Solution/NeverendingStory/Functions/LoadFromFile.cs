@@ -1,5 +1,4 @@
 ﻿using NeverendingStory.Data;
-using NeverendingStory.Functions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace NeverendingStory.Console
+namespace NeverendingStory.Functions
 {
     using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
@@ -19,13 +18,18 @@ namespace NeverendingStory.Console
         {
             static Stream GetDataResourceStream(string resourceName)
             {
-                string fullResourceName = $"NeverendingStory.Console.Data.{resourceName}";
+                string fullResourceName = $"NeverendingStory.Data.{resourceName}";
                 Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullResourceName);
                 return stream;
             }
 
             static string ReadAllText(Stream stream)
             {
+                if (stream == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
                 var lines = new List<string>();
 
                 using (var reader = new StreamReader(stream, Encoding.UTF8))

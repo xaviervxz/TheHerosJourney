@@ -174,10 +174,7 @@ namespace NeverendingStory.Functions
             return story;
         }
 
-        public static Character Character(
-            Relationship relationship,
-            IList<Character> characters,
-            CharacterData characterData)
+        public static Character Character(Relationship relationship, IList<Character> characters, CharacterData characterData)
         {
             var character = characters.FirstOrDefault(c => c.Relationship == relationship);
 
@@ -195,9 +192,7 @@ namespace NeverendingStory.Functions
             return character;
         }
 
-        public static Town Town(
-            List<Location> locations,
-            FileData data)
+        public static Town Town(List<Location> locations, FileData data)
         {
             Town town = locations.FirstOrDefault(c => c.Type == LocationType.Town) as Town;
 
@@ -254,10 +249,7 @@ namespace NeverendingStory.Functions
             return town;
         }
 
-        public static Location Location(
-            LocationType type,
-            List<Location> locations,
-            FileData data)
+        public static Location Location(LocationType type, List<Location> locations, FileData data)
         {
             if (type == LocationType.Town)
             {
@@ -306,29 +298,29 @@ namespace NeverendingStory.Functions
             return location;
         }
 
-        private static Dictionary<string, JourneyStage> stageCodes = new Dictionary<string, JourneyStage>
-        {
-            { "CTA", JourneyStage.CallToAdventure },
-            { "ROC", JourneyStage.RefusalOfCall },
-            { "MTM", JourneyStage.MeetingTheMentor },
-            { "CTT", JourneyStage.CrossingTheThreshhold },
-            { "BOTW", JourneyStage.BellyOfTheWhale },
-            { "ROT", JourneyStage.RoadOfTrials },
-            { "MWG", JourneyStage.MeetingWithGoddess },
-            { "WAT", JourneyStage.WomanAsTemptress },
-            { "AWF", JourneyStage.AtonementWithFather },
-            { "A", JourneyStage.Apotheosis },
-            { "UB", JourneyStage.UltimateBoon },
-            { "ROR", JourneyStage.RefusalOfReturn },
-            { "MF", JourneyStage.MagicFlight },
-            { "RFW", JourneyStage.RescueFromWithout },
-            { "CRT", JourneyStage.CrossingReturnThreshhold },
-            { "MOTW", JourneyStage.MasterOfTwoWorlds },
-            { "FTL", JourneyStage.FreedomToLive }
-        };
-
         public static JourneyStage? StageFromCode(string code)
         {
+            var stageCodes = new Dictionary<string, JourneyStage>
+            {
+                { "CTA", JourneyStage.CallToAdventure },
+                { "ROC", JourneyStage.RefusalOfCall },
+                { "MTM", JourneyStage.MeetingTheMentor },
+                { "CTT", JourneyStage.CrossingTheThreshhold },
+                { "BOTW", JourneyStage.BellyOfTheWhale },
+                { "ROT", JourneyStage.RoadOfTrials },
+                { "MWG", JourneyStage.MeetingWithGoddess },
+                { "WAT", JourneyStage.WomanAsTemptress },
+                { "AWF", JourneyStage.AtonementWithFather },
+                { "A", JourneyStage.Apotheosis },
+                { "UB", JourneyStage.UltimateBoon },
+                { "ROR", JourneyStage.RefusalOfReturn },
+                { "MF", JourneyStage.MagicFlight },
+                { "RFW", JourneyStage.RescueFromWithout },
+                { "CRT", JourneyStage.CrossingReturnThreshhold },
+                { "MOTW", JourneyStage.MasterOfTwoWorlds },
+                { "FTL", JourneyStage.FreedomToLive }
+            };
+
             var matchingStage = stageCodes.FirstOrDefault(c => code.StartsWith(c.Key));
 
             if (matchingStage.Equals(default(KeyValuePair<string, JourneyStage>)))

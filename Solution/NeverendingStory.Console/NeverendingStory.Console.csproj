@@ -10,15 +10,8 @@
 
   <ItemGroup>
     <None Remove="CharacterData.json" />
-    <None Remove="Data\.~lock.Scenes.xlsx#" />
     <None Remove="LocationData.json" />
     <None Remove="Scenes.xlsx" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Data\CharacterData.json" />
-    <EmbeddedResource Include="Data\LocationData.json" />
-    <EmbeddedResource Include="Data\Scenes.xlsx" />
   </ItemGroup>
 
   <ItemGroup>
