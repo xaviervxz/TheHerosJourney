@@ -7,14 +7,14 @@ using System.Collections.Generic;
 
 namespace NeverendingStory.Functions
 {
-    public static class Process
+    internal static class Process
     {
-        public static string ToTitleCase(this string text)
+        internal static string ToTitleCase(this string text)
         {
             return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(text);
         }
 
-        public static T[] ParseToValidTypes<T>(this IEnumerable<string> rawTypes)
+        internal static T[] ParseToValidTypes<T>(this IEnumerable<string> rawTypes)
             where T : struct
         {
             var validTypes = rawTypes
@@ -31,7 +31,7 @@ namespace NeverendingStory.Functions
             return validTypes;
         }
 
-        public static T? ParseToValidType<T>(this string rawType)
+        internal static T? ParseToValidType<T>(this string rawType)
             where T : struct
         {
             if (Enum.TryParse(rawType.ToTitleCase(), out T type))
@@ -42,13 +42,13 @@ namespace NeverendingStory.Functions
             return null;
         }
 
-        public static string Message(string message, Story story, FileData fileData)
+        internal static string Message(string message, Story story, FileData fileData)
         {
-            /*static */string subMessage(string subMessage, Story story, FileData fileData)
+            /*static */string subMessage(string subMessageText, Story pStory, FileData pFileData)
             {
-                var replacedSubMessage = subMessage.Replace("[", "{").Replace("]", "}").Replace("-", ":");
+                var replacedSubMessage = subMessageText.Replace("[", "{").Replace("]", "}").Replace("-", ":");
 
-                string processedSubMessage = Process.Message(replacedSubMessage, story, fileData);
+                string processedSubMessage = Process.Message(replacedSubMessage, pStory, pFileData);
 
                 return processedSubMessage;
             }

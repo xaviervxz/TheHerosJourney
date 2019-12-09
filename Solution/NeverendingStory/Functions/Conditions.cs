@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    public static class Condition
+    internal static class Condition
     {
         internal static bool IsMet(Story story, string condition)
         {

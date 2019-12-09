@@ -125,7 +125,7 @@ namespace NeverendingStory.Console
                 WriteMessage(almanacMessage);
             }
 
-            var story = Run.LoadGame(ShowLoadGameFilesError, out FileData fileData);
+            var (fileData, story) = Run.LoadGame(ShowLoadGameFilesError);
 
             // DISPLAY INTRODUCTION
             // LET THE PLAYER PICK THEIR NAME AND SEX
@@ -229,7 +229,7 @@ namespace NeverendingStory.Console
 
                 // IF THERE ARE CHOICES AVAILABLE IN THIS SCENE,
                 // PROCESS AND DISPLAY THEM.
-                bool choicesExist = Run.Choices(fileData, story, currentScene, PresentChoices, WriteMessage);
+                bool choicesExist = Run.PresentChoices(fileData, story, currentScene, PresentChoices, WriteMessage);
 
                 if (!choicesExist)
                 {

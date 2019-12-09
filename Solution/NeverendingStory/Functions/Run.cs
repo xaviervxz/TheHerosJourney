@@ -6,15 +6,14 @@ namespace NeverendingStory.Functions
 {
     public static class Run
     {
-        public static Story LoadGame(
-            Action showLoadGameFilesError,
-            out FileData fileData)
+        public static Tuple<FileData, Story> LoadGame(Action showLoadGameFilesError)
         {
             // ----------------
             // DATA SET UP AND INTRODUCTION
             // ----------------
 
             // LOAD DATA FROM FILES AND CREATE EMPTY STORY
+            FileData fileData;
             try
             {
                 fileData = LoadFromFile.Data();
@@ -24,8 +23,6 @@ namespace NeverendingStory.Functions
                 if (exception is FileNotFoundException || exception is ArgumentNullException)
                 {
                     showLoadGameFilesError();
-
-                    fileData = null;
 
                     return null;
                 }
@@ -49,7 +46,7 @@ namespace NeverendingStory.Functions
             //    }
             //}
 
-            return story;
+            return new Tuple<FileData, Story>(fileData, story);
         }
 
         public static Scene NewScene(FileData fileData, Story story, Action<string> addTextToStory)
@@ -78,6 +75,12 @@ namespace NeverendingStory.Functions
 
         private static void Outro(byte outroNum, FileData fileData, Story story, Scene currentScene, Action<string> addTextToStory)
         {
+            if (currentScene == null)
+            {
+                //throw new ArgumentNullException(nameof(currentScene), "The currentScene is null, so we can't show an Outro.");
+                return;
+            }
+
             string rawOutro = outroNum == 1 ? currentScene.Outro1 : currentScene.Outro2;
             string outro = Process.Message(rawOutro, story, fileData);
 
@@ -87,7 +90,7 @@ namespace NeverendingStory.Functions
             currentScene.Done = true;
         }
 
-        public static bool Choices(FileData fileData, Story story, Scene currentScene, Action<string, string> presentChoices, Action<string> addTextToStory)
+        public static bool PresentChoices(FileData fileData, Story story, Scene currentScene, Action<string, string> presentChoices, Action<string> addTextToStory)
         {
             // IF THERE ARE NO CHOICES AVAILABLE IN THIS SCENE,
             // SKIP TO THE NEXT SCENE.

@@ -6,10 +6,10 @@ using System.Linq;
 namespace NeverendingStory.Functions
 {
     using CharacterData = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
-    public static class Pick
+    internal static class Pick
     {
         private static readonly Random rng = new Random();
-        public static T Random<T>(this IEnumerable<T> list)
+        internal static T Random<T>(this IEnumerable<T> list)
         {
             if (list == null)
             {
@@ -28,7 +28,7 @@ namespace NeverendingStory.Functions
             return array[randomIndex];
         }
 
-        public static T WeightedRandom<T>(this IEnumerable<T> list, Func<T, int> weightingFunction)
+        internal static T WeightedRandom<T>(this IEnumerable<T> list, Func<T, int> weightingFunction)
         {
             var weightedList = new List<T>();
 
@@ -44,7 +44,7 @@ namespace NeverendingStory.Functions
             return randomWeightedItem;
         }
 
-        public static Scene NextScene(Scene[] scenes, Story story)
+        internal static Scene NextScene(Scene[] scenes, Story story)
         {
             if (story.NextSceneIdentifier != null)
             {
@@ -142,7 +142,7 @@ namespace NeverendingStory.Functions
             return scene;
         }
 
-        public static Story Story(FileData fileData)
+        internal static Story Story(FileData fileData)
         {
             var story = new Story();
 
@@ -174,7 +174,7 @@ namespace NeverendingStory.Functions
             return story;
         }
 
-        public static Character Character(Relationship relationship, IList<Character> characters, CharacterData characterData)
+        internal static Character Character(Relationship relationship, IList<Character> characters, CharacterData characterData)
         {
             var character = characters.FirstOrDefault(c => c.Relationship == relationship);
 
@@ -192,7 +192,7 @@ namespace NeverendingStory.Functions
             return character;
         }
 
-        public static Town Town(List<Location> locations, FileData data)
+        internal static Town Town(List<Location> locations, FileData data)
         {
             Town town = locations.FirstOrDefault(c => c.Type == LocationType.Town) as Town;
 
@@ -249,7 +249,7 @@ namespace NeverendingStory.Functions
             return town;
         }
 
-        public static Location Location(LocationType type, List<Location> locations, FileData data)
+        internal static Location Location(LocationType type, List<Location> locations, FileData data)
         {
             if (type == LocationType.Town)
             {
@@ -298,7 +298,7 @@ namespace NeverendingStory.Functions
             return location;
         }
 
-        public static JourneyStage? StageFromCode(string code)
+        internal static JourneyStage? StageFromCode(string code)
         {
             var stageCodes = new Dictionary<string, JourneyStage>
             {

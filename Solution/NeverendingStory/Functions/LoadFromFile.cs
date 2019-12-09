@@ -3,7 +3,6 @@ using NeverendingStory.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,9 +12,9 @@ namespace NeverendingStory.Functions
 {
     using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 
-    public static class LoadFromFile
+    internal static class LoadFromFile
     {
-        public static FileData Data()
+        internal static FileData Data()
         {
             /*static */Stream GetDataResourceStream(string resourceName)
             {
@@ -98,7 +97,7 @@ namespace NeverendingStory.Functions
                     scene.Stage = Pick.StageFromCode(scene.Identifier);
 
                     // IsSubStage
-                    char lastCharacter = scene.Identifier[^1];
+                    char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
                     scene.IsSubStage = char.IsLetter(lastCharacter);
                 }
 
