@@ -226,6 +226,11 @@
       "Name": "Solomon's Fork",
       "MainFeature": "RiverConfluenceTown",
       "Industry": "Wheat"
+    },
+    {
+      "Name": "Potteryboise",
+      "MainFeature": "DeltaTown",
+      "Industry": "Clay"
     }
   ],
   "MainFeatures": {
@@ -360,6 +365,15 @@
       "Purpose": "to build your village and trade for food and supplies, which provides for",
       "GoodDay": "In the quarry, work goes quickly and efficiently. Quality granite is extracted, and you know it will get a good price in the markets.",
       "GoodDayFinal": "Granite extraction continues without any interruptions or accidents. Everyone is happy to see the fine stone being mined from the quarry."
+    },
+    "Clay": {
+      "WorkGer": "collecting clay",
+      "Workplace": "in the clay flats",
+      "GoodsGer": "collecting",
+      "Goods": "clay",
+      "Purpose": "to build your homes and trade for food and supplies, which provides for",
+      "GoodDay": "In the clay flats, work goes quickly and efficiently. Quality clay is extracted, and you know it will get a good price in the markets.",
+      "GoodDayFinal": "Clay collecting continues without any interruptions or accidents. Everyone is happy to see the fine clay being gathered from the flats."
     },
     "Cattle": {
       "WorkGer": "working in the fields",

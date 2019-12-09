@@ -455,6 +455,7 @@ namespace NeverendingStory.Functions
                     if (keyPieces[1] == "pick")
                     {
                         //      0      1       2         3        4
+                        //                  location    role     tag
                         // {character:pick:baronhome:antagonist:baron}
 
                         string currentLocationName = keyPieces[2];
