@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NeverendingStory.Data
+namespace NeverendingStory.Models
 {
     public class Story
     {

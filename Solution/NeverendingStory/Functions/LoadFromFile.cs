@@ -1,4 +1,5 @@
-﻿using NeverendingStory.Data;
+﻿using CsvHelper;
+using NeverendingStory.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -16,14 +17,16 @@ namespace NeverendingStory.Functions
     {
         public static FileData Data()
         {
-            static Stream GetDataResourceStream(string resourceName)
+            /*static */Stream GetDataResourceStream(string resourceName)
             {
                 string fullResourceName = $"NeverendingStory.Data.{resourceName}";
+                
                 Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullResourceName);
+
                 return stream;
             }
 
-            static string ReadAllText(Stream stream)
+            /*static */string ReadAllText(Stream stream)
             {
                 if (stream == null)
                 {
@@ -80,70 +83,90 @@ namespace NeverendingStory.Functions
 
             // Get the file path of the Spreadsheet file.
             // TODO: Read from ODS file instead.
-            var scenesStream = GetDataResourceStream("Scenes.xlsx");
+            var scenesStream = GetDataResourceStream("Scenes.csv");
 
-            using (var excelPackage = new OfficeOpenXml.ExcelPackage())
+            using (var streamReader = new StreamReader(scenesStream))
+            using (var csv = new CsvReader(streamReader))
             {
-                excelPackage.Load(scenesStream);
+                var scenes = csv.GetRecords<Scene>().ToArray();
 
-                if (excelPackage.Workbook.Worksheets.Count != 0)
+                foreach (var scene in scenes)
                 {
-                    var worksheet = excelPackage.Workbook.Worksheets.First();
+                    // For each scene we got, assign some calculated variables...
 
-                    var headers = worksheet.Cells[1, 1, 1, worksheet.Dimension.Columns].Select(c => c.Text).ToArray();
+                    // The Stage
+                    scene.Stage = Pick.StageFromCode(scene.Identifier);
 
-                    List<Scene> scenes = new List<Scene>();
-
-                    for (int row = 2; row <= worksheet.Dimension.Rows; row += 1)
-                    {
-                        var scene = new Scene();
-
-                        for (int col = 1; col <= worksheet.Dimension.Columns; col += 1)
-                        {
-                            string value = worksheet.Cells[row, col].Value?.ToString() ?? "";
-                            string header = headers[col - 1];
-
-                            switch (header)
-                            {
-                                case "Identifier":
-                                    scene.Identifier = value;
-                                    break;
-                                case "Conditions":
-                                    scene.Conditions = value;
-                                    break;
-                                case "Message":
-                                    scene.Message = value;
-                                    break;
-                                case "Choice1":
-                                    scene.Choice1 = value;
-                                    break;
-                                case "Choice2":
-                                    scene.Choice2 = value;
-                                    break;
-                                case "Outro1":
-                                    scene.Outro1 = value;
-                                    break;
-                                case "Outro2":
-                                    scene.Outro2 = value;
-                                    break;
-                            }
-                        }
-
-                        // For each scene we got, assign some calculated variables...
-
-                        // The Stage
-                        scene.Stage = Pick.StageFromCode(scene.Identifier);
-
-                        // IsSubStage
-                        char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
-                        scene.IsSubStage = char.IsLetter(lastCharacter);
-
-                        scenes.Add(scene);
-                    }
-
-                    fileData.Scenes = scenes.ToArray();
+                    // IsSubStage
+                    char lastCharacter = scene.Identifier[^1];
+                    scene.IsSubStage = char.IsLetter(lastCharacter);
                 }
+
+                fileData.Scenes = scenes;
             }
+
+            //using (var excelPackage = new OfficeOpenXml.ExcelPackage())
+            //{
+            //    excelPackage.Load(scenesStream);
+
+            //    if (excelPackage.Workbook.Worksheets.Count != 0)
+            //    {
+            //        var worksheet = excelPackage.Workbook.Worksheets.First();
+
+            //        var headers = worksheet.Cells[1, 1, 1, worksheet.Dimension.Columns].Select(c => c.Text).ToArray();
+
+            //        List<Scene> scenes = new List<Scene>();
+
+            //        for (int row = 2; row <= worksheet.Dimension.Rows; row += 1)
+            //        {
+            //            var scene = new Scene();
+
+            //            for (int col = 1; col <= worksheet.Dimension.Columns; col += 1)
+            //            {
+            //                string value = worksheet.Cells[row, col].Value?.ToString() ?? "";
+            //                string header = headers[col - 1];
+
+            //                switch (header)
+            //                {
+            //                    case "Identifier":
+            //                        scene.Identifier = value;
+            //                        break;
+            //                    case "Conditions":
+            //                        scene.Conditions = value;
+            //                        break;
+            //                    case "Message":
+            //                        scene.Message = value;
+            //                        break;
+            //                    case "Choice1":
+            //                        scene.Choice1 = value;
+            //                        break;
+            //                    case "Choice2":
+            //                        scene.Choice2 = value;
+            //                        break;
+            //                    case "Outro1":
+            //                        scene.Outro1 = value;
+            //                        break;
+            //                    case "Outro2":
+            //                        scene.Outro2 = value;
+            //                        break;
+            //                }
+            //            }
+
+            //            // For each scene we got, assign some calculated variables...
+
+            //            // The Stage
+            //            scene.Stage = Pick.StageFromCode(scene.Identifier);
+
+            //            // IsSubStage
+            //            char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
+            //            scene.IsSubStage = char.IsLetter(lastCharacter);
+
+            //            scenes.Add(scene);
+            //        }
+
+            //        fileData.Scenes = scenes.ToArray();
+            //    }
+            //}
 
             return fileData;
         }

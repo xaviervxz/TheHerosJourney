@@ -1,5 +1,5 @@
 ﻿
-namespace NeverendingStory.Data
+namespace NeverendingStory.Models
 {
     public enum JourneyStage
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NeverendingStory.Data
+namespace NeverendingStory.Models
 {
     using CharacterData = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
 

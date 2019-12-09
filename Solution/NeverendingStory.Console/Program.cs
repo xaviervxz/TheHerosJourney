@@ -1,4 +1,4 @@
-﻿using NeverendingStory.Data;
+﻿using NeverendingStory.Models;
 using NeverendingStory.Functions;
 using System;
 using System.Collections.Generic;
@@ -125,7 +125,7 @@ namespace NeverendingStory.Console
                 WriteMessage(almanacMessage);
             }
 
-            var story = Run.LoadGame(ShowLoadGameFilesError, WriteMessage, WriteDashes, ReadInput, out FileData fileData);
+            var story = Run.LoadGame(ShowLoadGameFilesError, out FileData fileData);
 
             // DISPLAY INTRODUCTION
             // LET THE PLAYER PICK THEIR NAME AND SEX

@@ -1,7 +1,7 @@
 ﻿using NeverendingStory.Functions;
 using System.Collections.Generic;
 
-namespace NeverendingStory.Data
+namespace NeverendingStory.Models
 {
     public class Character
     {

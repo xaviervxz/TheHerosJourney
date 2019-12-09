@@ -1,1 +1,8 @@
 Randomly generate a pet for the kid (dog/cat/etc., probably walks on the ground) and a name for their pet.
+
+Add command to assign a character a random title from several titles (i.e. Baron/Duke or Sherrif/Captain)
+and then have the "title" property display that title.
+
+REMOVE DEPENDENCY ON EPPLUS, PARSE CSV DIRECTLY AND MANUALLY FOR CROSS-PLATFORM SUPPORT
+
+ADD PRE-BUILD EVENT TO CONVERT EXCEL FILE TO CSV.

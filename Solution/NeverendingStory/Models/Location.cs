@@ -1,4 +1,4 @@
-﻿namespace NeverendingStory.Data
+﻿namespace NeverendingStory.Models
 {
     public class Location
     {

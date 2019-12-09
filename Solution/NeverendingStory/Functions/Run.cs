@@ -1,4 +1,4 @@
-﻿using NeverendingStory.Data;
+﻿using NeverendingStory.Models;
 using System;
 using System.IO;
 
@@ -8,9 +8,6 @@ namespace NeverendingStory.Functions
     {
         public static Story LoadGame(
             Action showLoadGameFilesError,
-            Action<string> addTextToStory,
-            Action addGapToStory,
-            Func<string> getPlayerInput,
             out FileData fileData)
         {
             // ----------------

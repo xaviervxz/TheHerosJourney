@@ -1,4 +1,4 @@
-using NeverendingStory.Data;
+using NeverendingStory.Models;
 using NeverendingStory.Functions;
 using NUnit.Framework;
 using System;

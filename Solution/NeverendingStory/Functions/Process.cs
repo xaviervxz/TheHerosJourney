@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Text.RegularExpressions;
-using NeverendingStory.Data;
+using NeverendingStory.Models;
 using System.Linq;
 using System.Collections.Generic;
 
@@ -44,7 +44,7 @@ namespace NeverendingStory.Functions
 
         public static string Message(string message, Story story, FileData fileData)
         {
-            static string subMessage(string subMessage, Story story, FileData fileData)
+            /*static */string subMessage(string subMessage, Story story, FileData fileData)
             {
                 var replacedSubMessage = subMessage.Replace("[", "{").Replace("]", "}").Replace("-", ":");
 
@@ -176,7 +176,7 @@ namespace NeverendingStory.Functions
                 }
                 else if (primaryKey == "if")
                 {
-                    string condition = string.Join(':', keyPieces.Skip(1).Take(keyPieces.Length - 2));
+                    string condition = string.Join(":", keyPieces.Skip(1).Take(keyPieces.Length - 2));
                     var conditionIsTrue = Condition.IsMet(story, condition);
 
                     if (conditionIsTrue)
@@ -207,7 +207,7 @@ namespace NeverendingStory.Functions
                 }
                 else if (primaryKey == "location")
                 {
-                    static string locationProperty(Location location, string property, bool titleCase)
+                    /*static */string locationProperty(Location location, string property, bool titleCase)
                     {
                         string value = "";
 
@@ -407,7 +407,7 @@ namespace NeverendingStory.Functions
                 }
                 else if (primaryKey == "character")
                 {
-                    static string characterProperty(Character character, string property, bool titleCase)
+                    /*static */string characterProperty(Character character, string property, bool titleCase)
                     {
                         if (character == null)
                         {
