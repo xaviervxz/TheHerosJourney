@@ -8,7 +8,8 @@ namespace NeverendingStory.Functions
     using CharacterData = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
     internal static class Pick
     {
-        private static readonly Random rng = new Random();
+        internal static Random StorySeed = new Random();
+
         internal static T Random<T>(this IEnumerable<T> list)
         {
             if (list == null)
@@ -23,7 +24,7 @@ namespace NeverendingStory.Functions
                 return default(T);
             }
 
-            int randomIndex = rng.Next(0, array.Length);
+            int randomIndex = StorySeed.Next(0, array.Length);
 
             return array[randomIndex];
         }
@@ -145,6 +146,8 @@ namespace NeverendingStory.Functions
         internal static Story Story(FileData fileData)
         {
             var story = new Story();
+
+            StorySeed = new Random();
 
             // CREATE THE PLAYER CHARACTER.
             story.You = Pick.Character(Relationship.Self, story.Characters, fileData.CharacterData);

@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+﻿using NeverendingStory.Functions;
 using NeverendingStory.Models;
-using NeverendingStory.Functions;
-using TMPro;
 using System;
-using System.Text.RegularExpressions;
 using System.Collections;
+using TMPro;
+using UnityEngine;
 
 public class Game : MonoBehaviour
 {
@@ -13,13 +12,19 @@ public class Game : MonoBehaviour
     public int lettersPerSecond = 10;
 
     [SerializeField]
+#pragma warning disable 0649
     private TextMeshProUGUI storyTextMesh;
+#pragma warning restore 0649
 
     [SerializeField]
+#pragma warning disable 0649
     private GameObject choice1Button;
+#pragma warning restore 0649
 
     [SerializeField]
+#pragma warning disable 0649
     private GameObject choice2Button;
+#pragma warning restore 0649
 
     private static FileData FileData;
     private static Story Story;
@@ -43,15 +48,37 @@ public class Game : MonoBehaviour
 
         // LOAD THE STORY
 
+        void ShowLoadGameFilesError()
+        {
+            WriteMessage("");
+            WriteMessage("Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
+            WriteMessage("First, make sure you're running the most current version.");
+            WriteMessage("Then, if you are and this still happens, contact the developer and tell him to fix it.");
+            WriteMessage("Thanks! <3");
+        }
+
         (FileData, Story) = Run.LoadGame(ShowLoadGameFilesError);
+
+        // TODO: Make a "New Game" page where you can enter this information.
         Story.You.Name = "Alex";
         Story.You.Sex = Sex.Male;
 
         RunNewScenes();
     }
 
+    private IEnumerator ScrollToY(float y)
+    {
+
+    }
+
     private void RunNewScenes()
     {
+        void PresentChoices(string choice1, string choice2)
+        {
+            choice1Text = choice1;
+            choice2Text = choice2;
+        }
+
         bool choicesExist = false;
 
         do
@@ -66,11 +93,11 @@ public class Game : MonoBehaviour
 
         IEnumerator WriteToStory(string text)
         {
-            int numLinesBefore = storyTextMesh.text.Split('\n').Length;
+            //int numLinesBefore = storyTextMesh.textInfo.lineCount;
 
             storyTextMesh.text += text;
 
-            Debug.Log($"Adding Lines: {storyTextMesh.text.Split('\n').Length - numLinesBefore}");
+            //Debug.Log($"Adding Lines: {storyTextMesh.textInfo.lineCount - numLinesBefore}");
 
             // REVEAL MORE CHARACTERS
 
@@ -86,7 +113,24 @@ public class Game : MonoBehaviour
                     timeLastCharacterAdded = Time.time;
                 }
 
-                storyTextMesh.maxVisibleCharacters = Math.Min(storyTextMesh.maxVisibleCharacters + numberOfCharsToReveal, storyTextMesh.text.Length);
+                storyTextMesh.maxVisibleCharacters = Math.Min(
+                    storyTextMesh.maxVisibleCharacters + numberOfCharsToReveal,
+                    storyTextMesh.text.Length);
+
+                // WHAT LINE IS THE CURRENTLY-BEING-REVEALED CHARACTER ON?
+                int currentCharacterIndex = Math.Min(storyTextMesh.textInfo.characterInfo.Length - 1, Math.Max(0, storyTextMesh.maxVisibleCharacters - 1));
+                int currentLineNumber = storyTextMesh.textInfo.characterInfo[currentCharacterIndex].lineNumber;
+
+                // SET THE TEXT BOX TO SCROLL SO THAT LINE IS VISIBLE.
+                if (currentLineNumber > 0)
+                {
+                    float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
+                    var y = Math.Max(0, ((currentLineNumber + 1) * (storyTextMesh.fontSize + 4)) - parentsHeight);
+                    var storyTextRect = storyTextMesh.rectTransform;
+                    storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, y);
+
+                    Debug.Log($"Current Line: {currentLineNumber}");
+                }
 
                 yield return null;
             }
@@ -114,21 +158,6 @@ public class Game : MonoBehaviour
         }
 
         newStoryText += message;
-    }
-
-    private void ShowLoadGameFilesError()
-    {
-        WriteMessage("");
-        WriteMessage("Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
-        WriteMessage("First, make sure you're running the most current version.");
-        WriteMessage("Then, if you are and this still happens, contact the developer and tell him to fix it.");
-        WriteMessage("Thanks! <3");
-    }
-
-    private void PresentChoices(string choice1, string choice2)
-    {
-        choice1Text = choice1;
-        choice2Text = choice2;
     }
 
     public void SkipToChoice()
@@ -166,7 +195,7 @@ public class Game : MonoBehaviour
         action = action.Substring(0, 1).ToLower() + action.Substring(1);
 
         WriteMessage($"<i>You {action}.</i>");
-        
+
         WriteMessage("");
         WriteMessage("");
 
@@ -179,7 +208,7 @@ public class Game : MonoBehaviour
     {
         var buttonImage = button.GetComponent<CanvasGroup>();
 
-        float startingAlpha = buttonImage.alpha;
+        float startingAlpha = fadeIn ? 0 : 1;
         float targetAlpha = fadeIn ? 1 : 0;
 
         buttonImage.alpha = startingAlpha;
