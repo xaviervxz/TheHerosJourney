@@ -1668,7 +1668,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonFadeInSeconds: 0.5
   buttonFadeOutSeconds: 0.2
-  lettersPerSecond: 100
+  lettersPerSecond: 50
   storyTextMesh: {fileID: 628067965}
   choice1Button: {fileID: 1729758993}
   choice2Button: {fileID: 1177460622}

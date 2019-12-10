@@ -66,9 +66,25 @@ public class Game : MonoBehaviour
         RunNewScenes();
     }
 
-    private IEnumerator ScrollToY(float y)
+    private IEnumerator ScrollToY(float targetY, float numSeconds)
     {
+        var storyTextRect = storyTextMesh.rectTransform;
 
+        float timeStarted = Time.time;
+        float startingY = storyTextRect.anchoredPosition.y;
+        float currentY = startingY;
+
+        while (!Mathf.Approximately(currentY, targetY))
+        {
+            currentY = Mathf.Lerp(startingY, targetY, (Time.time - timeStarted) / numSeconds);
+            storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, currentY);
+
+            yield return null;
+        }
+
+        storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, targetY);
+
+        yield return null;
     }
 
     private void RunNewScenes()
@@ -93,44 +109,34 @@ public class Game : MonoBehaviour
 
         IEnumerator WriteToStory(string text)
         {
-            //int numLinesBefore = storyTextMesh.textInfo.lineCount;
+            // ADD THE NEW TEXT TO THE STORY.
 
             storyTextMesh.text += text;
 
-            //Debug.Log($"Adding Lines: {storyTextMesh.textInfo.lineCount - numLinesBefore}");
+            yield return null; // Force the text object to refresh.
+
+            // SCROLL DOWN WHILE THE TEXT REVEALS.
+            
+            float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
+            var targetY = Math.Max(0, ((storyTextMesh.textInfo.lineCount + 1) * (storyTextMesh.fontSize + 4)) - parentsHeight);
+            //Debug.Log("Line count: " + storyTextMesh.textInfo.lineCount);
+
+            int charactersInNewText = text.Length;
+            float secondsToScroll = charactersInNewText / lettersPerSecond;
+            
+            StartCoroutine(ScrollToY(targetY, secondsToScroll));
 
             // REVEAL MORE CHARACTERS
 
-            float timeLastCharacterAdded = Time.time;
+            float charactersRevealed = storyTextMesh.maxVisibleCharacters;
 
             while (storyTextMesh.maxVisibleCharacters < storyTextMesh.text.Length)
             {
-                float timeDiff = Time.time - timeLastCharacterAdded;
-                int numberOfCharsToReveal = (int)Math.Floor(lettersPerSecond * timeDiff);
-
-                if (numberOfCharsToReveal > 0)
-                {
-                    timeLastCharacterAdded = Time.time;
-                }
+                charactersRevealed += lettersPerSecond * Time.deltaTime;
 
                 storyTextMesh.maxVisibleCharacters = Math.Min(
-                    storyTextMesh.maxVisibleCharacters + numberOfCharsToReveal,
+                    Mathf.FloorToInt(charactersRevealed),
                     storyTextMesh.text.Length);
-
-                // WHAT LINE IS THE CURRENTLY-BEING-REVEALED CHARACTER ON?
-                int currentCharacterIndex = Math.Min(storyTextMesh.textInfo.characterInfo.Length - 1, Math.Max(0, storyTextMesh.maxVisibleCharacters - 1));
-                int currentLineNumber = storyTextMesh.textInfo.characterInfo[currentCharacterIndex].lineNumber;
-
-                // SET THE TEXT BOX TO SCROLL SO THAT LINE IS VISIBLE.
-                if (currentLineNumber > 0)
-                {
-                    float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
-                    var y = Math.Max(0, ((currentLineNumber + 1) * (storyTextMesh.fontSize + 4)) - parentsHeight);
-                    var storyTextRect = storyTextMesh.rectTransform;
-                    storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, y);
-
-                    Debug.Log($"Current Line: {currentLineNumber}");
-                }
 
                 yield return null;
             }
