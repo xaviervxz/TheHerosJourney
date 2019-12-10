@@ -76,7 +76,7 @@ public class Game : MonoBehaviour
 
         while (!Mathf.Approximately(currentY, targetY))
         {
-            currentY = Mathf.Lerp(startingY, targetY, (Time.time - timeStarted) / numSeconds);
+            currentY = Mathf.SmoothStep(startingY, targetY, (Time.time - timeStarted) / numSeconds);
             storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, currentY);
 
             yield return null;
@@ -99,32 +99,33 @@ public class Game : MonoBehaviour
 
         do
         {
-            WriteMessage("");
-
             currentScene = Run.NewScene(FileData, Story, WriteMessage);
 
             choicesExist = Run.PresentChoices(FileData, Story, currentScene, PresentChoices, WriteMessage);
+
+            WriteMessage("");
         }
         while (!choicesExist);
 
+        WriteMessage("");
+
         IEnumerator WriteToStory(string text)
         {
-            // ADD THE NEW TEXT TO THE STORY.
-
-            storyTextMesh.text += text;
-
-            yield return null; // Force the text object to refresh.
 
             // SCROLL DOWN WHILE THE TEXT REVEALS.
             
             float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
-            var targetY = Math.Max(0, ((storyTextMesh.textInfo.lineCount + 1) * (storyTextMesh.fontSize + 4)) - parentsHeight);
+            var targetY = Math.Max(0, storyTextMesh.textInfo.lineCount * (storyTextMesh.fontSize + 4));
             //Debug.Log("Line count: " + storyTextMesh.textInfo.lineCount);
 
-            int charactersInNewText = text.Length;
-            float secondsToScroll = charactersInNewText / lettersPerSecond;
+            // HOW LONG SHOULD THE SCROLL TAKE?
+            //int charactersInNewText = text.Length;
+            //float secondsToScroll = charactersInNewText / lettersPerSecond;
             
-            StartCoroutine(ScrollToY(targetY, secondsToScroll));
+            StartCoroutine(ScrollToY(targetY, 3));
+
+            // ADD THE NEW TEXT TO THE STORY.
+            storyTextMesh.text += text;
 
             // REVEAL MORE CHARACTERS
 
@@ -193,9 +194,6 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeButton(choice1Button, null, buttonFadeOutSeconds, fadeIn: false));
         StartCoroutine(FadeButton(choice2Button, null, buttonFadeOutSeconds, fadeIn: false));
 
-        WriteMessage("");
-        WriteMessage("");
-
         // LOWERCASE THE FIRST LETTER OF THE ACTION YOU CHOSE.
         string action = gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
         action = action.Substring(0, 1).ToLower() + action.Substring(1);
@@ -206,6 +204,8 @@ public class Game : MonoBehaviour
         WriteMessage("");
 
         runOutro();
+
+        WriteMessage("");
 
         RunNewScenes();
     }
