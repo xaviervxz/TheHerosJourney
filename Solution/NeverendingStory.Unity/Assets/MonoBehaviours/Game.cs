@@ -8,10 +8,12 @@ using System.Collections;
 
 public class Game : MonoBehaviour
 {
+    public float buttonFadeInSeconds = 0.5F;
+    public float buttonFadeOutSeconds = 0.1F;
     public int lettersPerSecond = 10;
 
     [SerializeField]
-    private TextMeshProUGUI storyText;
+    private TextMeshProUGUI storyTextMesh;
 
     [SerializeField]
     private GameObject choice1Button;
@@ -24,7 +26,7 @@ public class Game : MonoBehaviour
     private static Scene currentScene = null;
     private static bool isWaiting = false;
 
-    private static string newText = "";
+    private static string newStoryText = "";
     private static string choice1Text = "";
     private static string choice2Text = "";
 
@@ -33,12 +35,11 @@ public class Game : MonoBehaviour
     {
         // RESET GAMEOBJECTS
 
-        storyText.text = "";
-        storyText.maxVisibleCharacters = 0;
+        storyTextMesh.text = "";
+        storyTextMesh.maxVisibleCharacters = 0;
 
         choice1Button.SetActive(false);
         choice2Button.SetActive(false);
-        newText = "";
 
         // LOAD THE STORY
 
@@ -49,46 +50,132 @@ public class Game : MonoBehaviour
         RunNewScenes();
     }
 
-    // Update is called once per frame
-    private void Update()
+    private void RunNewScenes()
     {
-        // REVEAL MORE CHARACTERS
+        bool choicesExist = false;
 
-        int numberOfCharsToReveal = Math.Max(1, (int) Math.Floor(lettersPerSecond * Time.deltaTime));
-
-        storyText.maxVisibleCharacters = Math.Min(storyText.maxVisibleCharacters + numberOfCharsToReveal, storyText.text.Length);
-
-        // IF WE'RE DONE DISPLAYING WHAT WE HAVE SO FAR...
-        if (storyText.maxVisibleCharacters == storyText.text.Length)
+        do
         {
-            // AND THERE'S NEW TEXT LEFT TO DISPLAY, DISPLAY IT.
-            if (!string.IsNullOrEmpty(newText))
+            WriteMessage("");
+
+            currentScene = Run.NewScene(FileData, Story, WriteMessage);
+
+            choicesExist = Run.PresentChoices(FileData, Story, currentScene, PresentChoices, WriteMessage);
+        }
+        while (!choicesExist);
+
+        IEnumerator WriteToStory(string text)
+        {
+            int numLinesBefore = storyTextMesh.text.Split('\n').Length;
+
+            storyTextMesh.text += text;
+
+            Debug.Log($"Adding Lines: {storyTextMesh.text.Split('\n').Length - numLinesBefore}");
+
+            // REVEAL MORE CHARACTERS
+
+            float timeLastCharacterAdded = Time.time;
+
+            while (storyTextMesh.maxVisibleCharacters < storyTextMesh.text.Length)
             {
-                string newTextToAdd = newText;
+                float timeDiff = Time.time - timeLastCharacterAdded;
+                int numberOfCharsToReveal = (int)Math.Floor(lettersPerSecond * timeDiff);
 
-                var justTheFirstParagraph = Regex.Match(newText, "(.*\n\r?\n\r?)", RegexOptions.Multiline);
-
-                if (justTheFirstParagraph.Length > 0)
+                if (numberOfCharsToReveal > 0)
                 {
-                    newTextToAdd = justTheFirstParagraph.Groups["0"].Value;
+                    timeLastCharacterAdded = Time.time;
                 }
 
-                storyText.text += newTextToAdd;
+                storyTextMesh.maxVisibleCharacters = Math.Min(storyTextMesh.maxVisibleCharacters + numberOfCharsToReveal, storyTextMesh.text.Length);
 
-                newText = newText.Substring(newTextToAdd.Length);
+                yield return null;
             }
-            // OTHERWISE, SHOW THE CHOICES.
-            else
-            {
-                isWaiting = false;
 
-                StartCoroutine(FadeButton(choice1Button, choice1Text, 0.5F, fadeIn: true));
-                StartCoroutine(FadeButton(choice2Button, choice2Text, 0.5F, fadeIn: true));
-            }
+            isWaiting = false;
+
+            StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeInSeconds, fadeIn: true));
+            StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeInSeconds, fadeIn: true));
+
+            storyTextMesh.maxVisibleCharacters = storyTextMesh.text.Length;
+
+            yield return null;
         }
+
+        StartCoroutine(WriteToStory(newStoryText));
+
+        newStoryText = "";
     }
 
-    IEnumerator FadeButton(GameObject button, string text, float secondsToFade, bool fadeIn)
+    private void WriteMessage(string message)
+    {
+        if (string.IsNullOrWhiteSpace(message))
+        {
+            message = Environment.NewLine;
+        }
+
+        newStoryText += message;
+    }
+
+    private void ShowLoadGameFilesError()
+    {
+        WriteMessage("");
+        WriteMessage("Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
+        WriteMessage("First, make sure you're running the most current version.");
+        WriteMessage("Then, if you are and this still happens, contact the developer and tell him to fix it.");
+        WriteMessage("Thanks! <3");
+    }
+
+    private void PresentChoices(string choice1, string choice2)
+    {
+        choice1Text = choice1;
+        choice2Text = choice2;
+    }
+
+    public void SkipToChoice()
+    {
+        storyTextMesh.maxVisibleCharacters = storyTextMesh.text.Length;
+    }
+
+    public void Choose1()
+    {
+        Choose(() => Run.Outro1(FileData, Story, currentScene, WriteMessage), choice1Button.gameObject);
+    }
+
+    public void Choose2()
+    {
+        Choose(() => Run.Outro2(FileData, Story, currentScene, WriteMessage), choice2Button.gameObject);
+    }
+
+    private void Choose(Action runOutro, GameObject gameObject)
+    {
+        if (isWaiting)
+        {
+            return;
+        }
+
+        isWaiting = true;
+
+        StartCoroutine(FadeButton(choice1Button, null, buttonFadeOutSeconds, fadeIn: false));
+        StartCoroutine(FadeButton(choice2Button, null, buttonFadeOutSeconds, fadeIn: false));
+
+        WriteMessage("");
+        WriteMessage("");
+
+        // LOWERCASE THE FIRST LETTER OF THE ACTION YOU CHOSE.
+        string action = gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
+        action = action.Substring(0, 1).ToLower() + action.Substring(1);
+
+        WriteMessage($"<i>You {action}.</i>");
+        
+        WriteMessage("");
+        WriteMessage("");
+
+        runOutro();
+
+        RunNewScenes();
+    }
+
+    private IEnumerator FadeButton(GameObject button, string text, float secondsToFade, bool fadeIn)
     {
         var buttonImage = button.GetComponent<CanvasGroup>();
 
@@ -122,91 +209,5 @@ public class Game : MonoBehaviour
         {
             button.SetActive(false);
         }
-    }
-
-    private void RunNewScenes()
-    {
-        bool choicesExist = false;
-
-        do
-        {
-            WriteMessage("");
-
-            currentScene = Run.NewScene(FileData, Story, WriteMessage);
-
-            choicesExist = Run.PresentChoices(FileData, Story, currentScene, PresentChoices, WriteMessage);
-        }
-        while (!choicesExist);
-    }
-
-    private void WriteMessage(string message)
-    {
-        if (string.IsNullOrWhiteSpace(message))
-        {
-            newText += Environment.NewLine;
-        }
-        else
-        {
-            newText += message;
-        }
-    }
-
-    private void ShowLoadGameFilesError()
-    {
-        WriteMessage("");
-        WriteMessage("Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
-        WriteMessage("First, make sure you're running the most current version.");
-        WriteMessage("Then, if you are and this still happens, contact the developer and tell him to fix it.");
-        WriteMessage("Thanks! <3");
-    }
-
-    private void PresentChoices(string choice1, string choice2)
-    {
-        choice1Text = choice1;
-        choice2Text = choice2;
-    }
-
-    public void SkipToChoice()
-    {
-        storyText.maxVisibleCharacters = storyText.text.Length;
-    }
-
-    public void Choose1()
-    {
-        Choose(() => Run.Outro1(FileData, Story, currentScene, WriteMessage), choice1Button.gameObject);
-    }
-
-    public void Choose2()
-    {
-        Choose(() => Run.Outro2(FileData, Story, currentScene, WriteMessage), choice2Button.gameObject);
-    }
-
-    private void Choose(Action runOutro, GameObject gameObject)
-    {
-        if (isWaiting)
-        {
-            return;
-        }
-
-        isWaiting = true;
-
-        StartCoroutine(FadeButton(choice1Button, null, 0.1F, fadeIn: false));
-        StartCoroutine(FadeButton(choice2Button, null, 0.1F, fadeIn: false));
-
-        WriteMessage("");
-        WriteMessage("");
-
-        // LOWERCASE THE FIRST LETTER OF THE ACTION YOU CHOSE.
-        string action = gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
-        action = action.Substring(0, 1).ToLower() + action.Substring(1);
-
-        WriteMessage($"<i>You {action}.</i>");
-        
-        WriteMessage("");
-        WriteMessage("");
-
-        runOutro();
-
-        RunNewScenes();
     }
 }
