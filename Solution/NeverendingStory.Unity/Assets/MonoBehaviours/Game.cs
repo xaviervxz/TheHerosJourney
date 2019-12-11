@@ -1,4 +1,5 @@
-﻿using NeverendingStory.Functions;
+﻿using Assets.MonoBehaviours;
+using NeverendingStory.Functions;
 using NeverendingStory.Models;
 using System;
 using System.Collections;
@@ -100,8 +101,8 @@ public class Game : MonoBehaviour
         (FileData, Story) = Run.LoadGame(ShowLoadGameFilesError);
 
         // TODO: Make a "New Game" page where you can enter this information.
-        Story.You.Name = "Alex";
-        Story.You.Sex = Sex.Male;
+        Story.You.Name = Data.PlayersName;
+        Story.You.Sex = Data.PlayersSex;
 
         RunNewScenes();
     }
