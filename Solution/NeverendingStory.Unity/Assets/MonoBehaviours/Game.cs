@@ -4,10 +4,10 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
+    public float scrollSpeed = 5F;
     public float buttonFadeInSeconds = 0.5F;
     public float buttonFadeOutSeconds = 0.1F;
     public int lettersPerSecond = 10;
@@ -40,6 +40,8 @@ public class Game : MonoBehaviour
     private static float startingScrollY = 0;
     private static float startingScrollTime;
 
+    private static bool buttonsFadedIn = false;
+
     /// <summary>
     /// RESET GAMEOBJECTS. LOAD FILEDATA AND PICK A STORY. RUN THE FIRST SCENE.
     /// </summary>
@@ -56,6 +58,7 @@ public class Game : MonoBehaviour
         // RESET VARIABLES
 
         startingScrollTime = Time.time;
+        isWaiting = true;
 
         // LOAD THE STORY
 
@@ -82,7 +85,45 @@ public class Game : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        const float secondsToScrollFor = 1F;
+        if (!isWaiting)
+        {
+            // CHANGE THE TARGET SCROLL Y IF THE SCROLL WHEEL WAS USED.
+            float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
+            if (!Mathf.Approximately(scrollAmount, 0) && !isWaiting)
+            {
+                ScrollTo(targetScrollY - scrollAmount * scrollSpeed * 10 * (storyTextMesh.fontSize + 4));
+            }
+
+            // FADE IN OR OUT BUTTONS
+
+            int bottomLine = Math.Max(0, storyTextMesh.textInfo.lineCount - 3);
+            // Checking the actual position here, not the targetScrollY,
+            // because we want to know if the story has ACTUALLY cleared the buttons,
+            // Not just if it's going to.
+            if (storyTextMesh.rectTransform.anchoredPosition.y > ScrollYForLine(bottomLine, lineAtTop: false))
+            {
+                if (!buttonsFadedIn)
+                {
+                    StopCoroutine("FadeOutButtons");
+
+                    StartCoroutine(FadeInButtons());
+                }
+            }
+            else
+            {
+                if (buttonsFadedIn)
+                {
+                    StopCoroutine("FadeInButtons");
+                
+                    StartCoroutine(FadeOutButtons());
+                }
+            }
+        }
+
+
+        // SCROLL TO THE TARGET SCROLL Y
+
+        const float secondsToScrollFor = 0.5F;
 
         var storyTextRect = storyTextMesh.rectTransform;
         float currentY = storyTextRect.anchoredPosition.y;
@@ -110,23 +151,35 @@ public class Game : MonoBehaviour
 
     private float ScrollYForLine(int lineNumber, bool lineAtTop = true)
     {
-        LayoutRebuilder.ForceRebuildLayoutImmediate(storyTextMesh.rectTransform);
-        float myHeight = storyTextMesh.rectTransform.rect.height;
-
         var scrollY = lineNumber * (storyTextMesh.fontSize + 4);
         if (!lineAtTop)
         {
             float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
             scrollY -= (parentsHeight - storyTextMesh.margin.w - 40);
         }
-        scrollY = Mathf.Clamp(scrollY, 0, myHeight - 80 - storyTextMesh.margin.w); // w = bottom margin
 
         return scrollY;
     }
 
-    private void ScrollToLine(int lineNumber, bool lineAtTop = true)
+    private void ScrollTo(float newScrollY)
     {
-        targetScrollY = ScrollYForLine(lineNumber, lineAtTop);
+        // Doing this to force textInfo.lineCount to update below.
+        storyTextMesh.ForceMeshUpdate();
+
+        int bottomLine = Math.Max(0, storyTextMesh.textInfo.lineCount - 3);
+        float scrollYForBottomLine = ScrollYForLine(bottomLine, lineAtTop: true);
+
+        if (scrollYForBottomLine > 0 && newScrollY > scrollYForBottomLine)
+        {
+            newScrollY = scrollYForBottomLine;
+        }
+
+        if (newScrollY < 0)
+        {
+            newScrollY = 0;
+        }
+
+        targetScrollY = newScrollY;
     }
 
     private void RunNewScenes()
@@ -162,7 +215,7 @@ public class Game : MonoBehaviour
 
             storyTextMesh.text += text;
 
-            ScrollToLine(oldLineCount); // This needs to be AFTER, the new text is added, otherwise the clamping screws this up.
+            ScrollTo(ScrollYForLine(oldLineCount)); // This needs to be AFTER, the new text is added, otherwise the clamping screws this up.
 
             // REVEAL MORE CHARACTERS
 
@@ -184,7 +237,7 @@ public class Game : MonoBehaviour
 
                 if (currentLineScrollY > targetScrollY)
                 {
-                    ScrollToLine(currentLineNumber, lineAtTop: false);
+                    ScrollTo(ScrollYForLine(currentLineNumber, lineAtTop: false));
                 }
 
                 yield return null;
@@ -196,18 +249,10 @@ public class Game : MonoBehaviour
 
             if (lastLineScrollY > targetScrollY)
             {
-                ScrollToLine(storyTextMesh.textInfo.lineCount - 1, lineAtTop: false);
+                ScrollTo(ScrollYForLine(storyTextMesh.textInfo.lineCount - 1, lineAtTop: false));
             }
 
             storyTextMesh.maxVisibleCharacters = storyTextMesh.text.Length;
-
-            while (!Mathf.Approximately(targetScrollY, storyTextMesh.rectTransform.anchoredPosition.y))
-            {
-                yield return null;
-            }
-
-            StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeInSeconds, fadeIn: true));
-            StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeInSeconds, fadeIn: true));
         }
 
         StartCoroutine(WriteToStory(newStoryText));
@@ -249,8 +294,7 @@ public class Game : MonoBehaviour
 
         isWaiting = true;
 
-        StartCoroutine(FadeButton(choice1Button, null, buttonFadeOutSeconds, fadeIn: false));
-        StartCoroutine(FadeButton(choice2Button, null, buttonFadeOutSeconds, fadeIn: false));
+        StartCoroutine(FadeOutButtons());
 
         // LOWERCASE THE FIRST LETTER OF THE ACTION YOU CHOSE.
         string action = gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
@@ -266,6 +310,28 @@ public class Game : MonoBehaviour
         WriteMessage("");
 
         RunNewScenes();
+    }
+
+    private IEnumerator FadeInButtons()
+    {
+        buttonsFadedIn = true;
+
+        var button1Fade = StartCoroutine( FadeButton(choice1Button, choice1Text, buttonFadeInSeconds, fadeIn: true) );
+        var button2Fade = StartCoroutine( FadeButton(choice2Button, choice2Text, buttonFadeInSeconds, fadeIn: true) );
+
+        yield return button1Fade;
+        yield return button2Fade;
+    }
+
+    private IEnumerator FadeOutButtons()
+    {
+        buttonsFadedIn = false;
+
+        var button1Fade = StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeOutSeconds, fadeIn: false));
+        var button2Fade = StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeOutSeconds, fadeIn: false));
+
+        yield return button1Fade;
+        yield return button2Fade;
     }
 
     private IEnumerator FadeButton(GameObject button, string text, float secondsToFade, bool fadeIn)

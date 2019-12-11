@@ -770,7 +770,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1309621535}
-  - component: {fileID: 1309621536}
   m_Layer: 5
   m_Name: Story Text Container
   m_TagString: Untagged
@@ -798,34 +797,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -200, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1309621536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1309621534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 4
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1758216497}
-          m_MethodName: SkipToChoice
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &1318817471
 GameObject:
   m_ObjectHideFlags: 0
@@ -1564,6 +1535,7 @@ GameObject:
   - component: {fileID: 1758216494}
   - component: {fileID: 1758216493}
   - component: {fileID: 1758216497}
+  - component: {fileID: 1758216498}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1666,12 +1638,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52ed11531c2242445ae4dc9cd7bfd478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scrollSpeed: 1
   buttonFadeInSeconds: 0.5
   buttonFadeOutSeconds: 0.2
   lettersPerSecond: 100
   storyTextMesh: {fileID: 628067965}
   choice1Button: {fileID: 1729758993}
   choice2Button: {fileID: 1177460622}
+--- !u!114 &1758216498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1758216492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1758216497}
+          m_MethodName: SkipToChoice
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &2026696960
 GameObject:
   m_ObjectHideFlags: 0
