@@ -11,6 +11,8 @@ public class Game : MonoBehaviour
     public float scrollSpeed = 5F;
     public float buttonFadeInSeconds = 0.5F;
     public float buttonFadeOutSeconds = 0.1F;
+    public float menuFadeInSeconds = 0.5F;
+    public float menuFadeOutSeconds = 0.1F;
     public int lettersPerSecond = 10;
 
     [SerializeField]
@@ -75,6 +77,9 @@ public class Game : MonoBehaviour
 
         choice1Button.SetActive(false);
         choice2Button.SetActive(false);
+
+        almanacMenu.gameObject.SetActive(false);
+        inventoryMenu.gameObject.SetActive(false);
 
         // RESET VARIABLES
 
@@ -144,12 +149,13 @@ public class Game : MonoBehaviour
 
         // SCROLL TO THE TARGET SCROLL Y
 
-        const float secondsToScrollFor = 0.5F;
+        const float secondsToScrollFor = 1F;
 
         var storyTextRect = storyTextMesh.rectTransform;
         float currentY = storyTextRect.anchoredPosition.y;
 
-        if (!Mathf.Approximately(targetScrollY, prevTargetScrollY))
+        // IF WE JUST STARTED SCROLLING FROM A STANDSTILL...
+        if (/*Mathf.Approximately(targetScrollY, currentY) && */!Mathf.Approximately(targetScrollY, prevTargetScrollY))
         {
             startingScrollY = currentY;
             startingScrollTime = Time.time;
@@ -291,10 +297,41 @@ public class Game : MonoBehaviour
         newStoryText += message;
     }
 
+    private IEnumerator FadeMenu(CanvasGroup menu, bool fadeIn)
+    {
+        menu.alpha = fadeIn ? 0 : 1;
+
+        if (fadeIn)
+        {
+            menu.gameObject.SetActive(true);
+        }
+
+        float startingAlpha = menu.alpha;
+        float targetAlpha = fadeIn ? 1 : 0;
+        float startTime = Time.time;
+        float fadeDuration = fadeIn ? menuFadeInSeconds : menuFadeOutSeconds;
+
+        while (!Mathf.Approximately(menu.alpha, targetAlpha))
+        {
+            menu.alpha = Mathf.Lerp(startingAlpha, targetAlpha, (Time.time - startTime) / fadeDuration);
+
+            yield return null;
+        }
+
+        menu.alpha = targetAlpha;
+
+        if (!fadeIn)
+        {
+            menu.gameObject.SetActive(false);
+        }
+
+        yield return null;
+    }
+
     public void ShowAlmanac()
     {
         var almanacLines = Story.Almanac
-                    .Select(i => "* <indent=15px>" + i.Key + " - " + i.Value + "</indent>")
+                    .Select(i => "* <indent=15px><b>" + i.Key + "</b> - " + i.Value + "</indent>")
                     .ToArray();
 
         var almanacMessage = "Here are people you've met and places you've been or heard of:" + 
@@ -303,13 +340,12 @@ public class Game : MonoBehaviour
 
         almanacText.text = almanacMessage;
 
-        almanacMenu.gameObject.SetActive(true);
-        almanacMenu.alpha = 1;
+        StartCoroutine(FadeMenu(almanacMenu, fadeIn: true));
     }
 
     public void ShowInventory()
     {
-        var inventoryLines = Story.You.Inventory.Select(i => "* <indent=15px>" + i.Name + " - " + i.Description + "</indent>");
+        var inventoryLines = Story.You.Inventory.Select(i => "* <indent=15px><b>" + i.Name + "</b> - " + i.Description + "</indent>");
 
         var inventoryMessage = "Here are things you're carrying with you:" +
             Environment.NewLine + Environment.NewLine + 
@@ -317,17 +353,13 @@ public class Game : MonoBehaviour
 
         inventoryText.text = inventoryMessage;
 
-        inventoryMenu.gameObject.SetActive(true);
-        inventoryMenu.alpha = 1;
+        StartCoroutine(FadeMenu(inventoryMenu, fadeIn: true));
     }
 
     public void CloseMenus()
     {
-        almanacMenu.gameObject.SetActive(false);
-        almanacMenu.alpha = 0;
-
-        inventoryMenu.gameObject.SetActive(false);
-        inventoryMenu.alpha = 0;
+        StartCoroutine(FadeMenu(almanacMenu, fadeIn: false));
+        StartCoroutine(FadeMenu(inventoryMenu, fadeIn: false));
     }
 
     public void SkipToChoice()
