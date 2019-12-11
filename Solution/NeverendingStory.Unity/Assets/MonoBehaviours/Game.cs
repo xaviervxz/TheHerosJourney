@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -34,8 +35,14 @@ public class Game : MonoBehaviour
     private static string newStoryText = "";
     private static string choice1Text = "";
     private static string choice2Text = "";
+    private static float targetScrollY = 0;
+    private static float prevTargetScrollY = 0;
+    private static float startingScrollY = 0;
+    private static float startingScrollTime;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// RESET GAMEOBJECTS. LOAD FILEDATA AND PICK A STORY. RUN THE FIRST SCENE.
+    /// </summary>
     private void Start()
     {
         // RESET GAMEOBJECTS
@@ -45,6 +52,10 @@ public class Game : MonoBehaviour
 
         choice1Button.SetActive(false);
         choice2Button.SetActive(false);
+
+        // RESET VARIABLES
+
+        startingScrollTime = Time.time;
 
         // LOAD THE STORY
 
@@ -66,25 +77,56 @@ public class Game : MonoBehaviour
         RunNewScenes();
     }
 
-    private IEnumerator ScrollToY(float targetY, float numSeconds)
+    /// <summary>
+    /// HANDLE SCROLLING.
+    /// </summary>
+    private void Update()
     {
+        const float secondsToScrollFor = 1F;
+
         var storyTextRect = storyTextMesh.rectTransform;
+        float currentY = storyTextRect.anchoredPosition.y;
 
-        float timeStarted = Time.time;
-        float startingY = storyTextRect.anchoredPosition.y;
-        float currentY = startingY;
-
-        while (!Mathf.Approximately(currentY, targetY))
+        if (!Mathf.Approximately(targetScrollY, prevTargetScrollY))
         {
-            currentY = Mathf.SmoothStep(startingY, targetY, (Time.time - timeStarted) / numSeconds);
-            storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, currentY);
+            startingScrollY = currentY;
+            startingScrollTime = Time.time;
 
-            yield return null;
+            prevTargetScrollY = targetScrollY;
         }
 
-        storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, targetY);
+        float newY;
+        if (!Mathf.Approximately(currentY, targetScrollY))
+        {
+            newY = Mathf.SmoothStep(startingScrollY, targetScrollY, (Time.time - startingScrollTime) / secondsToScrollFor);
+        }
+        else
+        {
+            newY = targetScrollY;
+        }
 
-        yield return null;
+        storyTextRect.anchoredPosition = new Vector2(storyTextRect.anchoredPosition.x, newY);
+    }
+
+    private float ScrollYForLine(int lineNumber, bool lineAtTop = true)
+    {
+        LayoutRebuilder.ForceRebuildLayoutImmediate(storyTextMesh.rectTransform);
+        float myHeight = storyTextMesh.rectTransform.rect.height;
+
+        var scrollY = lineNumber * (storyTextMesh.fontSize + 4);
+        if (!lineAtTop)
+        {
+            float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
+            scrollY -= (parentsHeight - storyTextMesh.margin.w - 40);
+        }
+        scrollY = Mathf.Clamp(scrollY, 0, myHeight - 80 - storyTextMesh.margin.w); // w = bottom margin
+
+        return scrollY;
+    }
+
+    private void ScrollToLine(int lineNumber, bool lineAtTop = true)
+    {
+        targetScrollY = ScrollYForLine(lineNumber, lineAtTop);
     }
 
     private void RunNewScenes()
@@ -111,21 +153,16 @@ public class Game : MonoBehaviour
 
         IEnumerator WriteToStory(string text)
         {
-
-            // SCROLL DOWN WHILE THE TEXT REVEALS.
-            
             float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
-            var targetY = Math.Max(0, storyTextMesh.textInfo.lineCount * (storyTextMesh.fontSize + 4));
-            //Debug.Log("Line count: " + storyTextMesh.textInfo.lineCount);
 
-            // HOW LONG SHOULD THE SCROLL TAKE?
-            //int charactersInNewText = text.Length;
-            //float secondsToScroll = charactersInNewText / lettersPerSecond;
+            // SCROLL DOWN TO THE END OF THE LAST LINE,
+            // AND ADD THE NEW TEXT TO THE STORY.
             
-            StartCoroutine(ScrollToY(targetY, 3));
+            int oldLineCount = storyTextMesh.textInfo.lineCount;
 
-            // ADD THE NEW TEXT TO THE STORY.
             storyTextMesh.text += text;
+
+            ScrollToLine(oldLineCount); // This needs to be AFTER, the new text is added, otherwise the clamping screws this up.
 
             // REVEAL MORE CHARACTERS
 
@@ -139,17 +176,38 @@ public class Game : MonoBehaviour
                     Mathf.FloorToInt(charactersRevealed),
                     storyTextMesh.text.Length);
 
+                // SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
+                int currentCharacterIndex = Math.Min(storyTextMesh.textInfo.characterInfo.Length - 1, Math.Max(0, storyTextMesh.maxVisibleCharacters - 1));
+                int currentLineNumber = storyTextMesh.textInfo.characterInfo[currentCharacterIndex].lineNumber;
+
+                var currentLineScrollY = ScrollYForLine(currentLineNumber, lineAtTop: false);
+
+                if (currentLineScrollY > targetScrollY)
+                {
+                    ScrollToLine(currentLineNumber, lineAtTop: false);
+                }
+
                 yield return null;
             }
 
             isWaiting = false;
 
-            StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeInSeconds, fadeIn: true));
-            StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeInSeconds, fadeIn: true));
+            var lastLineScrollY = ScrollYForLine(storyTextMesh.textInfo.lineCount - 1, lineAtTop: false);
+
+            if (lastLineScrollY > targetScrollY)
+            {
+                ScrollToLine(storyTextMesh.textInfo.lineCount - 1, lineAtTop: false);
+            }
 
             storyTextMesh.maxVisibleCharacters = storyTextMesh.text.Length;
 
-            yield return null;
+            while (!Mathf.Approximately(targetScrollY, storyTextMesh.rectTransform.anchoredPosition.y))
+            {
+                yield return null;
+            }
+
+            StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeInSeconds, fadeIn: true));
+            StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeInSeconds, fadeIn: true));
         }
 
         StartCoroutine(WriteToStory(newStoryText));
