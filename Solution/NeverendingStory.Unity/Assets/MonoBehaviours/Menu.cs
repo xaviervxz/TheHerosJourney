@@ -35,6 +35,9 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        playersName.text = Data.PlayersName;
+        playersSex.value = Data.PlayersSex == Sex.Female ? 0 : 1;
+
         GotoMainMenu();
     }
 

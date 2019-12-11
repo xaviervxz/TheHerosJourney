@@ -6,6 +6,7 @@ using System.Collections;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Game : MonoBehaviour
 {
@@ -53,7 +54,7 @@ public class Game : MonoBehaviour
 
     private static FileData FileData;
     private static Story Story;
-    private static Scene currentScene = null;
+    private static NeverendingStory.Models.Scene currentScene = null;
     private static bool isWaiting = false;
 
     private static string newStoryText = "";
@@ -64,7 +65,7 @@ public class Game : MonoBehaviour
     private static float startingScrollY = 0;
     private static float startingScrollTime;
 
-    private static bool buttonsFadedIn = false;
+    private static bool buttonsFadedIn;
 
     /// <summary>
     /// RESET GAMEOBJECTS. LOAD FILEDATA AND PICK A STORY. RUN THE FIRST SCENE.
@@ -86,6 +87,7 @@ public class Game : MonoBehaviour
 
         startingScrollTime = Time.time;
         isWaiting = true;
+        buttonsFadedIn = false;
 
         // LOAD THE STORY
 
@@ -100,7 +102,13 @@ public class Game : MonoBehaviour
 
         (FileData, Story) = Run.LoadGame(ShowLoadGameFilesError);
 
-        // TODO: Make a "New Game" page where you can enter this information.
+        // IF THE NAME IS BLANK, MAKE ONE UP.
+        // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.
+        if (string.IsNullOrWhiteSpace(Data.PlayersName))
+        {
+            Data.PlayersName = "Alex";
+        }
+
         Story.You.Name = Data.PlayersName;
         Story.You.Sex = Data.PlayersSex;
 
@@ -355,6 +363,11 @@ public class Game : MonoBehaviour
         inventoryText.text = inventoryMessage;
 
         StartCoroutine(FadeMenu(inventoryMenu, fadeIn: true));
+    }
+
+    public void ExitToMainMenu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
     public void CloseMenus()
