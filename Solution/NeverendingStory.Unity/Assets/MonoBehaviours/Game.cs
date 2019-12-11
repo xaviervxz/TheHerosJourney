@@ -2,6 +2,7 @@
 using NeverendingStory.Models;
 using System;
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -25,6 +26,26 @@ public class Game : MonoBehaviour
     [SerializeField]
 #pragma warning disable 0649
     private GameObject choice2Button;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private CanvasGroup almanacMenu;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private TextMeshProUGUI almanacText;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private CanvasGroup inventoryMenu;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private TextMeshProUGUI inventoryText;
 #pragma warning restore 0649
 
     private static FileData FileData;
@@ -268,6 +289,45 @@ public class Game : MonoBehaviour
         }
 
         newStoryText += message;
+    }
+
+    public void ShowAlmanac()
+    {
+        var almanacLines = Story.Almanac
+                    .Select(i => "* <indent=15px>" + i.Key + " - " + i.Value + "</indent>")
+                    .ToArray();
+
+        var almanacMessage = "Here are people you've met and places you've been or heard of:" + 
+            Environment.NewLine + Environment.NewLine +
+            string.Join(Environment.NewLine, almanacLines);
+
+        almanacText.text = almanacMessage;
+
+        almanacMenu.gameObject.SetActive(true);
+        almanacMenu.alpha = 1;
+    }
+
+    public void ShowInventory()
+    {
+        var inventoryLines = Story.You.Inventory.Select(i => "* <indent=15px>" + i.Name + " - " + i.Description + "</indent>");
+
+        var inventoryMessage = "Here are things you're carrying with you:" +
+            Environment.NewLine + Environment.NewLine + 
+            string.Join(Environment.NewLine, inventoryLines);
+
+        inventoryText.text = inventoryMessage;
+
+        inventoryMenu.gameObject.SetActive(true);
+        inventoryMenu.alpha = 1;
+    }
+
+    public void CloseMenus()
+    {
+        almanacMenu.gameObject.SetActive(false);
+        almanacMenu.alpha = 0;
+
+        inventoryMenu.gameObject.SetActive(false);
+        inventoryMenu.alpha = 0;
     }
 
     public void SkipToChoice()
