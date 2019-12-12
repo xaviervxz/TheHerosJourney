@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading;
 using System.Text.RegularExpressions;
 using NeverendingStory.Models;
 using System.Linq;
@@ -11,7 +10,12 @@ namespace NeverendingStory.Functions
     {
         internal static string ToTitleCase(this string text)
         {
-            return Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(text);
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return text;
+            }
+
+            return text.Substring(0, 1).ToUpper() + text.Substring(1);
         }
 
         internal static T[] ParseToValidTypes<T>(this IEnumerable<string> rawTypes)
@@ -187,7 +191,7 @@ namespace NeverendingStory.Functions
                 else if (primaryKey == "almanac" && keyPieces.Length >= 3)
                 {
                     // STORE THE LOCATION IN THE ALMANAC.
-                    string almanacTitle = subMessage(keyPieces[1], story, fileData);
+                    string almanacTitle = subMessage(keyPieces[1], story, fileData).ToTitleCase();
                     string almanacDescription = subMessage(keyPieces[2], story, fileData);
 
                     if (story.Almanac.TryGetValue(almanacTitle, out string existingDescription)

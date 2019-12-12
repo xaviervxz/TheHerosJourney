@@ -7,6 +7,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour
 {
@@ -120,8 +121,26 @@ public class Game : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        // CHECK FOR THE "ENTER" KEYPRESS
+
+        if (Input.GetButton("Submit"))
+        {
+            SkipToChoice();
+        }
+
         if (!isWaiting)
         {
+            // CHECK FOR KEYBOARD SHORTCUTS
+
+            if (Input.GetButton("Choose1"))
+            {
+                choice1Button.GetComponent<Button>().onClick.Invoke();
+            }
+            else if (Input.GetButton("Choose2"))
+            {
+                choice2Button.GetComponent<Button>().onClick.Invoke();
+            }
+
             // CHANGE THE TARGET SCROLL Y IF THE SCROLL WHEEL WAS USED.
             float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
             if (!Mathf.Approximately(scrollAmount, 0) && !isWaiting)
@@ -137,7 +156,7 @@ public class Game : MonoBehaviour
             // Not just if it's going to.
             if (storyTextMesh.rectTransform.anchoredPosition.y > ScrollYForLine(bottomLine, lineAtTop: false))
             {
-                if (!buttonsFadedIn)
+                if (!buttonsFadedIn && currentScene != null)
                 {
                     StopCoroutine("FadeOutButtons");
 
@@ -236,9 +255,15 @@ public class Game : MonoBehaviour
 
             WriteMessage("");
         }
-        while (!choicesExist);
+        while (!choicesExist && currentScene != null);
 
         WriteMessage("");
+
+        if (currentScene == null)
+        {
+            WriteMessage("");
+            WriteMessage("THE END");
+        }
 
         IEnumerator WriteToStory(string text)
         {
@@ -293,6 +318,7 @@ public class Game : MonoBehaviour
 
         StartCoroutine(WriteToStory(newStoryText));
 
+        // Clear the newStoryText.
         newStoryText = "";
     }
 

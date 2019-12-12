@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace NeverendingStory.Test
 {
+    [TestFixture]
     public class PickTests
     {
         private FileData fileData;

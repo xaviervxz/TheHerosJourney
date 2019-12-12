@@ -92,6 +92,11 @@ namespace NeverendingStory.Functions
 
         public static bool PresentChoices(FileData fileData, Story story, Scene currentScene, Action<string, string> presentChoices, Action<string> addTextToStory)
         {
+            if (currentScene == null)
+            {
+                return false;
+            }
+
             // IF THERE ARE NO CHOICES AVAILABLE IN THIS SCENE,
             // SKIP TO THE NEXT SCENE.
             if (string.IsNullOrWhiteSpace(currentScene.Choice1) || string.IsNullOrWhiteSpace(currentScene.Choice2))
