@@ -56,7 +56,7 @@ namespace NeverendingStory.Console
 
                     foreach (string wrap in wrapped)
                     {
-                        if (wrap == "")
+                        if (string.IsNullOrWhiteSpace(wrap))
                         {
                             System.Console.ReadLine();
                         }
@@ -66,7 +66,7 @@ namespace NeverendingStory.Console
                         }
                     }
 
-                    if (process == "")
+                    if (string.IsNullOrWhiteSpace(process))
                     {
                         System.Console.ReadLine();
                     }
@@ -137,7 +137,7 @@ namespace NeverendingStory.Console
 
             var characterDataStream = GetDataResourceStream("CharacterData.json");
             var locationDataStream = GetDataResourceStream("LocationData.json");
-            var scenesStream = GetDataResourceStream("Scenes.csv");
+            var scenesStream = GetDataResourceStream("Scenes.ods");
 
             var (fileData, story) = Run.LoadGame(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
 

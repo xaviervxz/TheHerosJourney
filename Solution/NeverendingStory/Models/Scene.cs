@@ -1,4 +1,4 @@
-﻿using CsvHelper.Configuration.Attributes;
+﻿//using CsvHelper.Configuration.Attributes;
 
 namespace NeverendingStory.Models
 {
@@ -8,10 +8,10 @@ namespace NeverendingStory.Models
 
         public string Conditions { get; set; }
 
-        [Ignore] // - for CSV Helper package, or similar
+        //[Ignore] // - for CSV Helper package, or similar
         public JourneyStage? Stage { get; set; }
 
-        [Ignore] // - for CSV Helper package, or similar
+        //[Ignore] // - for CSV Helper package, or similar
         public bool IsSubStage { get; set; }
 
         public string Message { get; set; }
@@ -24,7 +24,7 @@ namespace NeverendingStory.Models
 
         public string Outro2 { get; set; }
 
-        [Ignore] // - for CSV Helper package, or similar
+        //[Ignore] // - for CSV Helper package, or similar
         public bool Done { get; set; }
 
 #if DEBUG

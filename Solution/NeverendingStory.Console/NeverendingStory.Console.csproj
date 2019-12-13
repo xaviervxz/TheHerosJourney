@@ -13,6 +13,7 @@
     <None Remove="Data\CharacterData.json" />
     <None Remove="Data\LocationData.json" />
     <None Remove="Data\Scenes.csv" />
+    <None Remove="Data\Scenes.ods" />
     <None Remove="Data\Scenes.xlsx" />
     <None Remove="LocationData.json" />
     <None Remove="Scenes.xlsx" />
@@ -22,6 +23,7 @@
     <EmbeddedResource Include="Data\CharacterData.json" />
     <EmbeddedResource Include="Data\LocationData.json" />
     <EmbeddedResource Include="Data\Scenes.csv" />
+    <EmbeddedResource Include="Data\Scenes.ods" />
     <EmbeddedResource Include="Data\Scenes.xlsx" />
   </ItemGroup>
 

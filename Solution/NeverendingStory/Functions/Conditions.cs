@@ -41,6 +41,13 @@ namespace NeverendingStory.Functions
 
             if (conditionPieces[0] == "character" && conditionPieces.Length == 2)
             {
+                if (Enum.TryParse(conditionPieces[1], out Relationship parsedRelationship))
+                {
+                    bool characterTypeExists = story.Characters.Any(c => c.Relationship == parsedRelationship);
+
+                    return characterTypeExists;
+                }
+
                 bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
 
                 return namedCharacterExists;

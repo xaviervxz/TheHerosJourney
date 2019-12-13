@@ -3,4 +3,10 @@ Randomly generate a pet for the kid (dog/cat/etc., probably walks on the ground)
 Add command to assign a character a random title from several titles (i.e. Baron/Duke or Sherrif/Captain)
 and then have the "title" property display that title.
 
-ADD PRE-BUILD EVENT TO CONVERT EXCEL FILE TO CSV.
+
+UNITY INTERFACE ONLY
+
+Add inertia to the scrolling, so if I scroll up or down a bunch really fast
+it keeps going for a while and then slows to a stop.
+
+Save the story log.
