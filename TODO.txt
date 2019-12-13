@@ -9,4 +9,7 @@ UNITY INTERFACE ONLY
 Add inertia to the scrolling, so if I scroll up or down a bunch really fast
 it keeps going for a while and then slows to a stop.
 
-Save the story log.
+Let the player save and load a game.
+
+Let "Enter" start the game when entering your name (also
+auto-highlight that text field when you go to that menu).

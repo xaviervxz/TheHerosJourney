@@ -3,6 +3,7 @@ using NeverendingStory.Functions;
 using NeverendingStory.Models;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
@@ -305,6 +306,12 @@ public class Game : MonoBehaviour
         {
             WriteMessage("");
             WriteMessage("THE END");
+
+            // WRITE STORY TO LOG FILE.
+            // TODO: IMPROVE THIS, MAYBE?
+            string filePath = Path.Combine(Application.persistentDataPath, $"story_log_{DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss")}.txt");
+            string storyContents = storyTextMesh.text;
+            File.WriteAllText(filePath, storyContents);
         }
 
         IEnumerator WriteToStory(string text)
