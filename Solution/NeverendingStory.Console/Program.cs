@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace NeverendingStory.Console
 {
@@ -125,7 +126,20 @@ namespace NeverendingStory.Console
                 WriteMessage(almanacMessage);
             }
 
-            var (fileData, story) = Run.LoadGame(ShowLoadGameFilesError);
+            /*static */Stream GetDataResourceStream(string resourceName)
+            {
+                string fullResourceName = $"NeverendingStory.Console.Data.{resourceName}";
+
+                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullResourceName);
+
+                return stream;
+            }
+
+            var characterDataStream = GetDataResourceStream("CharacterData.json");
+            var locationDataStream = GetDataResourceStream("LocationData.json");
+            var scenesStream = GetDataResourceStream("Scenes.csv");
+
+            var (fileData, story) = Run.LoadGame(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
 
             // DISPLAY INTRODUCTION
             // LET THE PLAYER PICK THEIR NAME AND SEX

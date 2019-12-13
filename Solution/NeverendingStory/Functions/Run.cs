@@ -6,7 +6,7 @@ namespace NeverendingStory.Functions
 {
     public static class Run
     {
-        public static Tuple<FileData, Story> LoadGame(Action showLoadGameFilesError)
+        public static Tuple<FileData, Story> LoadGame(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Action showLoadGameFilesError)
         {
             // ----------------
             // DATA SET UP AND INTRODUCTION
@@ -16,7 +16,7 @@ namespace NeverendingStory.Functions
             FileData fileData;
             try
             {
-                fileData = LoadFromFile.Data();
+                fileData = LoadFromFile.Data(characterDataStream, locationDataStream, scenesStream);
             }
             catch (Exception exception)
             {

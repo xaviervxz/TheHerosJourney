@@ -14,17 +14,8 @@ namespace NeverendingStory.Functions
 
     internal static class LoadFromFile
     {
-        internal static FileData Data()
+        internal static FileData Data(Stream characterDataStream, Stream locationDataStream, Stream scenesStream)
         {
-            /*static */Stream GetDataResourceStream(string resourceName)
-            {
-                string fullResourceName = $"NeverendingStory.Data.{resourceName}";
-                
-                Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullResourceName);
-
-                return stream;
-            }
-
             /*static */string ReadAllText(Stream stream)
             {
                 if (stream == null)
@@ -54,9 +45,6 @@ namespace NeverendingStory.Functions
             // LOADING PEOPLE'S NAMES ETC.
             // **************************
 
-            // Get the file path of the JSON file.
-            var characterDataStream = GetDataResourceStream("CharacterData.json");
-
             // Read the JSON file.
             string peopleNamesFileContents = ReadAllText(characterDataStream);
 
@@ -66,9 +54,6 @@ namespace NeverendingStory.Functions
             // **************************
             // LOADING LOCATION NAMES, INDUSTRIES, LAYOUTS, ETC.
             // **************************
-
-            // Get the file path of the JSON file.
-            var locationDataStream = GetDataResourceStream("LocationData.json");
 
             // Read the JSON file.
             string locationDataFileContents = ReadAllText(locationDataStream);
@@ -80,9 +65,8 @@ namespace NeverendingStory.Functions
             // LOADING SCENES
             // **************************
 
-            // Get the file path of the Spreadsheet file.
-            // TODO: Read from ODS file instead.
-            var scenesStream = GetDataResourceStream("Scenes.csv");
+            // Read the .csv file.
+            // TODO: Read from an .ods file instead, or at least from an .xlsx file again.
 
             using (var streamReader = new StreamReader(scenesStream))
             using (var csv = new CsvReader(streamReader))
