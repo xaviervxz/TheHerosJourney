@@ -3,6 +3,7 @@ using NeverendingStory.Functions;
 using NeverendingStory.Models;
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -101,7 +102,21 @@ public class Game : MonoBehaviour
             WriteMessage("Thanks! <3");
         }
 
-        (FileData, Story) = Run.LoadGame(ShowLoadGameFilesError);
+        Stream GenerateStreamFromString(string s)
+        {
+            var stream = new MemoryStream();
+            var writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
+        Stream characterDataStream = GenerateStreamFromString(Resources.Load<TextAsset>("CharacterData").text);
+        Stream locationDataStream = GenerateStreamFromString(Resources.Load<TextAsset>("LocationData").text);
+        Stream scenesStream = GenerateStreamFromString(Resources.Load<TextAsset>("Scenes").text);
+
+        (FileData, Story) = Run.LoadGame(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
 
         // IF THE NAME IS BLANK, MAKE ONE UP.
         // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.
