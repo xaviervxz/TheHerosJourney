@@ -4,6 +4,9 @@ using UnityEngine;
 using NeverendingStory.Models;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using NeverendingStory.Functions;
+using System.IO;
+using System;
 
 public class Menu : MonoBehaviour
 {
@@ -35,10 +38,30 @@ public class Menu : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        LoadFileData();
+
         playersName.text = Data.PlayersName;
         playersSex.value = Data.PlayersSex == Sex.Female ? 0 : 1;
 
         GotoMainMenu();
+    }
+
+    internal static void LoadFileData(Action callback = null)
+    {
+        Stream GenerateStreamFromStreamingAsset(string fileName)
+        {
+            var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
+
+            var stream = File.OpenRead(filePath);
+
+            return stream;
+        }
+
+        Stream characterDataStream = GenerateStreamFromStreamingAsset("CharacterData.json");
+        Stream locationDataStream = GenerateStreamFromStreamingAsset("LocationData.json");
+        Stream scenesStream = GenerateStreamFromStreamingAsset("Scenes.ods");
+
+        Data.FileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, callback);
     }
 
     public void GotoNewGameMenu()
@@ -48,6 +71,9 @@ public class Menu : MonoBehaviour
         ValidateNewStory();
 
         newGameMenu.SetActive(true);
+
+        GenerateNewName();
+        playersName.Select();
     }
 
     public void ExitGame()
@@ -62,6 +88,13 @@ public class Menu : MonoBehaviour
         newGameMenu.SetActive(false);
     }
 
+    public void GenerateNewName()
+    {
+        var newName = Run.NewName(Data.FileData, SelectedPlayersSex);
+
+        playersName.text = newName;
+    }
+
     public void ValidateNewStory()
     {
         if (playersName.text.Length > 0)
@@ -74,11 +107,18 @@ public class Menu : MonoBehaviour
         }
     }
 
+    private Sex SelectedPlayersSex => playersSex.options[playersSex.value].text == "Female" ? Sex.Female : Sex.Male;
+
     public void StartNewGame()
     {
+        if (!startGameButton.interactable)
+        {
+            return;
+        }
+
         Data.PlayersName = playersName.text;
 
-        Data.PlayersSex = playersSex.options[playersSex.value].text == "Female" ? Sex.Female : Sex.Male;
+        Data.PlayersSex = SelectedPlayersSex;
 
         SceneManager.LoadScene("Game");
     }

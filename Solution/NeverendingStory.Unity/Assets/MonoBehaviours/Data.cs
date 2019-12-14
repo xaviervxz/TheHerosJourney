@@ -7,5 +7,7 @@ namespace Assets.MonoBehaviours
         public static string PlayersName = "";
 
         public static Sex PlayersSex = Sex.Female;
+
+        public static FileData FileData = null;
     }
 }

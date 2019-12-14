@@ -139,7 +139,8 @@ namespace NeverendingStory.Console
             var locationDataStream = GetDataResourceStream("LocationData.json");
             var scenesStream = GetDataResourceStream("Scenes.ods");
 
-            var (fileData, story) = Run.LoadGame(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
+            var fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
+            var story = Run.NewStory(fileData);
 
             // DISPLAY INTRODUCTION
             // LET THE PLAYER PICK THEIR NAME AND SEX

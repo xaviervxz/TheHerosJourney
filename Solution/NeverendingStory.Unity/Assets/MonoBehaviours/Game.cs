@@ -3,7 +3,6 @@ using NeverendingStory.Functions;
 using NeverendingStory.Models;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TMPro;
@@ -18,7 +17,13 @@ public class Game : MonoBehaviour
     public float buttonFadeOutSeconds = 0.1F;
     public float menuFadeInSeconds = 0.5F;
     public float menuFadeOutSeconds = 0.1F;
-    public int lettersPerSecond = 10;
+
+    // RESEARCH NOTES:
+    // Average letters in an English word: 5-6 (or 6)
+    // Average adult reading speed: 200-250 wpm (words per minute)
+    // Average public speaking speed: 160 wpm
+    // Average speed reading speed: 600-1000 wpm
+    public int lettersPerSecond = 33;
 
     [SerializeField]
 #pragma warning disable 0649
@@ -55,7 +60,11 @@ public class Game : MonoBehaviour
     private TextMeshProUGUI inventoryText;
 #pragma warning restore 0649
 
-    private static FileData FileData;
+    [SerializeField]
+#pragma warning disable 0649
+    private GameObject scrollToEndButton;
+#pragma warning restore 0649
+
     private static Story Story;
     private static NeverendingStory.Models.Scene currentScene = null;
     private static bool isWaiting = false;
@@ -92,6 +101,7 @@ public class Game : MonoBehaviour
 
         // LOAD THE STORY
 
+#if DEBUG
         void ShowLoadGameFilesError()
         {
             WriteMessage("");
@@ -101,26 +111,19 @@ public class Game : MonoBehaviour
             WriteMessage("Thanks! <3");
         }
 
-        Stream GenerateStreamFromStreamingAsset(string fileName)
+        if (Data.FileData == null)
         {
-            var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
-
-            var stream = File.OpenRead(filePath);
-
-            return stream;
+            Menu.LoadFileData(ShowLoadGameFilesError);
         }
+#endif
 
-        Stream characterDataStream = GenerateStreamFromStreamingAsset("CharacterData.json");
-        Stream locationDataStream = GenerateStreamFromStreamingAsset("LocationData.json");
-        Stream scenesStream = GenerateStreamFromStreamingAsset("Scenes.ods");
-
-        (FileData, Story) = Run.LoadGame(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
+        Story = Run.NewStory(Data.FileData);
 
         // IF THE NAME IS BLANK, MAKE ONE UP.
         // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.
         if (string.IsNullOrWhiteSpace(Data.PlayersName))
         {
-            Data.PlayersName = "Alex";
+            Data.PlayersName = "Marielle";
         }
 
         Story.You.Name = Data.PlayersName;
@@ -141,6 +144,8 @@ public class Game : MonoBehaviour
 
         if (isWaiting)
         {
+            scrollToEndButton.SetActive(false);
+
             // CHECK FOR THE "ENTER" KEYPRESS
             if (Input.GetButton("Submit"))
             {
@@ -187,6 +192,8 @@ public class Game : MonoBehaviour
             // Not just if it's going to.
             if (storyTextMesh.rectTransform.anchoredPosition.y > ScrollYForLine(bottomLine, Line.AtBottom))
             {
+                scrollToEndButton.SetActive(false);
+
                 if (!buttonsFadedIn && currentScene != null)
                 {
                     StopCoroutine("FadeOutButtons");
@@ -196,6 +203,8 @@ public class Game : MonoBehaviour
             }
             else
             {
+                scrollToEndButton.SetActive(true);
+
                 if (buttonsFadedIn)
                 {
                     StopCoroutine("FadeInButtons");
@@ -292,9 +301,9 @@ public class Game : MonoBehaviour
 
         do
         {
-            currentScene = Run.NewScene(FileData, Story, WriteMessage);
+            currentScene = Run.NewScene(Data.FileData, Story, WriteMessage);
 
-            choicesExist = Run.PresentChoices(FileData, Story, currentScene, PresentChoices, WriteMessage);
+            choicesExist = Run.PresentChoices(Data.FileData, Story, currentScene, PresentChoices, WriteMessage);
 
             WriteMessage("");
         }
@@ -413,7 +422,9 @@ public class Game : MonoBehaviour
                     .Select(i => "* <indent=15px><b>" + i.Key + "</b> - " + i.Value + "</indent>")
                     .ToArray();
 
-        var almanacMessage = "Here are people you've met and places you've been or heard of:" + 
+        var almanacMessage = "<b>You are in " + Story.You.CurrentLocation.NameWithThe + ".</b>" +
+            Environment.NewLine + Environment.NewLine +
+            "Here are people you've met and places you've been or heard of:" +
             Environment.NewLine + Environment.NewLine +
             string.Join(Environment.NewLine, almanacLines);
 
@@ -453,12 +464,12 @@ public class Game : MonoBehaviour
 
     public void Choose1()
     {
-        Choose(() => Run.Outro1(FileData, Story, currentScene, WriteMessage), choice1Button.gameObject);
+        Choose(() => Run.Outro1(Data.FileData, Story, currentScene, WriteMessage), choice1Button.gameObject);
     }
 
     public void Choose2()
     {
-        Choose(() => Run.Outro2(FileData, Story, currentScene, WriteMessage), choice2Button.gameObject);
+        Choose(() => Run.Outro2(Data.FileData, Story, currentScene, WriteMessage), choice2Button.gameObject);
     }
 
     private void Choose(Action runOutro, GameObject gameObject)
@@ -476,7 +487,7 @@ public class Game : MonoBehaviour
         string action = gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
         action = action.Substring(0, 1).ToLower() + action.Substring(1);
 
-        WriteMessage($"<i>You {action}.</i>");
+        WriteMessage($"<i><indent=50px>You {action}.</indent></i>");
 
         WriteMessage("");
         WriteMessage("");

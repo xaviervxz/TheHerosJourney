@@ -6,7 +6,7 @@ namespace NeverendingStory.Functions
 {
     public static class Run
     {
-        public static Tuple<FileData, Story> LoadGame(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Action showLoadGameFilesError)
+        public static FileData LoadGameData(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Action showLoadGameFilesError)
         {
             // ----------------
             // DATA SET UP AND INTRODUCTION
@@ -22,7 +22,7 @@ namespace NeverendingStory.Functions
             {
                 if (exception is FileNotFoundException || exception is ArgumentNullException)
                 {
-                    showLoadGameFilesError();
+                    showLoadGameFilesError?.Invoke();
 
                     return null;
                 }
@@ -30,6 +30,11 @@ namespace NeverendingStory.Functions
                 throw;
             }
 
+            return fileData;
+        }
+
+        public static Story NewStory(FileData fileData)
+        {
             var story = Pick.Story(fileData);
 
             //{
@@ -46,7 +51,7 @@ namespace NeverendingStory.Functions
             //    }
             //}
 
-            return new Tuple<FileData, Story>(fileData, story);
+            return story;
         }
 
         public static Scene NewScene(FileData fileData, Story story, Action<string> addTextToStory)
@@ -111,6 +116,13 @@ namespace NeverendingStory.Functions
             presentChoices(choice1, choice2);
 
             return true;
+        }
+
+        public static string NewName(FileData fileData, Sex sex)
+        {
+            string name = fileData.CharacterData[PeopleNameOrigin.Westron][sex].Random();
+
+            return name;
         }
     }
 }
