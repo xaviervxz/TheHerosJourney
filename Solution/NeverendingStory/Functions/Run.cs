@@ -1,6 +1,7 @@
 ﻿using NeverendingStory.Models;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace NeverendingStory.Functions
 {
@@ -33,8 +34,19 @@ namespace NeverendingStory.Functions
             return fileData;
         }
 
-        public static Story NewStory(FileData fileData)
+        public static Story NewStory(FileData fileData, string storySeed)
         {
+            if (string.IsNullOrWhiteSpace(storySeed))
+            {
+                Pick.StorySeed = new Random();
+            }
+            else
+            {
+                int seed = storySeed.Sum(letter => letter);
+
+                Pick.StorySeed = new Random(seed);
+            }
+
             var story = Pick.Story(fileData);
 
             //{

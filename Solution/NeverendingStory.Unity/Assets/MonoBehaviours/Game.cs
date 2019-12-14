@@ -18,12 +18,7 @@ public class Game : MonoBehaviour
     public float menuFadeInSeconds = 0.5F;
     public float menuFadeOutSeconds = 0.1F;
 
-    // RESEARCH NOTES:
-    // Average letters in an English word: 5-6 (or 6)
-    // Average adult reading speed: 200-250 wpm (words per minute)
-    // Average public speaking speed: 160 wpm
-    // Average speed reading speed: 600-1000 wpm
-    public int lettersPerSecond = 33;
+    private int lettersPerSecond = 25;
 
     [SerializeField]
 #pragma warning disable 0649
@@ -123,7 +118,7 @@ public class Game : MonoBehaviour
         }
 #endif
 
-        Story = Run.NewStory(Data.FileData);
+        Story = Run.NewStory(Data.FileData, Data.StorySeed);
 
         // IF THE NAME IS BLANK, MAKE ONE UP.
         // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.
@@ -467,6 +462,11 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeMenu(almanacMenu, fadeIn: false));
         StartCoroutine(FadeMenu(inventoryMenu, fadeIn: false));
         StartCoroutine(FadeMenu(exitWarning, fadeIn: false));
+    }
+
+    public void SetLettersPerSecond(StorySpeed newLettersPerSecond)
+    {
+        lettersPerSecond = (int) newLettersPerSecond;
     }
 
     public void SkipToChoice()

@@ -9,5 +9,7 @@ namespace Assets.MonoBehaviours
         public static Sex PlayersSex = Sex.Female;
 
         public static FileData FileData = null;
+        
+        public static string StorySeed = "";
     }
 }

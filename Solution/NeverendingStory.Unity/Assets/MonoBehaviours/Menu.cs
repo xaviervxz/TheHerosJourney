@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using NeverendingStory.Functions;
 using System.IO;
 using System;
+using System.Collections;
 
 public class Menu : MonoBehaviour
 {
@@ -28,6 +29,16 @@ public class Menu : MonoBehaviour
     [SerializeField]
 #pragma warning disable 0649
     private TMP_Dropdown playersSex;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private GameObject storySeedEntry;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private TMP_InputField storySeed;
 #pragma warning restore 0649
 
     [SerializeField]
@@ -73,7 +84,23 @@ public class Menu : MonoBehaviour
         newGameMenu.SetActive(true);
 
         GenerateNewName();
-        playersName.Select();
+
+        HighlightPlayersName();
+    }
+
+    private void HighlightPlayersName()
+    {
+        // Highlight the player's name and move the cursor to the end.
+
+        playersName.ActivateInputField();
+
+        IEnumerator MoveTextEnd()
+        {
+            yield return null;
+
+            playersName.MoveTextEnd(false);
+        }
+        StartCoroutine(MoveTextEnd());
     }
 
     public void ExitGame()
@@ -93,6 +120,18 @@ public class Menu : MonoBehaviour
         var newName = Run.NewName(Data.FileData, SelectedPlayersSex);
 
         playersName.text = newName;
+
+        HighlightPlayersName();
+    }
+
+    public void ShowStorySeedEntry()
+    {
+        storySeedEntry.SetActive(true);
+    }
+
+    public void HideStorySeedEntry()
+    {
+        storySeedEntry.SetActive(false);
     }
 
     public void ValidateNewStory()
@@ -119,6 +158,8 @@ public class Menu : MonoBehaviour
         Data.PlayersName = playersName.text;
 
         Data.PlayersSex = SelectedPlayersSex;
+
+        Data.StorySeed = storySeed.text;
 
         SceneManager.LoadScene("Game");
     }
