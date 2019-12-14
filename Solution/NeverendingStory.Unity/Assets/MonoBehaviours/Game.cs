@@ -62,6 +62,11 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
+    private CanvasGroup exitWarning;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
     private GameObject scrollToEndButton;
 #pragma warning restore 0649
 
@@ -92,6 +97,7 @@ public class Game : MonoBehaviour
 
         almanacMenu.gameObject.SetActive(false);
         inventoryMenu.gameObject.SetActive(false);
+        exitWarning.gameObject.SetActive(false);
 
         // RESET VARIABLES
 
@@ -446,6 +452,11 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeMenu(inventoryMenu, fadeIn: true));
     }
 
+    public void ShowExitWarning()
+    {
+        StartCoroutine(FadeMenu(exitWarning, fadeIn: true));
+    }
+
     public void ExitToMainMenu()
     {
         SceneManager.LoadScene("Menu");
@@ -455,6 +466,7 @@ public class Game : MonoBehaviour
     {
         StartCoroutine(FadeMenu(almanacMenu, fadeIn: false));
         StartCoroutine(FadeMenu(inventoryMenu, fadeIn: false));
+        StartCoroutine(FadeMenu(exitWarning, fadeIn: false));
     }
 
     public void SkipToChoice()
