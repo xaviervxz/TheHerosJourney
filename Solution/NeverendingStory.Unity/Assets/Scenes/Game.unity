@@ -4434,7 +4434,7 @@ MonoBehaviour:
   buttonFadeOutSeconds: 0.2
   menuFadeInSeconds: 0.3
   menuFadeOutSeconds: 0.15
-  secondsToFadeInLetter: 1
+  letterFadeInSpeed: 15
   storyText: {fileID: 628067965}
   choice1Button: {fileID: 1729758993}
   choice2Button: {fileID: 1177460622}

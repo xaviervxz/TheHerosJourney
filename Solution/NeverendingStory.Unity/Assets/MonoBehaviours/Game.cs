@@ -17,7 +17,7 @@ public class Game : MonoBehaviour
     public float buttonFadeOutSeconds = 0.1F;
     public float menuFadeInSeconds = 0.5F;
     public float menuFadeOutSeconds = 0.1F;
-    public float secondsToFadeInLetter = 3F;
+    public float letterFadeInDuration = 3F;
 
     private int lettersPerSecond = 25;
 
@@ -238,7 +238,7 @@ public class Game : MonoBehaviour
     private void ScrollToNow(float newScrollY)
     {
         // Doing this to force textInfo.lineCount to update below.
-        storyText.ForceMeshUpdate();
+        //storyText.ForceMeshUpdate();
 
         int bottomLine = Math.Max(0, storyText.textInfo.lineCount - 3);
         float scrollYForBottomLine = ScrollYForLine(bottomLine, Line.AtTop);
@@ -291,6 +291,7 @@ public class Game : MonoBehaviour
         }
     }
 
+    private static int currentCharacterInt = 0;
     private void RunNewScenes()
     {
         void PresentChoices(string choice1, string choice2)
@@ -327,14 +328,12 @@ public class Game : MonoBehaviour
 
         IEnumerator WriteToStory(string text)
         {
-            IEnumerator FadeInLetter(TMP_CharacterInfo letter)
+            IEnumerator FadeInLetter(TMP_CharacterInfo letter, int characterIndex)
             {
                 if (!letter.isVisible)
                 {
                     yield break;
                 }
-
-                int sCharacterCount = storyText.textInfo.characterCount;
 
                 // Get the index of the material used by the current character.
                 int materialIndex = letter.materialReferenceIndex;
@@ -358,9 +357,21 @@ public class Game : MonoBehaviour
                 // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
                 storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
+                //Debug.Log("Color BEFORE: " + newVertexColors[vertexIndex].a);
+
+                //yield return new WaitForEndOfFrame();
+
+                //Debug.Log("Color AFTER: " + newVertexColors[vertexIndex].a);
+
+                while (characterIndex >= currentCharacterInt
+                    && isWaiting)
+                {
+                    yield return null;
+                }
+
                 // FADE IN AND MOVE DOWN.
 
-                var alphaPerSecond = 255F / secondsToFadeInLetter;
+                var alphaPerSecond = 255F / (letterFadeInDuration / lettersPerSecond);
 
                 while (color.a < 255)
                 {
@@ -401,76 +412,47 @@ public class Game : MonoBehaviour
             // SCROLL DOWN TO THE END OF THE LAST LINE,
             // AND ADD THE NEW TEXT TO THE STORY.
 
+            currentCharacterInt = storyText.textInfo.characterCount;
             int oldLineCount = storyText.textInfo.lineCount;
-            int currentCharacterInt = storyText.textInfo.characterCount;
-            // Note to future me: Do NOT depend on text.Length here.
+
+            // Note to future me: Do NOT depend on text.Length in this function.
             // The text variable has formatting info in it, which is NOT
             // counted in the textInfo.characterCount variable.
-
             storyText.text += text;
             
+            //storyText.ForceMeshUpdate();
+
+            yield return null; // DO NOT REMOVE THIS LINE. EVERYTHING BREAKS WITHOUT IT. P.S. I DESPERATELY NEED TO REMOVE THIS RIGHT NOW.
+
             StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
             
-            yield return null; // DO NOT REMOVE THIS LINE. EVERYTHING BREAKS WITHOUT IT.
-            
-            // HIDE ALL NEW LETTERS
+            // HIDE ALL THE NEW LETTERS
 
-            int characterCount = storyText.textInfo.characterCount;
-
-            var newLetters = storyText.textInfo.characterInfo.Skip(currentCharacterInt).Take(storyText.text.Length - currentCharacterInt).ToArray();
+            var newLetters = storyText.textInfo.characterInfo.Select((ci, index) => new { letter = ci, index }).Skip(currentCharacterInt).ToArray();
             foreach (var newLetter in newLetters)
             {
-                // Invisible characters have vertexIndexes of 0, so
-                // if they aren't skipped, the first letter spazzes out.
-                if (!newLetter.isVisible)
-                {
-                    continue;
-                }
-
-                // Get the index of the material used by the current character.
-                int materialIndex = newLetter.materialReferenceIndex;
-
-                // Get the vertex colors of the mesh used by this text element (character or sprite).
-                var newVertexColors = storyText.textInfo.meshInfo[materialIndex].colors32;
-
-                // Get the index of the first vertex used by this text element.
-                int vertexIndex = newLetter.vertexIndex;
-
-                // MAKE CLEAR TO START.
-
-                var transparentColor = newVertexColors[vertexIndex + 0];
-                transparentColor.a = 0;
-
-                newVertexColors[vertexIndex + 0] = transparentColor;
-                newVertexColors[vertexIndex + 1] = transparentColor;
-                newVertexColors[vertexIndex + 2] = transparentColor;
-                newVertexColors[vertexIndex + 3] = transparentColor;
+                StartCoroutine(FadeInLetter(newLetter.letter, newLetter.index));
             }
-            // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
-            storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
             // FADE IN ALL NEW LETTERS ONE BY ONE
 
             float currentCharacterFloat = currentCharacterInt;
+            int test = 0;
             while (currentCharacterInt < storyText.textInfo.characterCount)
             {
                 int previousCharacter = currentCharacterInt;
                 currentCharacterFloat += lettersPerSecond * Time.deltaTime;
-                
+
                 if (skipToChoice)
                 {
                     currentCharacterFloat = storyText.textInfo.characterCount;
                     skipToChoice = false;
                 }
-                
-                currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.text.Length);
 
-                var charactersToFadeIn = storyText.textInfo.characterInfo.Skip(previousCharacter).Take(currentCharacterInt - previousCharacter).ToArray();
-
-                foreach (var characterToFadeIn in charactersToFadeIn)
-                {
-                    StartCoroutine(FadeInLetter(characterToFadeIn));
-                }
+                // Advancing this variable makes the fading in letters realize
+                // it's their turn and they should just go for it.
+                currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.textInfo.characterCount);
+                test = currentCharacterInt;
 
                 yield return null;
             }
@@ -489,8 +471,6 @@ public class Game : MonoBehaviour
             //{
             //    ScrollToEnd();
             //}
-
-            //yield return null;
         }
 
         StartCoroutine(WriteToStory(newStoryText));

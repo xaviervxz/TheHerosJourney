@@ -68,6 +68,6 @@ public class StorySpeedChanger : MonoBehaviour
 public enum StorySpeed : int
 {
     Slow = 16, // 160 wpm * 6 lpw (letters per word) / 60 seconds per minute == 16 lps
-    Medium = 33, // 250 wpm * 6 lpw / 60 spm == 33 lps
+    Medium = 25, // 250 wpm * 6 lpw / 60 spm == 25 lps
     Fast = 60 // 600 wpm * 6 lpw / 60 spm == 60 lps
 }
