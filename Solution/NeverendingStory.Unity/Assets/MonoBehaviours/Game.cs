@@ -17,12 +17,13 @@ public class Game : MonoBehaviour
     public float buttonFadeOutSeconds = 0.1F;
     public float menuFadeInSeconds = 0.5F;
     public float menuFadeOutSeconds = 0.1F;
+    public float secondsToFadeInLetter = 3F;
 
     private int lettersPerSecond = 25;
 
     [SerializeField]
 #pragma warning disable 0649
-    private TextMeshProUGUI storyTextMesh;
+    private TextMeshProUGUI storyText;
 #pragma warning restore 0649
 
     [SerializeField]
@@ -74,6 +75,7 @@ public class Game : MonoBehaviour
     private static string choice2Text = "";
 
     private static float targetScrollY = 0;
+    private static bool skipToChoice = false;
 
     private static bool buttonsFadedIn;
 
@@ -84,8 +86,8 @@ public class Game : MonoBehaviour
     {
         // RESET GAMEOBJECTS
 
-        storyTextMesh.text = "";
-        storyTextMesh.maxVisibleCharacters = 0;
+        storyText.text = "";
+        //storyTextMesh.maxVisibleCharacters = 0;
 
         choice1Button.SetActive(false);
         choice2Button.SetActive(false);
@@ -161,7 +163,6 @@ public class Game : MonoBehaviour
 
         else
         {
-
             // CHECK FOR KEYBOARD SHORTCUTS
             // TO MAKE CHOICES.
 
@@ -180,18 +181,18 @@ public class Game : MonoBehaviour
             {
                 StopCoroutine("ScrollToSmooth");
 
-                var currentY = storyTextMesh.rectTransform.anchoredPosition.y;
-                ScrollToNow(currentY - scrollAmount * scrollSpeed * 10 * (storyTextMesh.fontSize + 4));
-                targetScrollY = storyTextMesh.rectTransform.anchoredPosition.y;
+                var currentY = storyText.rectTransform.anchoredPosition.y;
+                ScrollToNow(currentY - scrollAmount * scrollSpeed * 10 * (storyText.fontSize + 4));
+                targetScrollY = storyText.rectTransform.anchoredPosition.y;
             }
 
             // FADE IN OR OUT BUTTONS
 
-            int bottomLine = Math.Max(0, storyTextMesh.textInfo.lineCount - 3);
+            int bottomLine = Math.Max(0, storyText.textInfo.lineCount - 3);
             // Checking the actual position here, not the targetScrollY,
             // because we want to know if the story has ACTUALLY cleared the buttons,
             // Not just if it's going to.
-            if (storyTextMesh.rectTransform.anchoredPosition.y > ScrollYForLine(bottomLine, Line.AtBottom))
+            if (storyText.rectTransform.anchoredPosition.y > ScrollYForLine(bottomLine, Line.AtBottom))
             {
                 scrollToEndButton.SetActive(false);
 
@@ -224,11 +225,11 @@ public class Game : MonoBehaviour
 
     private float ScrollYForLine(int lineNumber, Line linePos)
     {
-        var scrollY = lineNumber * (storyTextMesh.fontSize + 4);
+        var scrollY = lineNumber * (storyText.fontSize + 4);
         if (linePos == Line.AtBottom)
         {
-            float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
-            scrollY -= (parentsHeight - storyTextMesh.margin.w - 40);
+            float parentsHeight = storyText.rectTransform.parent.GetComponent<RectTransform>().rect.height;
+            scrollY -= (parentsHeight - storyText.margin.w - 40);
         }
 
         return scrollY;
@@ -237,9 +238,9 @@ public class Game : MonoBehaviour
     private void ScrollToNow(float newScrollY)
     {
         // Doing this to force textInfo.lineCount to update below.
-        storyTextMesh.ForceMeshUpdate();
+        storyText.ForceMeshUpdate();
 
-        int bottomLine = Math.Max(0, storyTextMesh.textInfo.lineCount - 3);
+        int bottomLine = Math.Max(0, storyText.textInfo.lineCount - 3);
         float scrollYForBottomLine = ScrollYForLine(bottomLine, Line.AtTop);
 
         if (scrollYForBottomLine > 0 && newScrollY > scrollYForBottomLine)
@@ -252,7 +253,7 @@ public class Game : MonoBehaviour
             newScrollY = 0;
         }
 
-        storyTextMesh.rectTransform.anchoredPosition = new Vector2(storyTextMesh.rectTransform.anchoredPosition.x, newScrollY);
+        storyText.rectTransform.anchoredPosition = new Vector2(storyText.rectTransform.anchoredPosition.x, newScrollY);
     }
 
     private IEnumerator ScrollToSmooth(int lineNumber, Line linePos)
@@ -261,7 +262,7 @@ public class Game : MonoBehaviour
 
         targetScrollY = ScrollYForLine(lineNumber, linePos);
 
-        float startingY = storyTextMesh.rectTransform.anchoredPosition.y;
+        float startingY = storyText.rectTransform.anchoredPosition.y;
 
         float startingTime = Time.time;
 
@@ -282,11 +283,11 @@ public class Game : MonoBehaviour
 
     public void ScrollToEnd()
     {
-        var lastLineScrollY = ScrollYForLine(storyTextMesh.textInfo.lineCount - 1, Line.AtBottom);
+        var lastLineScrollY = ScrollYForLine(storyText.textInfo.lineCount - 1, Line.AtBottom);
 
         if (lastLineScrollY > targetScrollY)
         {
-            StartCoroutine(ScrollToSmooth(storyTextMesh.textInfo.lineCount - 1, Line.AtBottom));
+            StartCoroutine(ScrollToSmooth(storyText.textInfo.lineCount - 1, Line.AtBottom));
         }
     }
 
@@ -320,44 +321,155 @@ public class Game : MonoBehaviour
             // WRITE STORY TO LOG FILE.
             // TODO: IMPROVE THIS, MAYBE?
             string filePath = Path.Combine(Application.persistentDataPath, $"story_log_{DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss")}.txt");
-            string storyContents = storyTextMesh.text;
+            string storyContents = storyText.text;
             File.WriteAllText(filePath, storyContents);
         }
 
         IEnumerator WriteToStory(string text)
         {
-            float parentsHeight = storyTextMesh.rectTransform.parent.GetComponent<RectTransform>().rect.height;
+            IEnumerator FadeInLetter(TMP_CharacterInfo letter)
+            {
+                if (!letter.isVisible)
+                {
+                    yield break;
+                }
+
+                int sCharacterCount = storyText.textInfo.characterCount;
+
+                // Get the index of the material used by the current character.
+                int materialIndex = letter.materialReferenceIndex;
+
+                // Get the vertex colors of the mesh used by this text element (character or sprite).
+                var newVertexColors = storyText.textInfo.meshInfo[materialIndex].colors32;
+
+                // Get the index of the first vertex used by this text element.
+                int vertexIndex = letter.vertexIndex;
+
+                // MAKE CLEAR TO START.
+
+                var color = newVertexColors[vertexIndex + 0];
+                color.a = 0;
+
+                newVertexColors[vertexIndex + 0] = color;
+                newVertexColors[vertexIndex + 1] = color;
+                newVertexColors[vertexIndex + 2] = color;
+                newVertexColors[vertexIndex + 3] = color;
+
+                // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
+                storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+                // FADE IN AND MOVE DOWN.
+
+                var alphaPerSecond = 255F / secondsToFadeInLetter;
+
+                while (color.a < 255)
+                {
+                    int previousAlpha = color.a;
+                    color.a += (byte) Mathf.RoundToInt(alphaPerSecond * Time.deltaTime);
+                    if (previousAlpha > color.a)
+                    {
+                        // We've looped around, break out.
+                        break;
+                    }
+
+                    newVertexColors[vertexIndex + 0] = color;
+                    newVertexColors[vertexIndex + 1] = color;
+                    newVertexColors[vertexIndex + 2] = color;
+                    newVertexColors[vertexIndex + 3] = color;
+
+                    // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
+                    storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+                    yield return null;
+                }
+
+                // SET BACK TO ORIGINAL COLOR TO END.
+
+                color.a = 255;
+
+                newVertexColors[vertexIndex + 0] = color;
+                newVertexColors[vertexIndex + 1] = color;
+                newVertexColors[vertexIndex + 2] = color;
+                newVertexColors[vertexIndex + 3] = color;
+
+                // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
+                storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+                yield return null;
+            }
 
             // SCROLL DOWN TO THE END OF THE LAST LINE,
             // AND ADD THE NEW TEXT TO THE STORY.
+
+            int oldLineCount = storyText.textInfo.lineCount;
+            int currentCharacterInt = storyText.textInfo.characterCount;
+            // Note to future me: Do NOT depend on text.Length here.
+            // The text variable has formatting info in it, which is NOT
+            // counted in the textInfo.characterCount variable.
+
+            storyText.text += text;
             
-            int oldLineCount = storyTextMesh.textInfo.lineCount;
-
-            storyTextMesh.text += text;
-
             StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
+            
+            yield return null; // DO NOT REMOVE THIS LINE. EVERYTHING BREAKS WITHOUT IT.
+            
+            // HIDE ALL NEW LETTERS
 
-            // REVEAL MORE CHARACTERS
+            int characterCount = storyText.textInfo.characterCount;
 
-            float charactersRevealed = storyTextMesh.maxVisibleCharacters;
-
-            while (storyTextMesh.maxVisibleCharacters < storyTextMesh.text.Length)
+            var newLetters = storyText.textInfo.characterInfo.Skip(currentCharacterInt).Take(storyText.text.Length - currentCharacterInt).ToArray();
+            foreach (var newLetter in newLetters)
             {
-                charactersRevealed += lettersPerSecond * Time.deltaTime;
-
-                storyTextMesh.maxVisibleCharacters = Math.Min(
-                    Mathf.FloorToInt(charactersRevealed),
-                    storyTextMesh.text.Length);
-
-                // SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
-                int currentCharacterIndex = Math.Min(storyTextMesh.textInfo.characterInfo.Length - 1, Math.Max(0, storyTextMesh.maxVisibleCharacters - 1));
-                int currentLineNumber = storyTextMesh.textInfo.characterInfo[currentCharacterIndex].lineNumber;
-
-                var currentLineScrollY = ScrollYForLine(currentLineNumber, Line.AtBottom);
-
-                if (currentLineScrollY > targetScrollY)
+                // Invisible characters have vertexIndexes of 0, so
+                // if they aren't skipped, the first letter spazzes out.
+                if (!newLetter.isVisible)
                 {
-                    ScrollToEnd();
+                    continue;
+                }
+
+                // Get the index of the material used by the current character.
+                int materialIndex = newLetter.materialReferenceIndex;
+
+                // Get the vertex colors of the mesh used by this text element (character or sprite).
+                var newVertexColors = storyText.textInfo.meshInfo[materialIndex].colors32;
+
+                // Get the index of the first vertex used by this text element.
+                int vertexIndex = newLetter.vertexIndex;
+
+                // MAKE CLEAR TO START.
+
+                var transparentColor = newVertexColors[vertexIndex + 0];
+                transparentColor.a = 0;
+
+                newVertexColors[vertexIndex + 0] = transparentColor;
+                newVertexColors[vertexIndex + 1] = transparentColor;
+                newVertexColors[vertexIndex + 2] = transparentColor;
+                newVertexColors[vertexIndex + 3] = transparentColor;
+            }
+            // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
+            storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+            // FADE IN ALL NEW LETTERS ONE BY ONE
+
+            float currentCharacterFloat = currentCharacterInt;
+            while (currentCharacterInt < storyText.textInfo.characterCount)
+            {
+                int previousCharacter = currentCharacterInt;
+                currentCharacterFloat += lettersPerSecond * Time.deltaTime;
+                
+                if (skipToChoice)
+                {
+                    currentCharacterFloat = storyText.textInfo.characterCount;
+                    skipToChoice = false;
+                }
+                
+                currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.text.Length);
+
+                var charactersToFadeIn = storyText.textInfo.characterInfo.Skip(previousCharacter).Take(currentCharacterInt - previousCharacter).ToArray();
+
+                foreach (var characterToFadeIn in charactersToFadeIn)
+                {
+                    StartCoroutine(FadeInLetter(characterToFadeIn));
                 }
 
                 yield return null;
@@ -367,7 +479,18 @@ public class Game : MonoBehaviour
 
             ScrollToEnd();
 
-            storyTextMesh.maxVisibleCharacters = storyTextMesh.text.Length;
+            //// SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
+            ////int currentCharacterIndex = Math.Min(storyText.textInfo.characterInfo.Length - 1, Math.Max(0, numCharactersRevealed));//storyTextMesh.maxVisibleCharacters - 1));
+            //int currentLineNumber = storyText.textInfo.characterInfo[currentCharacterInt].lineNumber;
+
+            //var currentLineScrollY = ScrollYForLine(currentLineNumber, Line.AtBottom);
+
+            //if (currentLineScrollY > targetScrollY)
+            //{
+            //    ScrollToEnd();
+            //}
+
+            //yield return null;
         }
 
         StartCoroutine(WriteToStory(newStoryText));
@@ -471,7 +594,7 @@ public class Game : MonoBehaviour
 
     public void SkipToChoice()
     {
-        storyTextMesh.maxVisibleCharacters = storyTextMesh.text.Length;
+        skipToChoice = true;
     }
 
     public void Choose1()
