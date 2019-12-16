@@ -237,9 +237,6 @@ public class Game : MonoBehaviour
 
     private void ScrollToNow(float newScrollY)
     {
-        // Doing this to force textInfo.lineCount to update below.
-        //storyText.ForceMeshUpdate();
-
         int bottomLine = Math.Max(0, storyText.textInfo.lineCount - 3);
         float scrollYForBottomLine = ScrollYForLine(bottomLine, Line.AtTop);
 
@@ -334,7 +331,7 @@ public class Game : MonoBehaviour
                 {
                     yield break;
                 }
-
+                
                 // Get the index of the material used by the current character.
                 int materialIndex = letter.materialReferenceIndex;
 
@@ -348,26 +345,22 @@ public class Game : MonoBehaviour
 
                 var color = newVertexColors[vertexIndex + 0];
                 color.a = 0;
-
+                
                 newVertexColors[vertexIndex + 0] = color;
                 newVertexColors[vertexIndex + 1] = color;
                 newVertexColors[vertexIndex + 2] = color;
                 newVertexColors[vertexIndex + 3] = color;
+                
+                // NOTE TO FUTURE SELF:
+                // NEVER call UpdateVertexData in this function.
+                // It makes the scrolling lag a ton if you skip forward about 4-5 choices in.
+                // NEVER CALL THIS storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
-                // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
-                storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-
-                //Debug.Log("Color BEFORE: " + newVertexColors[vertexIndex].a);
-
-                //yield return new WaitForEndOfFrame();
-
-                //Debug.Log("Color AFTER: " + newVertexColors[vertexIndex].a);
-
-                while (characterIndex >= currentCharacterInt
-                    && isWaiting)
+                do
                 {
                     yield return null;
                 }
+                while (characterIndex >= currentCharacterInt && isWaiting);
 
                 // FADE IN AND MOVE DOWN.
 
@@ -379,7 +372,7 @@ public class Game : MonoBehaviour
                     color.a += (byte) Mathf.RoundToInt(alphaPerSecond * Time.deltaTime);
                     if (previousAlpha > color.a)
                     {
-                        // We've looped around, break out.
+                        // We've looped around, break out of this loop.
                         break;
                     }
 
@@ -387,9 +380,6 @@ public class Game : MonoBehaviour
                     newVertexColors[vertexIndex + 1] = color;
                     newVertexColors[vertexIndex + 2] = color;
                     newVertexColors[vertexIndex + 3] = color;
-
-                    // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
-                    storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
                     yield return null;
                 }
@@ -402,9 +392,6 @@ public class Game : MonoBehaviour
                 newVertexColors[vertexIndex + 1] = color;
                 newVertexColors[vertexIndex + 2] = color;
                 newVertexColors[vertexIndex + 3] = color;
-
-                // New function which pushes (all) updated vertex data to the appropriate meshes when using either the Mesh Renderer or CanvasRenderer.
-                storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
                 yield return null;
             }
@@ -419,12 +406,7 @@ public class Game : MonoBehaviour
             // The text variable has formatting info in it, which is NOT
             // counted in the textInfo.characterCount variable.
             storyText.text += text;
-            
-            //storyText.ForceMeshUpdate();
-
-            yield return null; // DO NOT REMOVE THIS LINE. EVERYTHING BREAKS WITHOUT IT. P.S. I DESPERATELY NEED TO REMOVE THIS RIGHT NOW.
-
-            StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
+            storyText.ForceMeshUpdate(ignoreInactive: true);
             
             // HIDE ALL THE NEW LETTERS
 
@@ -434,7 +416,11 @@ public class Game : MonoBehaviour
                 StartCoroutine(FadeInLetter(newLetter.letter, newLetter.index));
             }
 
+            StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
+
             // FADE IN ALL NEW LETTERS ONE BY ONE
+
+            var firstCharacterAfterFirstLine = currentCharacterInt + storyText.textInfo.characterInfo.Skip(currentCharacterInt).Count(c => c.style == FontStyles.Italic);
 
             float currentCharacterFloat = currentCharacterInt;
             int test = 0;
@@ -442,6 +428,7 @@ public class Game : MonoBehaviour
             {
                 int previousCharacter = currentCharacterInt;
                 currentCharacterFloat += lettersPerSecond * Time.deltaTime;
+                currentCharacterFloat = Math.Max(firstCharacterAfterFirstLine, currentCharacterFloat);
 
                 if (skipToChoice)
                 {
@@ -454,12 +441,25 @@ public class Game : MonoBehaviour
                 currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.textInfo.characterCount);
                 test = currentCharacterInt;
 
+                storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
                 yield return null;
             }
 
             isWaiting = false;
 
             ScrollToEnd();
+
+            {
+                float startingTime = Time.time;
+
+                while (Time.time < startingTime + 5)
+                {
+                    storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+                    yield return null;
+                }
+            }
 
             //// SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
             ////int currentCharacterIndex = Math.Min(storyText.textInfo.characterInfo.Length - 1, Math.Max(0, numCharactersRevealed));//storyTextMesh.maxVisibleCharacters - 1));
@@ -473,6 +473,8 @@ public class Game : MonoBehaviour
             //}
         }
 
+        //const string sentence = "The quick brown fox jumps over the lazy dog. ";
+        //StartCoroutine(WriteToStory(string.Join(" ", Enumerable.Repeat(sentence, 10))));
         StartCoroutine(WriteToStory(newStoryText));
 
         // Clear the newStoryText.

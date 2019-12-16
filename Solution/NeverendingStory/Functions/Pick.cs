@@ -137,6 +137,9 @@ namespace NeverendingStory.Functions
                 //.OrderByDescending(s => s.Key)
                 //.FirstOrDefault()
                 
+                // This next line will be useful to nudge the random generator towards
+                // scenes with conditions matching the player's state.
+                //.WeightedRandom(s => (int) Math.Pow(s.Conditions.Split('&').Length, 2));
                 .WeightedRandom(s => s.Conditions.Split('&').Length);
 
             if (scene == null && story.CurrentStage != JourneyStage.FreedomToLive)

@@ -1209,8 +1209,6 @@ GameObject:
   - component: {fileID: 628067964}
   - component: {fileID: 628067966}
   - component: {fileID: 628067965}
-  - component: {fileID: 628067967}
-  - component: {fileID: 628067968}
   m_Layer: 5
   m_Name: Story Text
   m_TagString: Untagged
@@ -1235,7 +1233,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 600}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &628067965
 MonoBehaviour:
@@ -1359,40 +1357,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 628067963}
   m_CullTransparentMesh: 0
---- !u!114 &628067967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628067963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalFit: 0
-  m_VerticalFit: 2
---- !u!114 &628067968
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628067963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: 600
-  m_PreferredWidth: -1
-  m_PreferredHeight: -1
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!1 &637968522
 GameObject:
   m_ObjectHideFlags: 0
@@ -4434,7 +4398,7 @@ MonoBehaviour:
   buttonFadeOutSeconds: 0.2
   menuFadeInSeconds: 0.3
   menuFadeOutSeconds: 0.15
-  letterFadeInSpeed: 15
+  letterFadeInDuration: 18
   storyText: {fileID: 628067965}
   choice1Button: {fileID: 1729758993}
   choice2Button: {fileID: 1177460622}
