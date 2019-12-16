@@ -28,12 +28,14 @@ public class StorySpeedChanger : MonoBehaviour
     private Game game;
 #pragma warning restore 0649
 
-    private StorySpeed currentStorySpeed = StorySpeed.Medium;
+    private StorySpeed currentStorySpeed;
 
     // Start is called before the first frame update
     private void Start()
     {
         currentStorySpeed = StorySpeed.Medium;
+
+        IncrementStorySpeed();
     }
 
     public void IncrementStorySpeed()

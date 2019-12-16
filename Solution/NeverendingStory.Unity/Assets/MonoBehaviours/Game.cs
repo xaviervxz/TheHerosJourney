@@ -441,6 +441,17 @@ public class Game : MonoBehaviour
                 currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.textInfo.characterCount);
                 test = currentCharacterInt;
 
+                //// SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
+                //int currentCharacterIndex = Math.Min(storyText.textInfo.characterInfo.Length - 1, Math.Max(0, numCharactersRevealed));//storyTextMesh.maxVisibleCharacters - 1));
+                int currentLineNumber = storyText.textInfo.characterInfo[currentCharacterInt].lineNumber;
+
+                var currentLineScrollY = ScrollYForLine(currentLineNumber, Line.AtBottom);
+
+                if (currentLineScrollY > targetScrollY)
+                {
+                    ScrollToEnd();
+                }
+
                 storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
 
                 yield return null;
@@ -460,17 +471,6 @@ public class Game : MonoBehaviour
                     yield return null;
                 }
             }
-
-            //// SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
-            ////int currentCharacterIndex = Math.Min(storyText.textInfo.characterInfo.Length - 1, Math.Max(0, numCharactersRevealed));//storyTextMesh.maxVisibleCharacters - 1));
-            //int currentLineNumber = storyText.textInfo.characterInfo[currentCharacterInt].lineNumber;
-
-            //var currentLineScrollY = ScrollYForLine(currentLineNumber, Line.AtBottom);
-
-            //if (currentLineScrollY > targetScrollY)
-            //{
-            //    ScrollToEnd();
-            //}
         }
 
         //const string sentence = "The quick brown fox jumps over the lazy dog. ";
