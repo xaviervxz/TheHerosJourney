@@ -28,14 +28,14 @@ public class StorySpeedChanger : MonoBehaviour
     private Game game;
 #pragma warning restore 0649
 
+    public StorySpeed startingStorySpeed;
+
     private StorySpeed currentStorySpeed;
 
     // Start is called before the first frame update
     private void Start()
     {
-        currentStorySpeed = StorySpeed.Medium;
-
-        IncrementStorySpeed();
+        SetStorySpeed(startingStorySpeed);
     }
 
     public void IncrementStorySpeed()
@@ -45,15 +45,32 @@ public class StorySpeedChanger : MonoBehaviour
             case StorySpeed.Slow:
             default:
                 currentStorySpeed = StorySpeed.Medium;
-                speedImage.sprite = mediumSprite;
                 break;
             case StorySpeed.Medium:
                 currentStorySpeed = StorySpeed.Fast;
-                speedImage.sprite = fastSprite;
                 break;
             case StorySpeed.Fast:
                 currentStorySpeed = StorySpeed.Slow;
+                break;
+        }
+
+        SetStorySpeed(currentStorySpeed);
+    }
+
+    private void SetStorySpeed(StorySpeed storySpeed)
+    {
+        currentStorySpeed = storySpeed;
+        switch (currentStorySpeed)
+        {
+            case StorySpeed.Slow:
+            default:
                 speedImage.sprite = slowSprite;
+                break;
+            case StorySpeed.Medium:
+                speedImage.sprite = mediumSprite;
+                break;
+            case StorySpeed.Fast:
+                speedImage.sprite = fastSprite;
                 break;
         }
 

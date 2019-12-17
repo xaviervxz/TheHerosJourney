@@ -3,6 +3,10 @@ Randomly generate a pet for the kid (dog/cat/etc., probably walks on the ground)
 Add command to assign a character a random title from several titles (i.e. Baron/Duke or Sherrif/Captain)
 and then have the "title" property display that title.
 
+Roads run THROUGH some other place
+
+Buildings exist inside Towns
+
 
 UNITY INTERFACE ONLY
 

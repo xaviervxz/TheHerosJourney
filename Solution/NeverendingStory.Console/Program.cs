@@ -149,8 +149,8 @@ namespace NeverendingStory.Console
             WriteMessage("Welcome to the Neverending Story!");
             WriteDashes();
 #if DEBUG
-            story.You.Name = "Alex";
-            story.You.Sex = Sex.Male;
+            story.You.Name = "Marielle";
+            story.You.Sex = Sex.Female;
 #else
             WriteMessage("Type your character name and press Enter.");
             {
