@@ -163,6 +163,8 @@ public class Game : MonoBehaviour
 
         else
         {
+            skipToChoice = false;
+
             // CHECK FOR KEYBOARD SHORTCUTS
             // TO MAKE CHOICES.
 
