@@ -443,6 +443,13 @@ public class Game : MonoBehaviour
                 currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.textInfo.characterCount);
                 test = currentCharacterInt;
 
+                if (currentCharacterInt >= storyText.textInfo.characterInfo.Length)
+                {
+                    yield return null;
+
+                    continue;
+                }
+
                 //// SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
                 //int currentCharacterIndex = Math.Min(storyText.textInfo.characterInfo.Length - 1, Math.Max(0, numCharactersRevealed));//storyTextMesh.maxVisibleCharacters - 1));
                 int currentLineNumber = storyText.textInfo.characterInfo[currentCharacterInt].lineNumber;
