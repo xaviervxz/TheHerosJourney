@@ -537,7 +537,7 @@ public class Game : MonoBehaviour
                     .Select(i => "* <indent=15px><b>" + i.Key + "</b> - " + i.Value + "</indent>")
                     .ToArray();
 
-        var almanacMessage = "<b>You are in " + Story.You.CurrentLocation.NameWithThe + ".</b>" +
+        var almanacMessage = "<b>" + Story.You.Name + ", you're in " + Story.You.CurrentLocation.NameWithThe + ".</b>" +
             Environment.NewLine + Environment.NewLine +
             "Here are people you've met and places you've been or heard of:" +
             Environment.NewLine + Environment.NewLine +
