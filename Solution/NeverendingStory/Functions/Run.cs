@@ -34,7 +34,7 @@ namespace NeverendingStory.Functions
             return fileData;
         }
 
-        public static Story NewStory(FileData fileData, string storySeed)
+        public static Story NewStory(FileData fileData, string storySeed, string[] reqSceneIds = null)
         {
             if (string.IsNullOrWhiteSpace(storySeed))
             {
@@ -48,6 +48,11 @@ namespace NeverendingStory.Functions
             }
 
             var story = Pick.Story(fileData);
+
+            if (reqSceneIds != null)
+            {
+                Pick.ReqSceneIds = reqSceneIds;
+            }
 
             //{
             //    // PICK A BUNCH OF LOCATION NAMES.

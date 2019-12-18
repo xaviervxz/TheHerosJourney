@@ -10,6 +10,8 @@ namespace NeverendingStory.Functions
     {
         internal static Random StorySeed = null;
 
+        internal static string[] ReqSceneIds = new string[0];
+
         internal static T Random<T>(this IEnumerable<T> list)
         {
             if (list == null)
@@ -125,22 +127,22 @@ namespace NeverendingStory.Functions
                 return sceneMatches && sceneIsFilledOut && !s.Done && !s.IsSubStage && conditions.All(c => Condition.IsMet(story, c));
             }
 
-            
-            // RANDOMLY PICK A NEW SCENE
-            var scene = scenes
-                .Where(s => SceneCanBeUsedHere(s, story.CurrentStage))
 
-                // The idea of this next three lines is that the Scenes would be
-                // select randomly from those scenes that have the most
-                // conditions (i.e. requires Baron and Ranger would be 2).
-                //.GroupBy(s => s.Conditions.Split('&').Length)
-                //.OrderByDescending(s => s.Key)
-                //.FirstOrDefault()
-                
-                // This next line will be useful to nudge the random generator towards
-                // scenes with conditions matching the player's state.
-                //.WeightedRandom(s => (int) Math.Pow(s.Conditions.Split('&').Length, 2));
-                .WeightedRandom(s => s.Conditions.Split('&').Length);
+            // RANDOMLY PICK A NEW SCENE
+            var validScenes = scenes
+                .Where(s => SceneCanBeUsedHere(s, story.CurrentStage));
+
+            var scene = validScenes.FirstOrDefault(s => ReqSceneIds.Contains(s.Identifier));
+
+            if (scene == null)
+            { 
+                scene = validScenes
+                    // This next line will be useful to nudge the random generator towards
+                    // scenes with conditions matching the player's state.
+                    //.WeightedRandom(s => (int) Math.Pow(s.Conditions.Split('&').Length, 2));
+
+                    .WeightedRandom(s => s.Conditions.Split('&').Length);
+            }
 
             if (scene == null && story.CurrentStage != JourneyStage.FreedomToLive)
             {

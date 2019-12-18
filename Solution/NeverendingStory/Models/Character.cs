@@ -55,7 +55,8 @@ namespace NeverendingStory.Models
         Friend,
         Mentor,
         Antagonist,
-        Child
+        Child,
+        Mysterious
     }
 
     public class Item

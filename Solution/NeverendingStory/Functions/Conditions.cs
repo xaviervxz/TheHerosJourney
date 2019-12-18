@@ -39,18 +39,37 @@ namespace NeverendingStory.Functions
                 return doesNotHaveItem;
             }
 
-            if (conditionPieces[0] == "character" && conditionPieces.Length == 2)
+            if (conditionPieces[0] == "character")
             {
-                if (Enum.TryParse(conditionPieces[1], out Relationship parsedRelationship))
+                if (conditionPieces.Length == 2)
                 {
-                    bool characterTypeExists = story.Characters.Any(c => c.Relationship == parsedRelationship);
+                    if (Enum.TryParse(conditionPieces[1], out Relationship parsedRelationship))
+                    {
+                        bool characterTypeExists = story.Characters.Any(c => c.Relationship == parsedRelationship);
 
-                    return characterTypeExists;
+                        return characterTypeExists;
+                    }
+
+                    bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
+
+                    return namedCharacterExists;
                 }
+                else if (conditionPieces.Length == 3)
+                {
+                    if (story.NamedCharacters.TryGetValue(conditionPieces[1], out Character namedCharacter))
+                    {
+                        if (conditionPieces[2] == "female" && namedCharacter.Sex == Sex.Female)
+                        {
+                            return true;
+                        }
+                        else if (conditionPieces[2] == "male" && namedCharacter.Sex == Sex.Male)
+                        {
+                            return true;
+                        }
 
-                bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
-
-                return namedCharacterExists;
+                        return false;
+                    }
+                }
             }
 
             if (conditionPieces[0] == "nocharacter" && conditionPieces.Length == 2)
