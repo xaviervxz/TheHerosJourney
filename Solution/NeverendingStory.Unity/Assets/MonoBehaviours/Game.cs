@@ -120,7 +120,7 @@ public class Game : MonoBehaviour
         }
 #endif
 
-        Story = Run.NewStory(Data.FileData, Data.StorySeed);
+        Story = Run.NewStory(Data.FileData, Data.StorySeed, Data.ScenesToTest);
 
         // IF THE NAME IS BLANK, MAKE ONE UP.
         // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.

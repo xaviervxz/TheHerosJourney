@@ -8,6 +8,7 @@ using NeverendingStory.Functions;
 using System.IO;
 using System;
 using System.Collections;
+using System.Linq;
 
 public class Menu : MonoBehaviour
 {
@@ -159,7 +160,23 @@ public class Menu : MonoBehaviour
 
         Data.PlayersSex = SelectedPlayersSex;
 
-        Data.StorySeed = storySeed.text;
+        const string testPrefix = "TEST:";
+        if (storySeed.text.StartsWith(testPrefix))
+        {
+            try
+            {
+                Data.ScenesToTest = storySeed.text.Substring(testPrefix.Length).Split(',').Select(s => s.Trim()).ToArray();
+            }
+            catch
+            {
+                Debug.LogError("Story seed looked like it was a list of scenes, but didn't parse correctly. Sorry!");
+                Data.StorySeed = storySeed.text;
+            }
+        }
+        else
+        {
+            Data.StorySeed = storySeed.text;
+        }
 
         SceneManager.LoadScene("Game");
     }

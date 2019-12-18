@@ -11,5 +11,7 @@ namespace Assets.MonoBehaviours
         public static FileData FileData = null;
         
         public static string StorySeed = "";
+
+        public static string[] ScenesToTest = null;
     }
 }
