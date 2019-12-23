@@ -14,6 +14,8 @@ namespace NeverendingStory.Models
 
         public string NextSceneIdentifier { get; set; } = null;
 
+        public string Seed = null;
+
 
         // STORY DATA
 

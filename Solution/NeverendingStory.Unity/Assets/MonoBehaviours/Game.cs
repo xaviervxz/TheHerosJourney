@@ -3,8 +3,10 @@ using NeverendingStory.Functions;
 using NeverendingStory.Models;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -64,6 +66,21 @@ public class Game : MonoBehaviour
     [SerializeField]
 #pragma warning disable 0649
     private CanvasGroup exitWarning;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private CanvasGroup feedbackForm;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private ToggleGroup feedbackType;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private TMP_InputField feedbackText;
 #pragma warning restore 0649
 
     [SerializeField]
@@ -155,7 +172,7 @@ public class Game : MonoBehaviour
             scrollToEndButton.SetActive(false);
 
             // CHECK FOR THE "ENTER" KEYPRESS
-            if (Input.GetButton("Submit"))
+            if (Input.GetButton("Submit") && !feedbackForm.isActiveAndEnabled)
             {
                 SkipToChoice();
             }
@@ -173,13 +190,16 @@ public class Game : MonoBehaviour
             // CHECK FOR KEYBOARD SHORTCUTS
             // TO MAKE CHOICES.
 
-            if (Input.GetButton("Choose1"))
+            if (!feedbackForm.isActiveAndEnabled)
             {
-                choice1Button.GetComponent<Button>().onClick.Invoke();
-            }
-            else if (Input.GetButton("Choose2"))
-            {
-                choice2Button.GetComponent<Button>().onClick.Invoke();
+                if (Input.GetButton("Choose1"))
+                {
+                    choice1Button.GetComponent<Button>().onClick.Invoke();
+                }
+                else if (Input.GetButton("Choose2"))
+                {
+                    choice2Button.GetComponent<Button>().onClick.Invoke();
+                }
             }
 
             // CHANGE THE TARGET SCROLL Y IF THE SCROLL WHEEL WAS USED.
@@ -571,6 +591,38 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeMenu(exitWarning, fadeIn: true));
     }
 
+    public void ShowFeedbackForm()
+    {
+        StartCoroutine(FadeMenu(feedbackForm, fadeIn: true));
+    }
+
+    public void SendFeedback()
+    {
+        string message = feedbackText.text;
+
+        string type = feedbackType.ActiveToggles().Select(t => t.GetComponentInChildren<Text>().text).FirstOrDefault();
+
+        var postData = new Dictionary<string, string>
+        {
+            { "Message", message },
+            { "Type", type },
+            { "Seed", Story.Seed },
+            { "Name", Story.You.Name },
+            { "Sex", Story.You.Sex.ToString() },
+            { "StorySoFar", storyText.text }
+        };
+
+        var client = new HttpClient();
+
+        var content = new FormUrlEncodedContent(postData);
+
+        var response = client.PostAsync("https://hooks.zapier.com/hooks/catch/706824/otm5qu7/", content);
+
+        // TODO: SHOWs "THANK YOU" MESSAGE
+
+        CloseMenus();
+    }
+
     public void ExitToMainMenu()
     {
         SceneManager.LoadScene("Menu");
@@ -581,6 +633,7 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeMenu(almanacMenu, fadeIn: false));
         StartCoroutine(FadeMenu(inventoryMenu, fadeIn: false));
         StartCoroutine(FadeMenu(exitWarning, fadeIn: false));
+        StartCoroutine(FadeMenu(feedbackForm, fadeIn: false));
     }
 
     public void SetLettersPerSecond(StorySpeed newLettersPerSecond)

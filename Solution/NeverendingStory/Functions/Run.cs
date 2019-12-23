@@ -38,16 +38,21 @@ namespace NeverendingStory.Functions
         {
             if (string.IsNullOrWhiteSpace(storySeed))
             {
-                Pick.StorySeed = new Random();
+                int seed = Environment.TickCount;
+                Pick.StoryGenerator = new Random(seed);
+
+                storySeed = seed.ToString();
             }
             else
             {
                 int seed = storySeed.Sum(letter => letter);
 
-                Pick.StorySeed = new Random(seed);
+                Pick.StoryGenerator = new Random(seed);
             }
 
             var story = Pick.Story(fileData);
+
+            story.Seed = storySeed;
 
             if (reqSceneIds != null)
             {

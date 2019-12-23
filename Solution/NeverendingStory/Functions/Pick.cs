@@ -5,12 +5,11 @@ using System.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using CharacterData = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
     internal static class Pick
     {
-        internal static Random StorySeed = null;
-
         internal static string[] ReqSceneIds = new string[0];
+
+        internal static Random StoryGenerator = null;
 
         internal static T Random<T>(this IEnumerable<T> list)
         {
@@ -26,11 +25,11 @@ namespace NeverendingStory.Functions
                 return default(T);
             }
 
-            if (StorySeed == null)
+            if (StoryGenerator == null)
             {
-                StorySeed = new Random();
+                StoryGenerator = new Random();
             }
-            int randomIndex = StorySeed.Next(0, array.Length);
+            int randomIndex = StoryGenerator.Next(0, array.Length);
 
             return array[randomIndex];
         }
