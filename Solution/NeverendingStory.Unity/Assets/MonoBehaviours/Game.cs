@@ -28,6 +28,11 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
+    private RectTransform storyContainer;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
     private GameObject choice1Button;
 #pragma warning restore 0649
 
@@ -183,9 +188,9 @@ public class Game : MonoBehaviour
             {
                 StopCoroutine("ScrollToSmooth");
 
-                var currentY = storyText.rectTransform.anchoredPosition.y;
+                var currentY = storyContainer.anchoredPosition.y;
                 ScrollToNow(currentY - scrollAmount * scrollSpeed * 10 * (storyText.fontSize + 4));
-                targetScrollY = storyText.rectTransform.anchoredPosition.y;
+                targetScrollY = storyContainer.anchoredPosition.y;
             }
 
             // FADE IN OR OUT BUTTONS
@@ -194,7 +199,7 @@ public class Game : MonoBehaviour
             // Checking the actual position here, not the targetScrollY,
             // because we want to know if the story has ACTUALLY cleared the buttons,
             // Not just if it's going to.
-            if (storyText.rectTransform.anchoredPosition.y > ScrollYForLine(bottomLine, Line.AtBottom))
+            if (storyContainer.anchoredPosition.y > ScrollYForLine(bottomLine, Line.AtBottom))
             {
                 scrollToEndButton.SetActive(false);
 
@@ -230,7 +235,7 @@ public class Game : MonoBehaviour
         var scrollY = lineNumber * (storyText.fontSize + 4);
         if (linePos == Line.AtBottom)
         {
-            float parentsHeight = storyText.rectTransform.parent.GetComponent<RectTransform>().rect.height;
+            float parentsHeight = storyContainer.rect.height;
             scrollY -= (parentsHeight - storyText.margin.w - 40);
         }
 
@@ -252,7 +257,7 @@ public class Game : MonoBehaviour
             newScrollY = 0;
         }
 
-        storyText.rectTransform.anchoredPosition = new Vector2(storyText.rectTransform.anchoredPosition.x, newScrollY);
+        storyContainer.anchoredPosition = new Vector2(storyContainer.anchoredPosition.x, newScrollY);
     }
 
     private IEnumerator ScrollToSmooth(int lineNumber, Line linePos)
@@ -261,7 +266,7 @@ public class Game : MonoBehaviour
 
         targetScrollY = ScrollYForLine(lineNumber, linePos);
 
-        float startingY = storyText.rectTransform.anchoredPosition.y;
+        float startingY = storyContainer.anchoredPosition.y;
 
         float startingTime = Time.time;
 

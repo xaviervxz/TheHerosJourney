@@ -52,6 +52,7 @@ namespace NeverendingStory.Models
     public enum Relationship
     {
         Self,
+        Stranger,
         Friend,
         Mentor,
         Antagonist,

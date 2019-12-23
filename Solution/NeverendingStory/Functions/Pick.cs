@@ -157,7 +157,8 @@ namespace NeverendingStory.Functions
             var story = new Story();
 
             // CREATE THE PLAYER CHARACTER.
-            story.You = Pick.Character(Relationship.Self, story.Characters, fileData.CharacterData);
+            story.You = Pick.Character(story.Characters, fileData);
+            story.You.Relationship = Relationship.Self;
 
             // CREATE THEIR HOMETOWN, START THEM THERE, AND ADD IT TO THE ALMANAC.
             story.You.Hometown = Pick.Town(story.Locations, fileData);
@@ -184,17 +185,22 @@ namespace NeverendingStory.Functions
             return story;
         }
 
-        internal static Character Character(Relationship relationship, IList<Character> characters, CharacterData characterData)
+        internal static Character Character(List<Character> characters, FileData fileData, Func<Character, bool> selector = null)
         {
-            var character = characters.FirstOrDefault(c => c.Relationship == relationship);
+            Character character = null;
+
+            if (selector != null)
+            {
+                character = characters.FirstOrDefault(selector);
+            }
 
             if (character == null)
             {
                 character = new Character
                 {
-                    Relationship = relationship
+                    Relationship = Relationship.Stranger
                 };
-                character.Name = Pick.Random(characterData[PeopleNameOrigin.Westron][character.Sex].Except(characters.Select(c => c.Name)).ToArray());
+                character.Name = Pick.NewCharacterName(character.Sex, fileData, characters);
 
                 characters.Add(character);
             }
@@ -339,6 +345,11 @@ namespace NeverendingStory.Functions
             }
 
             return matchingStage.Value;
+        }
+
+        internal static string NewCharacterName(Sex sex, FileData fileData, List<Character> characters)
+        {
+            return Pick.Random(fileData.CharacterData[PeopleNameOrigin.Westron][sex].Except(characters.Select(c => c.Name)).ToArray());
         }
     }
 }

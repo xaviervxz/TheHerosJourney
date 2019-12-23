@@ -57,6 +57,17 @@ namespace NeverendingStory.Functions
                 return processedSubMessage;
             }
 
+            // WORK IN PROGRESS
+            // BASICALLY, HAVE A PREPART OF THE FIRST CALL TO ADVENTURE
+
+            if (message.StartsWith("ADVENTURE:"))
+            {
+                const string beginMarker = "BEGIN:";
+                int beginIndex = message.IndexOf(beginMarker);
+
+                message = message.Substring(beginIndex + beginMarker.Length);
+            }
+
             var replacements = Regex.Matches(message, "\\{.+?\\}");
 
             string replacedMessage = message;
@@ -462,41 +473,98 @@ namespace NeverendingStory.Functions
                         //                  location    role     tag
                         // {character:pick:baronhome:antagonist:baron}
 
-                        string currentLocationName = keyPieces[2];
-                        if (!story.NamedLocations.TryGetValue(currentLocationName, out Location currentLocation))
+                        // PROPERTIES
+                        // NAME=DEFAULT_VALUE
+                        // location=current
+                        // relationship=stranger
+                        // tag=(none)
+                        // sex=(random)
+
+                        /*static */Character updateCharacter(Character characterToUpdate, string property)
                         {
-                            switch (currentLocationName)
+                            var propertyReplacement = Regex.Match(property, "(.*)=(.*)");
+
+                            string propertyName = propertyReplacement.Groups[1].Value;
+                            string propertyValue = propertyReplacement.Groups[2].Value;
+
+                            switch (propertyName)
                             {
-                                case "hometown":
-                                    currentLocation = story.You.Hometown;
+                                case "location":
+                                    if (!story.NamedLocations.TryGetValue(propertyValue, out Location currentLocation))
+                                    {
+                                        switch (propertyValue)
+                                        {
+                                            case "hometown":
+                                                currentLocation = story.You.Hometown;
+                                                break;
+                                            case "current":
+                                                currentLocation = story.You.CurrentLocation;
+                                                break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                    characterToUpdate.CurrentLocation = currentLocation;
                                     break;
-                                case "current":
-                                    currentLocation = story.You.CurrentLocation;
+                                case "relationship":
+                                    characterToUpdate.Relationship = propertyValue.ParseToValidType<Relationship>() ?? Relationship.Stranger;
                                     break;
+                                case "tag":
+                                    // STORE IT IN NAMED CHARACTER.
+                                    story.NamedCharacters[propertyValue] = characterToUpdate;
+                                    break;
+                                case "sex":
+                                    if (propertyValue == "f")
+                                    {
+                                        characterToUpdate.Sex = Sex.Female;
+                                    }
+
+                                    if (propertyValue == "m")
+                                    {
+                                        characterToUpdate.Sex = Sex.Male;
+                                    }
+
+                                    if (propertyValue == "opposite")
+                                    {
+                                        characterToUpdate.Sex = story.You.Sex == Sex.Female ? Sex.Male : Sex.Female;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                            return characterToUpdate;
+                        }
+
+                        var propertyAssignments = keyPieces.Skip(2).ToArray();
+
+                        Func<Character, bool> selector = null;
+
+                        const string selectorPrefix = "selector=";
+                        if (propertyAssignments[0].StartsWith(selectorPrefix))
+                        {
+                            string rawSelector = propertyAssignments[0].Substring(selectorPrefix.Length);
+
+                            switch (rawSelector)
+                            {
+                                case "relationship":
+                                    var relationshipProperty = propertyAssignments.FirstOrDefault(pa => pa.StartsWith("relationship"));
+                                    var cTemp = new Character();
+                                    cTemp = updateCharacter(cTemp, relationshipProperty);
+                                    selector = c => c.Relationship == cTemp.Relationship;
+                                    break;
+                                case "new":
                                 default:
                                     break;
                             }
                         }
 
-                        string role = keyPieces[3];
-                        var relationship = role.ParseToValidType<Relationship>();
+                        var character = Pick.Character(story.Characters, fileData, selector);
 
-                        Character character = story.Characters
-                            .FirstOrDefault(c =>
-                                c.Relationship == relationship &&
-                                (c.CurrentLocation == currentLocation || currentLocation == null)
-                            );
-
-                        if (character == null && relationship != null)
+                        foreach (var propertyAssignment in propertyAssignments)
                         {
-                            // PICK A CHARACTER.
-                            character = Pick.Character(relationship.Value, story.Characters, fileData.CharacterData);
-
-                            character.CurrentLocation = currentLocation;
+                            character = updateCharacter(character, propertyAssignment);
                         }
-
-                        // STORE IT IN NAMED CHARACTER.
-                        story.NamedCharacters[keyPieces[4]] = character;
                     }
                     else
                     {

@@ -64,7 +64,7 @@ public class Menu : MonoBehaviour
         {
             var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
 
-            var stream = File.OpenRead(filePath);
+            var stream = File.Open(filePath, FileMode.Open, FileAccess.Read);
 
             return stream;
         }
@@ -74,6 +74,10 @@ public class Menu : MonoBehaviour
         Stream scenesStream = GenerateStreamFromStreamingAsset("Scenes.ods");
 
         Data.FileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, callback);
+
+        characterDataStream.Close();
+        locationDataStream.Close();
+        scenesStream.Close();
     }
 
     public void GotoNewGameMenu()
