@@ -65,7 +65,7 @@ namespace NeverendingStory.Functions
                 const string beginMarker = "BEGIN:";
                 int beginIndex = message.IndexOf(beginMarker);
 
-                message = message.Substring(beginIndex + beginMarker.Length);
+                message = message.Substring(beginIndex + beginMarker.Length).TrimStart();
             }
 
             var replacements = Regex.Matches(message, "\\{.+?\\}");

@@ -85,16 +85,6 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
-    private Toggle giveFeedbackToggle;
-#pragma warning restore 0649
-
-    [SerializeField]
-#pragma warning disable 0649
-    private Toggle reportBugToggle;
-#pragma warning restore 0649
-
-    [SerializeField]
-#pragma warning disable 0649
     private CanvasGroup feedbackForm;
 #pragma warning restore 0649
 
@@ -272,6 +262,13 @@ public class Game : MonoBehaviour
 
     private float ScrollYForLine(int lineNumber, Line linePos)
     {
+        // EDGE CASE FOR THE FIRST LINE,
+        // TO SHOW OFF THE TOP OF THE PARCHMENT SCROLL.
+        if (lineNumber == 0 && linePos == Line.AtTop)
+        {
+            return 0;
+        }
+
         var scrollY = lineNumber * (storyText.fontSize + 4);
         if (linePos == Line.AtBottom)
         {
@@ -279,7 +276,8 @@ public class Game : MonoBehaviour
             scrollY -= (parentsHeight - storyText.margin.w - 40);
         }
 
-        return scrollY;
+        var storyTextOffset = storyText.rectTransform.anchoredPosition.y;
+        return scrollY - storyTextOffset;
     }
 
     private void ScrollToNow(float newScrollY)
@@ -503,7 +501,20 @@ public class Game : MonoBehaviour
 
                 if (currentLineScrollY > targetScrollY)
                 {
-                    ScrollToEnd();
+                    int lineNumberNearTheBottom = Math.Max(0, currentLineNumber - 2);
+                    var newTargetScrollY = ScrollYForLine(lineNumberNearTheBottom, Line.AtTop);
+
+                    int lastLine = storyText.textInfo.lineCount - 1;
+                    var lineEndScrollY = ScrollYForLine(lastLine, Line.AtBottom);
+
+                    if (newTargetScrollY > lineEndScrollY)
+                    {
+                        ScrollToEnd();
+                    }
+                    else
+                    {
+                        StartCoroutine(ScrollToSmooth(lineNumberNearTheBottom, Line.AtTop));
+                    }
                 }
 
                 storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
@@ -611,7 +622,7 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeMenu(exitWarning, fadeIn: true));
     }
 
-    private void ShowFeedbackFormBase()
+    public void ShowFeedbackForm()
     {
         StartCoroutine(FadeMenu(feedbackFormParent, fadeIn: true));
 
@@ -621,23 +632,7 @@ public class Game : MonoBehaviour
         feedbackThankYou.alpha = 0;
         feedbackForm.gameObject.SetActive(true);
 
-        giveFeedbackToggle.isOn = true;
-
         feedbackText.Select();
-    }
-
-    public void ShowFeedbackForm()
-    {
-        ShowFeedbackFormBase();
-
-        giveFeedbackToggle.isOn = true;
-    }
-
-    public void ReportBugForm()
-    {
-        ShowFeedbackFormBase();
-
-        reportBugToggle.isOn = true;
     }
 
     public void SendFeedback()
