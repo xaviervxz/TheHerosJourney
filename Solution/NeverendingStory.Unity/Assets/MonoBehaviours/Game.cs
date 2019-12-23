@@ -70,7 +70,7 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
-    private CanvasGroup feedbackForm;
+    private CanvasGroup feedbackFormParent;
 #pragma warning restore 0649
 
     [SerializeField]
@@ -81,6 +81,26 @@ public class Game : MonoBehaviour
     [SerializeField]
 #pragma warning disable 0649
     private TMP_InputField feedbackText;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private Toggle giveFeedbackToggle;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private Toggle reportBugToggle;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private CanvasGroup feedbackForm;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private CanvasGroup feedbackThankYou;
 #pragma warning restore 0649
 
     [SerializeField]
@@ -172,7 +192,7 @@ public class Game : MonoBehaviour
             scrollToEndButton.SetActive(false);
 
             // CHECK FOR THE "ENTER" KEYPRESS
-            if (Input.GetButton("Submit") && !feedbackForm.isActiveAndEnabled)
+            if (Input.GetButton("Submit") && !feedbackFormParent.isActiveAndEnabled)
             {
                 SkipToChoice();
             }
@@ -190,7 +210,7 @@ public class Game : MonoBehaviour
             // CHECK FOR KEYBOARD SHORTCUTS
             // TO MAKE CHOICES.
 
-            if (!feedbackForm.isActiveAndEnabled)
+            if (!feedbackFormParent.isActiveAndEnabled)
             {
                 if (Input.GetButton("Choose1"))
                 {
@@ -591,9 +611,33 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeMenu(exitWarning, fadeIn: true));
     }
 
+    private void ShowFeedbackFormBase()
+    {
+        StartCoroutine(FadeMenu(feedbackFormParent, fadeIn: true));
+
+        feedbackForm.alpha = 1;
+        feedbackFormParent.interactable = true;
+        feedbackText.text = "";
+        feedbackThankYou.alpha = 0;
+        feedbackForm.gameObject.SetActive(true);
+
+        giveFeedbackToggle.isOn = true;
+
+        feedbackText.Select();
+    }
+
     public void ShowFeedbackForm()
     {
-        StartCoroutine(FadeMenu(feedbackForm, fadeIn: true));
+        ShowFeedbackFormBase();
+
+        giveFeedbackToggle.isOn = true;
+    }
+
+    public void ReportBugForm()
+    {
+        ShowFeedbackFormBase();
+
+        reportBugToggle.isOn = true;
     }
 
     public void SendFeedback()
@@ -602,7 +646,7 @@ public class Game : MonoBehaviour
 
         string type = feedbackType.ActiveToggles().Select(t => t.GetComponentInChildren<Text>().text).FirstOrDefault();
 
-        var postData = new Dictionary<string, string>
+        var feedbackData = new Dictionary<string, string>
         {
             { "Message", message },
             { "Type", type },
@@ -612,15 +656,32 @@ public class Game : MonoBehaviour
             { "StorySoFar", storyText.text }
         };
 
-        var client = new HttpClient();
+        IEnumerator sendFeedbackPost(Dictionary<string, string> postData)
+        {
+            using (var client = new HttpClient())
+            {
+                var content = new FormUrlEncodedContent(postData);
 
-        var content = new FormUrlEncodedContent(postData);
+                feedbackFormParent.interactable = false;
 
-        var response = client.PostAsync("https://hooks.zapier.com/hooks/catch/706824/otm5qu7/", content);
+                yield return null;
 
-        // TODO: SHOWs "THANK YOU" MESSAGE
+                var response = client.PostAsync("https://hooks.zapier.com/hooks/catch/706824/otm5qu7/", content);
 
-        CloseMenus();
+                while (!response.IsCompleted)
+                {
+                    yield return null;
+                }
+
+                var fadeOutForm = FadeMenu(feedbackForm, fadeIn: false);
+                var fadeInThankYou = FadeMenu(feedbackThankYou, fadeIn: true);
+
+                yield return fadeOutForm;
+                yield return fadeInThankYou;
+            }
+        }
+
+        StartCoroutine(sendFeedbackPost(feedbackData));
     }
 
     public void ExitToMainMenu()
@@ -633,7 +694,7 @@ public class Game : MonoBehaviour
         StartCoroutine(FadeMenu(almanacMenu, fadeIn: false));
         StartCoroutine(FadeMenu(inventoryMenu, fadeIn: false));
         StartCoroutine(FadeMenu(exitWarning, fadeIn: false));
-        StartCoroutine(FadeMenu(feedbackForm, fadeIn: false));
+        StartCoroutine(FadeMenu(feedbackFormParent, fadeIn: false));
     }
 
     public void SetLettersPerSecond(StorySpeed newLettersPerSecond)
