@@ -132,6 +132,8 @@ public class Menu : MonoBehaviour
     public void ShowStorySeedEntry()
     {
         storySeedEntry.SetActive(true);
+
+        storySeed.Select();
     }
 
     public void HideStorySeedEntry()
