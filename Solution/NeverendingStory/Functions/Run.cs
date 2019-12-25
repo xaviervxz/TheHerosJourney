@@ -142,7 +142,7 @@ namespace NeverendingStory.Functions
 
         public static string NewName(FileData fileData, Sex sex)
         {
-            string name = fileData.CharacterData[PeopleNameOrigin.Westron][sex].Random();
+            string name = fileData.CharacterData[sex].Random();
 
             return name;
         }

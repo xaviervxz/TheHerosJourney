@@ -10,8 +10,6 @@ using System.Xml.Linq;
 
 namespace NeverendingStory.Functions
 {
-    using PeopleNames = Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>;
-
     internal static class LoadFromFile
     {
         internal static FileData Data(Stream characterDataStream, Stream locationDataStream, Stream scenesStream)
@@ -49,7 +47,7 @@ namespace NeverendingStory.Functions
             string peopleNamesFileContents = ReadAllText(characterDataStream);
 
             // Deserialize the JSON file.
-            fileData.CharacterData = JsonConvert.DeserializeObject<PeopleNames>(peopleNamesFileContents);
+            fileData.CharacterData = JsonConvert.DeserializeObject<Dictionary<Sex, string[]>>(peopleNamesFileContents);
 
             // **************************
             // LOADING LOCATION NAMES, INDUSTRIES, LAYOUTS, ETC.

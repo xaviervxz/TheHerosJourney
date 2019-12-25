@@ -278,7 +278,7 @@ namespace NeverendingStory.Functions
                 string terrain = data.LocationData.Names.Terrain[type].SpecificTypes.Random();
                 string adjective = data.LocationData.Names.Adjectives.Random();
                 string noun = data.LocationData.Names.Nouns.Concat(data.LocationData.Names.TheNouns).Random();
-                string personName = Pick.Random(data.CharacterData[PeopleNameOrigin.Westron][new[] { Sex.Female, Sex.Male }.Random()].ToArray());
+                string personName = Pick.Random(data.CharacterData[new[] { Sex.Female, Sex.Male }.Random()]);
                 string format = data.LocationData.Names.Terrain[type].Formats.Random();
 
                 bool nounHasThe = data.LocationData.Names.TheNouns.Contains(noun);
@@ -348,7 +348,7 @@ namespace NeverendingStory.Functions
 
         internal static string NewCharacterName(Sex sex, FileData fileData, List<Character> characters)
         {
-            return Pick.Random(fileData.CharacterData[PeopleNameOrigin.Westron][sex].Except(characters.Select(c => c.Name)).ToArray());
+            return Pick.Random(fileData.CharacterData[sex].Except(characters.Select(c => c.Name)).ToArray());
         }
     }
 }

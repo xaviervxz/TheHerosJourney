@@ -19,7 +19,7 @@ namespace NeverendingStory.Test
             // FILLING IN THE FILE DATA OBJECT WITH BLANK SUB-OBJECTS AND BLANK RECORDS.
             // SPECIFIC RECORDS WILL BE ADDED BY SPECIFIC TESTS.
 
-            fileData.CharacterData = new Dictionary<PeopleNameOrigin, Dictionary<Sex, string[]>>();
+            fileData.CharacterData = new Dictionary<Sex, string[]>();
             fileData.LocationData = new LocationData
             {
                 Industries = new Dictionary<Industry, IndustryData>(),
@@ -37,7 +37,7 @@ namespace NeverendingStory.Test
 
         private void SetUpForPickCharacter()
         {
-            fileData.CharacterData[PeopleNameOrigin.Westron] = new Dictionary<Sex, string[]>
+            fileData.CharacterData = new Dictionary<Sex, string[]>
             {
                 { Sex.Male, new [] { "Alex" } },
                 { Sex.Female, new [] { "Julia" } }
@@ -110,32 +110,24 @@ namespace NeverendingStory.Test
             Assert.IsTrue(selections.Contains(item2));
         }
 
-        [TestCase(Relationship.Antagonist)]
-        [TestCase(Relationship.Child)]
-        [TestCase(Relationship.Friend)]
-        [TestCase(Relationship.Mentor)]
-        [TestCase(Relationship.Self)]
-        public void Pick_Character_RunsWithoutError(Relationship relationshipType)
+        [Test]
+        public void Pick_Character_RunsWithoutError()
         {
             // THIS TEST IS TO MAKE SURE THIS REUSABLE FUNCTION WORKS.
             SetUpForPickCharacter();
 
-            Action pickCharacter = () => Pick.Character(relationshipType, new List<Character>(), fileData.CharacterData);
+            Action pickCharacter = () => Pick.Character(new List<Character>(), fileData);
 
             Assert.DoesNotThrow(() => pickCharacter());
         }
 
-        [TestCase(Relationship.Antagonist)]
-        [TestCase(Relationship.Child)]
-        [TestCase(Relationship.Friend)]
-        [TestCase(Relationship.Mentor)]
-        [TestCase(Relationship.Self)]
-        public void Pick_Character_ReturnsNotNull(Relationship relationshipType)
+        [Test]
+        public void Pick_Character_ReturnsNotNull()
         {
             // THIS TEST IS TO MAKE SURE THIS REUSABLE FUNCTION WORKS.
             SetUpForPickCharacter();
 
-            var character = Pick.Character(relationshipType, new List<Character>(), fileData.CharacterData);
+            var character = Pick.Character(new List<Character>(), fileData);
 
             Assert.IsNotNull(character);
         }
