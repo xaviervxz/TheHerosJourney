@@ -45,6 +45,11 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
+    private CanvasGroup clickToContinue;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
     private CanvasGroup almanacMenu;
 #pragma warning restore 0649
 
@@ -123,6 +128,7 @@ public class Game : MonoBehaviour
 
         choice1Button.SetActive(false);
         choice2Button.SetActive(false);
+        clickToContinue.gameObject.SetActive(false);
 
         almanacMenu.gameObject.SetActive(false);
         inventoryMenu.gameObject.SetActive(false);
@@ -495,7 +501,7 @@ public class Game : MonoBehaviour
                 {
                     if (!hasPausedBetweenTheseParagraphs)
                     {
-                        hasPausedBetweenTheseParagraphs = true;
+hasPausedBetweenTheseParagraphs = true;
 
                         // Don't use WaitForSeconds here,
                         // UpdateVertexData still needs to be called every frame.
@@ -522,14 +528,29 @@ public class Game : MonoBehaviour
                     continue;
                 }
 
-                //// SCROLL UP, IF NECESSARY, TO REVEAL NEW TEXT.
-                //int currentCharacterIndex = Math.Min(storyText.textInfo.characterInfo.Length - 1, Math.Max(0, numCharactersRevealed));//storyTextMesh.maxVisibleCharacters - 1));
+                // ONCE WE GET TO THE END OF THE SCREEN,
+                // WAIT UNTIL THE PLAYER CLICKS.
                 int currentLineNumber = storyText.textInfo.characterInfo[currentCharacterInt].lineNumber;
 
                 var currentLineScrollY = ScrollYForLine(currentLineNumber, Line.AtBottom);
 
                 if (currentLineScrollY > targetScrollY)
                 {
+                    // WAIT UNTIL THE USER HAS CLICKED TO CONTINUE.
+                    //waitingOnClickToContinue = true;
+                    //isWaiting = false;
+
+                    //while (!Input.GetButton("Select"))
+                    //{
+                    //    storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                    //    yield return null;
+                    //}
+
+                    //yield return null;
+
+                    //waitingOnClickToContinue = false;
+                    //isWaiting = true;
+
                     int lineNumberNearTheBottom = Math.Max(0, currentLineNumber - 2);
                     var newTargetScrollY = ScrollYForLine(lineNumberNearTheBottom, Line.AtTop);
 
@@ -768,47 +789,70 @@ public class Game : MonoBehaviour
         RunNewScenes();
     }
 
+    private static bool waitingOnClickToContinue = false;
+
     private IEnumerator FadeInButtons()
     {
         buttonsFadedIn = true;
 
-        var button1Fade = StartCoroutine( FadeButton(choice1Button, choice1Text, buttonFadeInSeconds, fadeIn: true) );
-        var button2Fade = StartCoroutine( FadeButton(choice2Button, choice2Text, buttonFadeInSeconds, fadeIn: true) );
+        if (waitingOnClickToContinue)
+        {
+            const string clickToContinueText = "Click to continue...";
+            yield return FadeButton(clickToContinue.gameObject, clickToContinueText, buttonFadeInSeconds, fadeIn: true);
+        }
+        else
+        {
+            var button1Fade = StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeInSeconds, fadeIn: true));
+            var button2Fade = StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeInSeconds, fadeIn: true));
 
-        yield return button1Fade;
-        yield return button2Fade;
+            yield return button1Fade;
+            yield return button2Fade;
+        }
     }
 
     private IEnumerator FadeOutButtons()
     {
         buttonsFadedIn = false;
 
-        var button1Fade = StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeOutSeconds, fadeIn: false));
-        var button2Fade = StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeOutSeconds, fadeIn: false));
+        if (waitingOnClickToContinue)
+        {
+            yield return FadeButton(clickToContinue.gameObject, null, buttonFadeInSeconds, fadeIn: false);
+        }
+        else
+        {
+            var button1Fade = StartCoroutine(FadeButton(choice1Button, choice1Text, buttonFadeOutSeconds, fadeIn: false));
+            var button2Fade = StartCoroutine(FadeButton(choice2Button, choice2Text, buttonFadeOutSeconds, fadeIn: false));
 
-        yield return button1Fade;
-        yield return button2Fade;
+            yield return button1Fade;
+            yield return button2Fade;
+        }
     }
 
     private IEnumerator FadeButton(GameObject button, string text, float secondsToFade, bool fadeIn)
     {
-        var buttonImage = button.GetComponent<CanvasGroup>();
+        // IF WE'RE FADING IN, SET THE BUTTON'S TEXT.
+        if (fadeIn)
+        {
+            var textMesh = button.GetComponentInChildren<TextMeshProUGUI>();
+            if (textMesh != null)
+            {
+                textMesh.text = text;
+            }
+        }
 
         float startingAlpha = fadeIn ? 0 : 1;
         float targetAlpha = fadeIn ? 1 : 0;
 
+        var buttonImage = button.GetComponent<CanvasGroup>();
         buttonImage.alpha = startingAlpha;
-        if (fadeIn)
-        {
-            button.GetComponentInChildren<TextMeshProUGUI>().text = text;
-        }
+
         button.SetActive(true);
 
         yield return null;
 
         var startingTime = Time.time;
-
         float newAlpha = startingAlpha;
+
         while (Mathf.Abs(newAlpha - targetAlpha) > Mathf.Epsilon)
         {
             newAlpha = Mathf.Lerp(startingAlpha, targetAlpha, (Time.time - startingTime) / secondsToFade);

@@ -63,8 +63,6 @@
       "God",
       "Gold",
       "Hope",
-      "Muck",
-      "Mud",
       "Silver",
       "Smoke",
       "Souls",
@@ -231,6 +229,46 @@
       "Name": "Potteryboise",
       "MainFeature": "DeltaTown",
       "Industry": "Clay"
+    },
+    {
+      "Name": "Dabsaltmaes",
+      "MainFeature": "BayTown",
+      "Industry": "Salt"
+    },
+    {
+      "Name": "Corduroy O Vey",
+      "MainFeature": "ConfluenceTown",
+      "Industry": "HardwoodLumber"
+    },
+    {
+      "Name": "Dekusville",
+      "MainFeature": "RoadAndLakeTown",
+      "Industry": "Beans"
+    },
+    {
+      "Name": "Deathococo",
+      "MainFeature": "SpringTown",
+      "Industry": "SugarCane"
+    },
+    {
+      "Name": "Marijoy Marion",
+      "MainFeature": "BayTown",
+      "Industry": "Fishing"
+    },
+    {
+      "Name": "Rocks O Lee",
+      "MainFeature": "RoadAndRiver",
+      "Industry": "Rice"
+    },
+    {
+      "Name": "Rocks O Man",
+      "MainFeature": "LakeTown",
+      "Industry": "Granite"
+    },
+    {
+      "Name": "Rosemary Rock",
+      "MainFeature": "RiverTown",
+      "Industry": "CopperOre"
     }
   ],
   "MainFeatures": {
@@ -303,6 +341,15 @@
       "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
       "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
     },
+    "Beans": {
+      "WorkGer": "working in the bean fields",
+      "Workplace": "in the bean fields",
+      "GoodsGer": "growing",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to dry the first bean crops to be stored in the storehouses.",
+      "GoodDayFinal": "The fields are full, beans are drying, and the storehouses will be filled quickly. You'll be ready for the winter in no time."
+    },
     "Rice": {
       "WorkGer": "working in the rice flats",
       "Workplace": "in the rice flats",
@@ -357,6 +404,15 @@
       "GoodDay": "The mining is safe and efficient, and your buckets fill with iron ore. Smelting it yields good quality iron this week.",
       "GoodDayFinal": "In the mines, you run into a new vein of iron ore. Everyone's very excited. You all prepare to excavate the new vein."
     },
+    "CopperOre": {
+      "WorkGer": "mining copper ore",
+      "Workplace": "in the copper mines",
+      "GoodsGer": "bringing up",
+      "Goods": "iron",
+      "Purpose": "to trade for food and supplies, which provides for",
+      "GoodDay": "The mining is safe and efficient, and your buckets fill with copper ore. Smelting it yields good quality copper this week.",
+      "GoodDayFinal": "In the mines, you run into a new vein of copper ore. Everyone's very excited. You all prepare to excavate the new vein."
+    },
     "Granite": {
       "WorkGer": "mining granite",
       "Workplace": "at the granite quarry",
@@ -365,6 +421,15 @@
       "Purpose": "to build your village and trade for food and supplies, which provides for",
       "GoodDay": "In the quarry, work goes quickly and efficiently. Quality granite is extracted, and you know it will get a good price in the markets.",
       "GoodDayFinal": "Granite extraction continues without any interruptions or accidents. Everyone is happy to see the fine stone being mined from the quarry."
+    },
+    "Salt": {
+      "WorkGer": "mining salt",
+      "Workplace": "it the salt mines",
+      "GoodsGer": "extracting",
+      "Goods": "salt",
+      "Purpose": "to season your meals and trade for food and supplies, which provides for",
+      "GoodDay": "In the salt mines, work goes quickly and efficiently. Quality salt is extracted, and you know it will get a good price in the markets.",
+      "GoodDayFinal": "Salt mining continues without any interruptions or accidents, thankfully. Everyone is happy to see the fine salt being removed from the mine."
     },
     "Clay": {
       "WorkGer": "collecting clay",
@@ -383,6 +448,24 @@
       "Purpose": "to provide food and leather for",
       "GoodDay": "The sun is shining today and you find fresh grass for the cattle the graze. The cattle are very happy.",
       "GoodDayFinal": "The cattle are thriving, and they graze happily as they often do under the warm sun. A new calf was born this week."
+    },
+    "HardwoodLumber": {
+      "WorkGer": "working in the forest",
+      "Workplace": "in the forest",
+      "GoodsGer": "chopping",
+      "Goods": "hardwood trees",
+      "Purpose": "to build your homes and furniture, and trade for food to feed",
+      "GoodDay": "Working in the forest is safe and today, and fortune smiles upon you. Several good clumps of trees are discovered that are ready to be felled.",
+      "GoodDayFinal": "The forest is alive, and your axes are sharp. You'll bring in the best lumber this week, and there will be plenty next season as well."
+    },
+    "SugarCane": {
+      "WorkGer": "working in the sugar cane fields",
+      "Workplace": "in the sugar cane fields",
+      "GoodsGer": "harvesting",
+      "Goods": "sugar cane",
+      "Purpose": "to trade to nearby villages for food and supplies to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to process the first crop of sugar cane.",
+      "GoodDayFinal": "The fields are full and sugar is being extracted from the sugar cane as fast as you can harvest it."
     }
   }
 }
