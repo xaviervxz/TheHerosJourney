@@ -116,6 +116,8 @@ public class Game : MonoBehaviour
 
     private static bool buttonsFadedIn;
 
+    private static string[] paragraphs = new string[0];
+
     /// <summary>
     /// RESET GAMEOBJECTS. LOAD FILEDATA AND PICK A STORY. RUN THE FIRST SCENE.
     /// </summary>
@@ -270,12 +272,14 @@ public class Game : MonoBehaviour
     {
         // EDGE CASE FOR THE FIRST LINE,
         // TO SHOW OFF THE TOP OF THE PARCHMENT SCROLL.
-        if (lineNumber == 0 && linePos == Line.AtTop)
+        if (lineNumber <= 0 && linePos == Line.AtTop)
         {
             return 0;
         }
 
-        var scrollY = lineNumber * (storyText.fontSize + 4);
+        float lineHeight = (storyText.font.faceInfo.lineHeight + storyText.lineSpacing) / (storyText.font.faceInfo.pointSize / storyText.fontSize);
+        var scrollY = (lineNumber - 1) * lineHeight + 45;
+
         if (linePos == Line.AtBottom)
         {
             float parentsHeight = storyContainer.rect.height;
@@ -374,7 +378,7 @@ public class Game : MonoBehaviour
             File.WriteAllText(filePath, storyContents);
         }
 
-        IEnumerator WriteToStory(string text)
+        IEnumerator WriteOutStory()
         {
             IEnumerator FadeInLetter(TMP_CharacterInfo letter, int characterIndex)
             {
@@ -447,17 +451,53 @@ public class Game : MonoBehaviour
                 yield return null;
             }
 
+            bool LineIsBelowBottom(int lineNumber)
+            {
+                var currentLineScrollY = ScrollYForLine(lineNumber, Line.AtBottom);
+
+                return currentLineScrollY > targetScrollY;
+            }
+
             // SCROLL DOWN TO THE END OF THE LAST LINE,
             // AND ADD THE NEW TEXT TO THE STORY.
 
             currentCharacterInt = storyText.textInfo.characterCount;
             int oldLineCount = storyText.textInfo.lineCount;
 
+            StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
+
+            // HOW MANY PARAGRAPHS SHOULD WE SHOW NOW?
+            int numParagraphs = 0;
+            foreach (var paragraph in paragraphs)
+            {
+                string previousStoryText = storyText.text;
+
+                if (!string.IsNullOrWhiteSpace(storyText.text))
+                {
+                    storyText.text += Environment.NewLine + Environment.NewLine;
+                }
+                storyText.text += paragraph;
+                storyText.ForceMeshUpdate(ignoreInactive: true);
+
+                if (LineIsBelowBottom(storyText.textInfo.characterInfo[storyText.textInfo.characterCount - 1].lineNumber))
+                {
+                    storyText.text = previousStoryText;
+                    storyText.ForceMeshUpdate(ignoreInactive: true);
+
+                    break;
+                }
+                else
+                {
+                    numParagraphs += 1;
+                }
+            }
+            paragraphs = paragraphs.Skip(numParagraphs).ToArray();
+
             // Note to future me: Do NOT depend on text.Length in this function.
             // The text variable has formatting info in it, which is NOT
             // counted in the textInfo.characterCount variable.
-            storyText.text += text;
-            storyText.ForceMeshUpdate(ignoreInactive: true);
+            //storyText.text += text;
+            //storyText.ForceMeshUpdate(ignoreInactive: true);
             
             // HIDE ALL THE NEW LETTERS
 
@@ -467,7 +507,6 @@ public class Game : MonoBehaviour
                 StartCoroutine(FadeInLetter(newLetter.letter, newLetter.index));
             }
 
-            StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
 
             // FADE IN ALL NEW LETTERS ONE BY ONE
 
@@ -588,12 +627,15 @@ hasPausedBetweenTheseParagraphs = true;
             }
         }
 
+        // Split the newStoryText into paragraphs.
+        paragraphs = newStoryText.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+        newStoryText = "";
+
         //const string sentence = "The quick brown fox jumps over the lazy dog. ";
         //StartCoroutine(WriteToStory(string.Join(" ", Enumerable.Repeat(sentence, 10))));
-        StartCoroutine(WriteToStory(newStoryText));
+        StartCoroutine(WriteOutStory());
 
         // Clear the newStoryText.
-        newStoryText = "";
     }
 
     private void WriteMessage(string message)
@@ -674,11 +716,11 @@ hasPausedBetweenTheseParagraphs = true;
 
     public void ShowFeedbackForm()
     {
-        feedbackForm.alpha = 1;
         feedbackFormParent.interactable = true;
-        feedbackText.text = "";
-        feedbackThankYou.alpha = 0;
+        feedbackThankYou.gameObject.SetActive(false);
         feedbackForm.gameObject.SetActive(true);
+        feedbackForm.alpha = 1;
+        feedbackText.text = "";
 
         StartCoroutine(FadeMenu(feedbackFormParent, fadeIn: true));
 
@@ -717,6 +759,9 @@ hasPausedBetweenTheseParagraphs = true;
                 {
                     yield return null;
                 }
+
+                feedbackThankYou.alpha = 0;
+                feedbackThankYou.gameObject.SetActive(true);
 
                 var fadeOutForm = FadeMenu(feedbackForm, fadeIn: false);
                 var fadeInThankYou = FadeMenu(feedbackThankYou, fadeIn: true);

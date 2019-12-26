@@ -223,6 +223,10 @@ namespace NeverendingStory.Functions
                 };
 
                 // GENERATE A MAIN FEATURE
+                if (!data.LocationData.MainFeatures.ContainsKey(townTemplate.MainFeature))
+                {
+                    throw new Exception("Missing Town Feature: The town \"" + townTemplate.Name + "\" has the non-existent Main Feature \"" + townTemplate.MainFeature + ".\"");
+                }
                 var feature = data.LocationData.MainFeatures[townTemplate.MainFeature];
 
                 var featureLocations = new List<Location>();
@@ -254,6 +258,10 @@ namespace NeverendingStory.Functions
                 }
 
                 // PICK AN INDUSTRY
+                if (!data.LocationData.Industries.ContainsKey(townTemplate.Industry))
+                {
+                    throw new Exception("Missing Town Industry: The town \"" + townTemplate.Name + "\" has the non-existent Industry \"" + townTemplate.Industry + ".\"");
+                }
                 town.MainIndustry = townTemplate.Industry;
                 town.MainIndustryData = data.LocationData.Industries[town.MainIndustry];
 
