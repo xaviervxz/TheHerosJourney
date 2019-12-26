@@ -468,7 +468,8 @@ public class Game : MonoBehaviour
             var firstCharacterAfterFirstLine = currentCharacterInt + storyText.textInfo.characterInfo.Skip(currentCharacterInt).Count(c => c.style == FontStyles.Italic);
 
             float currentCharacterFloat = currentCharacterInt;
-            int test = 0;
+            bool hasPausedBetweenTheseParagraphs = false;
+            //int test = currentCharacterInt;
             while (currentCharacterInt < storyText.textInfo.characterCount)
             {
                 int previousCharacter = currentCharacterInt;
@@ -484,8 +485,36 @@ public class Game : MonoBehaviour
                 // Advancing this variable makes the fading in letters realize
                 // it's their turn and they should just go for it.
                 currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.textInfo.characterCount);
-                test = currentCharacterInt;
+                //test = currentCharacterInt;
 
+                if (storyText.textInfo.characterInfo.Skip(currentCharacterInt)
+                    .Take(currentCharacterInt - previousCharacter)
+                    .Any(c => c.character == '\n' || c.character == '\r')
+                    && currentCharacterInt + 1 < storyText.textInfo.characterCount
+                    && !char.IsWhiteSpace(storyText.textInfo.characterInfo[currentCharacterInt + 1].character))
+                {
+                    if (!hasPausedBetweenTheseParagraphs)
+                    {
+                        hasPausedBetweenTheseParagraphs = true;
+
+                        // Don't use WaitForSeconds here,
+                        // UpdateVertexData still needs to be called every frame.
+                        float waitUntilTime = Time.time + 10F / lettersPerSecond;
+                        while (waitUntilTime > Time.time)
+                        {
+                            storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                            yield return null;
+                        }
+
+                        continue;
+                    }
+                }
+                else
+                {
+                    hasPausedBetweenTheseParagraphs = false;
+                }
+
+                // ERROR CHECKING FOR THE NEXT PART
                 if (currentCharacterInt >= storyText.textInfo.characterInfo.Length)
                 {
                     yield return null;
@@ -624,13 +653,13 @@ public class Game : MonoBehaviour
 
     public void ShowFeedbackForm()
     {
-        StartCoroutine(FadeMenu(feedbackFormParent, fadeIn: true));
-
         feedbackForm.alpha = 1;
         feedbackFormParent.interactable = true;
         feedbackText.text = "";
         feedbackThankYou.alpha = 0;
         feedbackForm.gameObject.SetActive(true);
+
+        StartCoroutine(FadeMenu(feedbackFormParent, fadeIn: true));
 
         feedbackText.Select();
     }
