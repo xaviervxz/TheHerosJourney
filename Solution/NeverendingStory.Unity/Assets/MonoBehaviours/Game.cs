@@ -511,6 +511,7 @@ public class Game : MonoBehaviour
             // FADE IN ALL NEW LETTERS ONE BY ONE
 
             var firstCharacterAfterFirstLine = currentCharacterInt + storyText.textInfo.characterInfo.Skip(currentCharacterInt).Count(c => c.style == FontStyles.Italic);
+            firstCharacterAfterFirstLine += storyText.textInfo.characterInfo.Skip(currentCharacterInt).Take(firstCharacterAfterFirstLine - currentCharacterInt).Count(c => c.style != FontStyles.Italic) + (Environment.NewLine.Length * 2);
 
             float currentCharacterFloat = currentCharacterInt;
             bool hasPausedBetweenTheseParagraphs = false;
@@ -532,6 +533,7 @@ public class Game : MonoBehaviour
                 currentCharacterInt = Math.Min(Mathf.FloorToInt(currentCharacterFloat), storyText.textInfo.characterCount);
                 //test = currentCharacterInt;
 
+                // PAUSE BRIEFLY BETWEEN PARAGRAPHS.
                 if (storyText.textInfo.characterInfo.Skip(currentCharacterInt)
                     .Take(currentCharacterInt - previousCharacter)
                     .Any(c => c.character == '\n' || c.character == '\r')
@@ -540,7 +542,7 @@ public class Game : MonoBehaviour
                 {
                     if (!hasPausedBetweenTheseParagraphs)
                     {
-hasPausedBetweenTheseParagraphs = true;
+                        hasPausedBetweenTheseParagraphs = true;
 
                         // Don't use WaitForSeconds here,
                         // UpdateVertexData still needs to be called every frame.
