@@ -525,6 +525,7 @@ public class Game : MonoBehaviour
             {
                 if (tutorial.activeInHierarchy)
                 {
+                    storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
                     yield return null;
                     continue;
                 }
