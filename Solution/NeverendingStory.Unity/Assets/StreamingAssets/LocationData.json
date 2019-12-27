@@ -237,7 +237,7 @@
     },
     {
       "Name": "Corduroy O Vey",
-      "MainFeature": "ConfluenceTown",
+      "MainFeature": "RiverConfluenceTown",
       "Industry": "HardwoodLumber"
     },
     {
@@ -257,7 +257,7 @@
     },
     {
       "Name": "Rocks O Lee",
-      "MainFeature": "RoadAndRiver",
+      "MainFeature": "RoadAndRiverTown",
       "Industry": "Rice"
     },
     {

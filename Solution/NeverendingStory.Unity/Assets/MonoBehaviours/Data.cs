@@ -4,7 +4,7 @@ namespace Assets.MonoBehaviours
 {
     public static class Data
     {
-        public static string PlayersName = "";
+        public static string PlayersName = "Marielle";
 
         public static Sex PlayersSex = Sex.Female;
 

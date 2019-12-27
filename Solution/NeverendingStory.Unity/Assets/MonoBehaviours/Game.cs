@@ -50,6 +50,11 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
+    private GameObject tutorial;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
     private CanvasGroup almanacMenu;
 #pragma warning restore 0649
 
@@ -518,6 +523,12 @@ public class Game : MonoBehaviour
             //int test = currentCharacterInt;
             while (currentCharacterInt < storyText.textInfo.characterCount)
             {
+                if (tutorial.activeInHierarchy)
+                {
+                    yield return null;
+                    continue;
+                }
+
                 int previousCharacter = currentCharacterInt;
                 currentCharacterFloat += lettersPerSecond * Time.deltaTime;
                 currentCharacterFloat = Math.Max(firstCharacterAfterFirstLine, currentCharacterFloat);
