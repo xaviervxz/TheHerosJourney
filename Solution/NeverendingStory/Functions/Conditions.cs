@@ -96,7 +96,7 @@ namespace NeverendingStory.Functions
                 // FIGURE OUT WHAT WE WANT TO KNOW ABOUT THAT LOCATION
                 bool isInLocation = false;
 
-                bool isLocationType = Enum.TryParse(conditionPieces[2].ToTitleCase(), out LocationType locationType);
+                bool isLocationType = Enum.TryParse(conditionPieces[2].CapitalizeFirstLetter(), out LocationType locationType);
 
                 if (isLocationType)
                 {

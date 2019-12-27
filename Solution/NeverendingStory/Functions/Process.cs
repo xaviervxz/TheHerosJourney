@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace NeverendingStory.Functions
 {
-    internal static class Process
+    public static class Process
     {
-        internal static string ToTitleCase(this string text)
+        internal static string CapitalizeFirstLetter(this string text)
         {
             if (string.IsNullOrWhiteSpace(text))
             {
@@ -38,7 +38,7 @@ namespace NeverendingStory.Functions
         internal static T? ParseToValidType<T>(this string rawType)
             where T : struct
         {
-            if (Enum.TryParse(rawType.ToTitleCase(), out T type))
+            if (Enum.TryParse(rawType.CapitalizeFirstLetter(), out T type))
             {
                 return type;
             }
@@ -46,7 +46,7 @@ namespace NeverendingStory.Functions
             return null;
         }
 
-        internal static string Message(FileData fileData, Story story, string message)
+        public static string Message(FileData fileData, Story story, string message)
         {
             /*static */string subMessage(string subMessageText, Story pStory, FileData pFileData)
             {
@@ -202,7 +202,7 @@ namespace NeverendingStory.Functions
                 else if (primaryKey == "almanac" && keyPieces.Length >= 3)
                 {
                     // STORE THE LOCATION IN THE ALMANAC.
-                    string almanacTitle = subMessage(keyPieces[1], story, fileData).ToTitleCase();
+                    string almanacTitle = subMessage(keyPieces[1], story, fileData).CapitalizeFirstLetter();
                     string almanacDescription = subMessage(keyPieces[2], story, fileData);
 
                     if (story.Almanac.TryGetValue(almanacTitle, out string existingDescription)
@@ -243,7 +243,7 @@ namespace NeverendingStory.Functions
 
                         if (titleCase)
                         {
-                            value = value.ToTitleCase();
+                            value = value.CapitalizeFirstLetter();
                         }
 
                         return value;
@@ -365,7 +365,7 @@ namespace NeverendingStory.Functions
                     }
                     else
                     {
-                        string rawLocationType = locationRelation.ToTitleCase();
+                        string rawLocationType = locationRelation.CapitalizeFirstLetter();
                         bool locationTypeExists = Enum.TryParse(rawLocationType, out LocationType locationType);
 
                         if (locationTypeExists)
@@ -415,7 +415,7 @@ namespace NeverendingStory.Functions
                     {
                         if (keyPieces[3] == "cap")
                         {
-                            replacementValue = replacementValue.ToTitleCase();
+                            replacementValue = replacementValue.CapitalizeFirstLetter();
                         }
                     }
 
@@ -461,7 +461,7 @@ namespace NeverendingStory.Functions
 
                         if (titleCase)
                         {
-                            value = value.ToTitleCase();
+                            value = value.CapitalizeFirstLetter();
                         }
 
                         return value;
@@ -589,6 +589,180 @@ namespace NeverendingStory.Functions
             }
 
             return replacedMessage;
+        }
+
+        public static SavedGameData GetSavedGameFrom(FileData fileData, Story story, string theStorySoFar)
+        {
+            SavedCharacter MapCharacter(Character character)
+            {
+                var savedCharacter = new SavedCharacter
+                {
+                    Name = character.Name,
+                    Sex = character.Sex,
+                    Relationship = character.Relationship,
+                    Hometown = character.Hometown?.Name,
+                    CurrentLocation = character.CurrentLocation?.Name,
+                    Goal = character.Goal?.Name,
+                    Inventory = character.Inventory
+                        .Select(item => new SavedItem
+                        {
+                            Identifier = item.Identifier,
+                            Name = item.Name,
+                            Description = item.Description
+                        })
+                        .ToArray()
+                };
+
+                return savedCharacter;
+            }
+
+            var savedGameData = new SavedGameData
+            {
+                CompletedSceneIds = fileData.Scenes.Where(s => s.Done).Select(s => s.Identifier).ToArray(),
+                TheStorySoFar = theStorySoFar,
+                Seed = story.Seed,
+                CurrentStage = story.CurrentStage,
+                CurrentStageNumber = story.CurrentStageNumber,
+                NextSceneIdentifier = story.NextSceneIdentifier,
+                Almanac = new Dictionary<string, string>(story.Almanac),
+                Flags = new Dictionary<string, string>(story.Flags),
+                You = MapCharacter(story.You),
+                Characters = story.Characters.Select(MapCharacter).ToArray(),
+                NamedCharacters = story.NamedCharacters.ToDictionary(nc => nc.Key, nc => nc.Value.Name),
+                Locations = story.Locations
+                    .Select(location => {
+                        var savedLocation = new SavedLocation
+                        {
+                            Name = location.Name,
+                            HasThe = location.HasThe,
+                            Type = location.Type,
+                            SpecificType = location.SpecificType
+                        };
+
+                        if (location is Town)
+                        {
+                            var town = location as Town;
+
+                            savedLocation.TownIndustry = town.MainIndustry;
+                            savedLocation.TownFeatureRelativePosition = town.MainFeature.RelativePosition;
+                            savedLocation.TownFeatureLocations = town.MainFeature.Locations.Select(l => l.Name).ToArray();
+                        }
+
+                        return savedLocation;
+                    })
+                    .ToArray(),
+                NamedLocations = story.NamedLocations.ToDictionary(nc => nc.Key, nc => nc.Value.Name)
+            };
+
+            return savedGameData;
+        }
+
+        /// <returns>The loaded story and the "story so far,"
+        /// to be loaded into the storyText element, if applicable.</returns>
+        public static Tuple<Story, string> LoadStoryFrom(FileData fileData, SavedGameData savedGameData)
+        {
+            var loadedStory = new Story
+            {
+                Seed = savedGameData.Seed,
+                CurrentStage = savedGameData.CurrentStage,
+                CurrentStageNumber = savedGameData.CurrentStageNumber,
+                NextSceneIdentifier = savedGameData.NextSceneIdentifier,
+                Almanac = new Dictionary<string, string>(savedGameData.Almanac),
+                Flags = new Dictionary<string, string>(savedGameData.Flags)
+            };
+
+            Location FindLocation(string locationName)
+            {
+                var foundLocation = loadedStory.Locations.FirstOrDefault(l => l.Name == locationName);
+
+                return foundLocation;
+            }
+
+            foreach (var savedLocation in savedGameData.Locations)
+            {
+                Location location;
+
+                if (savedLocation.Type == LocationType.Town)
+                {
+                    location = new Town();
+                    var town = location as Town;
+
+                    town.MainIndustry = savedLocation.TownIndustry;
+                    town.MainIndustryData = fileData.LocationData.Industries[savedLocation.TownIndustry];
+                    town.MainFeature = new Feature
+                    {
+                        RelativePosition = savedLocation.TownFeatureRelativePosition
+                        // FILL IN THE TOWN FEATURE LOCATIONS LATER
+                    };
+                }
+                else
+                {
+                    location = new Location();
+                }
+
+                location.Name = savedLocation.Name;
+                location.HasThe = savedLocation.HasThe;
+                location.SpecificType = savedLocation.SpecificType;
+                location.Type = savedLocation.Type;
+
+                loadedStory.Locations.Add(location);
+            }
+
+            foreach (var savedLocation in savedGameData.Locations)
+            {
+                if (savedLocation.Type == LocationType.Town)
+                {
+                    var town = FindLocation(savedLocation.Name) as Town;
+
+                    town.MainFeature.Locations = savedLocation.TownFeatureLocations.Select(FindLocation).ToArray();
+                }
+            }
+
+            foreach (var namedLocation in savedGameData.NamedLocations)
+            {
+                loadedStory.NamedLocations.Add(namedLocation.Key, FindLocation(namedLocation.Value));
+            }
+
+            Character MapCharacter(SavedCharacter savedCharacter)
+            {
+                var character = new Character
+                {
+                    Name = savedCharacter.Name,
+                    Sex = savedCharacter.Sex,
+                    Relationship = savedCharacter.Relationship,
+                    Hometown = (Town) FindLocation(savedCharacter.Hometown),
+                    CurrentLocation = FindLocation(savedCharacter.CurrentLocation),
+                    Goal = FindLocation(savedCharacter.Goal)
+                };
+
+                character.Inventory.AddRange(savedCharacter.Inventory
+                    .Select(item => new Item
+                    {
+                        Identifier = item.Identifier,
+                        Name = item.Name,
+                        Description = item.Description
+                    })
+                    .ToList()
+                );
+
+                return character;
+            }
+
+            loadedStory.You = MapCharacter(savedGameData.You);
+
+            foreach (var savedCharacter in savedGameData.Characters)
+            {
+                var character = MapCharacter(savedCharacter);
+
+                loadedStory.Characters.Add(character);
+            }
+
+            foreach (var namedCharacter in savedGameData.NamedCharacters)
+            {
+                loadedStory.NamedCharacters.Add(namedCharacter.Key, loadedStory.Characters.FirstOrDefault(c => c.Name == namedCharacter.Value));
+            }
+
+            return new Tuple<Story, string>(loadedStory, savedGameData.TheStorySoFar);
         }
     }
 }

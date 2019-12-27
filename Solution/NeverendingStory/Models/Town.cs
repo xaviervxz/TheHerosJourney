@@ -9,8 +9,6 @@
         public Industry MainIndustry { get; set; }
 
         public IndustryData MainIndustryData { get; set; }
-
-        public Location[] NearbyLocations { get; set; }
     }
 
     public class Feature

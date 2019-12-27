@@ -13,7 +13,7 @@ namespace NeverendingStory.Test.Functions
         public void Process_ToTitleCase_CapitalizesJustFirstLetter(string input, string expectedOutput)
         {
 
-            string output = Process.ToTitleCase(input);
+            string output = Process.CapitalizeFirstLetter(input);
 
             Assert.AreEqual(expectedOutput, output);
         }

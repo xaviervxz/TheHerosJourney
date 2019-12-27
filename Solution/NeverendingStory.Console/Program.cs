@@ -34,7 +34,7 @@ namespace NeverendingStory.Console
             /// <param name="tabSize">The value that indicates the column width of tab characters.</param>
             static void WriteMessage(string paragraph)
             {
-                paragraph = Run.ProcessMessage(fileData, story, paragraph);
+                paragraph = Process.Message(fileData, story, paragraph);
 
                 MessageLog.Add(paragraph);
 
@@ -218,6 +218,10 @@ namespace NeverendingStory.Console
             bool gameRunning = true;
             while (gameRunning)
             {
+                var savedGame = Process.GetSavedGameFrom(fileData, story, "");
+                string ignore;
+                (story, ignore) = Process.LoadStoryFrom(fileData, savedGame);
+
                 // IF WE WERE JUST CHECKING INVENTORY OR SOMETHING,
                 // DON'T PICK A NEW SCENE.
                 if (getNewScene)
