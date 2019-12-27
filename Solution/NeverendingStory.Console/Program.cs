@@ -10,7 +10,11 @@ namespace NeverendingStory.Console
 {
     internal class Program
     {
-        static List<string> MessageLog = new List<string>();
+        private static List<string> MessageLog = new List<string>();
+
+        private static FileData fileData;
+
+        private static Story story;
 
         static void Main(string[] args)
         {
@@ -30,6 +34,8 @@ namespace NeverendingStory.Console
             /// <param name="tabSize">The value that indicates the column width of tab characters.</param>
             static void WriteMessage(string paragraph)
             {
+                paragraph = Run.ProcessMessage(fileData, story, paragraph);
+
                 MessageLog.Add(paragraph);
 
                 const int tabSize = 8;
@@ -139,11 +145,11 @@ namespace NeverendingStory.Console
             var locationDataStream = GetDataResourceStream("LocationData.json");
             var scenesStream = GetDataResourceStream("Scenes.ods");
 
-            var fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
+            fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
 
             string[] scenesToTest = null;// new []{ "MWG2" };
 
-            var story = Run.NewStory(fileData, null, scenesToTest);
+            story = Run.NewStory(fileData, null, scenesToTest);
 
             // DISPLAY INTRODUCTION
             // LET THE PLAYER PICK THEIR NAME AND SEX
@@ -247,7 +253,7 @@ namespace NeverendingStory.Console
 
                 // IF THERE ARE CHOICES AVAILABLE IN THIS SCENE,
                 // PROCESS AND DISPLAY THEM.
-                bool choicesExist = Run.PresentChoices(fileData, story, currentScene, PresentChoices, WriteMessage);
+                bool choicesExist = Run.PresentChoices(currentScene, PresentChoices, WriteMessage);
 
                 if (!choicesExist)
                 {
@@ -296,13 +302,13 @@ exit - exit the story");
                 }
                 else if (input == "1")
                 {
-                    Run.Outro1(fileData, story, currentScene, WriteMessage);
+                    Run.Outro1(currentScene, WriteMessage);
 
                     getNewScene = true;
                 }
                 else if (input == "2")
                 {
-                    Run.Outro2(fileData, story, currentScene, WriteMessage);
+                    Run.Outro2(currentScene, WriteMessage);
 
                     getNewScene = true;
                 }

@@ -46,13 +46,13 @@ namespace NeverendingStory.Functions
             return null;
         }
 
-        internal static string Message(string message, Story story, FileData fileData)
+        internal static string Message(FileData fileData, Story story, string message)
         {
             /*static */string subMessage(string subMessageText, Story pStory, FileData pFileData)
             {
                 var replacedSubMessage = subMessageText.Replace("[", "{").Replace("]", "}").Replace("-", ":");
 
-                string processedSubMessage = Process.Message(replacedSubMessage, pStory, pFileData);
+                string processedSubMessage = Process.Message(pFileData, pStory, replacedSubMessage);
 
                 return processedSubMessage;
             }

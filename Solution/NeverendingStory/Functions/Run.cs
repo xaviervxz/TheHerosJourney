@@ -76,31 +76,37 @@ namespace NeverendingStory.Functions
             return story;
         }
 
+        public static string ProcessMessage(FileData fileData, Story story, string message)
+        {
+            string processedMessage = Process.Message(fileData, story, message);
+
+            return processedMessage;
+        }
+
         public static Scene NewScene(FileData fileData, Story story, Action<string> addTextToStory)
         {
             var newScene = Pick.NextScene(fileData.Scenes, story);
 
             if (newScene != null)
             {
-                // PROCESS AND DISPLAY MAIN MESSAGE
-                string message = Process.Message(newScene.Message, story, fileData);
-                addTextToStory(message);
+                // DISPLAY MAIN MESSAGE
+                addTextToStory(newScene.Message);
             }
 
             return newScene;
         }
 
-        public static void Outro1(FileData fileData, Story story, Scene currentScene, Action<string> addTextToStory)
+        public static void Outro1(Scene currentScene, Action<string> addTextToStory)
         {
-            Outro(1, fileData, story, currentScene, addTextToStory);
+            Outro(1, currentScene, addTextToStory);
         }
 
-        public static void Outro2(FileData fileData, Story story, Scene currentScene, Action<string> addTextToStory)
+        public static void Outro2(Scene currentScene, Action<string> addTextToStory)
         {
-            Outro(2, fileData, story, currentScene, addTextToStory);
+            Outro(2, currentScene, addTextToStory);
         }
 
-        private static void Outro(byte outroNum, FileData fileData, Story story, Scene currentScene, Action<string> addTextToStory)
+        private static void Outro(byte outroNum, Scene currentScene, Action<string> addTextToStory)
         {
             if (currentScene == null)
             {
@@ -108,8 +114,7 @@ namespace NeverendingStory.Functions
                 return;
             }
 
-            string rawOutro = outroNum == 1 ? currentScene.Outro1 : currentScene.Outro2;
-            string outro = Process.Message(rawOutro, story, fileData);
+            string outro = outroNum == 1 ? currentScene.Outro1 : currentScene.Outro2;
 
             addTextToStory(outro);
             addTextToStory("");
@@ -117,7 +122,7 @@ namespace NeverendingStory.Functions
             currentScene.Done = true;
         }
 
-        public static bool PresentChoices(FileData fileData, Story story, Scene currentScene, Action<string, string> presentChoices, Action<string> addTextToStory)
+        public static bool PresentChoices(Scene currentScene, Action<string, string> presentChoices, Action<string> addTextToStory)
         {
             if (currentScene == null)
             {
@@ -132,8 +137,8 @@ namespace NeverendingStory.Functions
                 return false;
             }
 
-            string choice1 = Process.Message(currentScene.Choice1, story, fileData);
-            string choice2 = Process.Message(currentScene.Choice2, story, fileData);
+            string choice1 = currentScene.Choice1;
+            string choice2 = currentScene.Choice2;
 
             presentChoices(choice1, choice2);
 

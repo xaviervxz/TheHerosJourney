@@ -358,7 +358,7 @@ public class Game : MonoBehaviour
         {
             currentScene = Run.NewScene(Data.FileData, Story, WriteMessage);
 
-            choicesExist = Run.PresentChoices(Data.FileData, Story, currentScene, PresentChoices, WriteMessage);
+            choicesExist = Run.PresentChoices(currentScene, PresentChoices, WriteMessage);
 
             WriteMessage("");
         }
@@ -629,6 +629,9 @@ public class Game : MonoBehaviour
             }
         }
 
+        // PROCESS THE MESSAGES
+        newStoryText = Run.ProcessMessage(Data.FileData, Story, newStoryText);
+
         // Split the newStoryText into paragraphs.
         paragraphs = newStoryText.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
         newStoryText = "";
@@ -801,12 +804,12 @@ public class Game : MonoBehaviour
 
     public void Choose1()
     {
-        Choose(() => Run.Outro1(Data.FileData, Story, currentScene, WriteMessage), choice1Button.gameObject);
+        Choose(() => Run.Outro1(currentScene, WriteMessage), choice1Button.gameObject);
     }
 
     public void Choose2()
     {
-        Choose(() => Run.Outro2(Data.FileData, Story, currentScene, WriteMessage), choice2Button.gameObject);
+        Choose(() => Run.Outro2(currentScene, WriteMessage), choice2Button.gameObject);
     }
 
     private void Choose(Action runOutro, GameObject gameObject)
@@ -883,7 +886,8 @@ public class Game : MonoBehaviour
             var textMesh = button.GetComponentInChildren<TextMeshProUGUI>();
             if (textMesh != null)
             {
-                textMesh.text = text;
+                string processedText = Run.ProcessMessage(Data.FileData, Story, text);
+                textMesh.text = processedText;
             }
         }
 
