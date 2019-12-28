@@ -23,6 +23,7 @@ public class Game : MonoBehaviour
 
     private int lettersPerSecond = 25;
 
+    [Header("The Story")]
     [SerializeField]
 #pragma warning disable 0649
     private TextMeshProUGUI storyText;
@@ -33,6 +34,7 @@ public class Game : MonoBehaviour
     private RectTransform storyContainer;
 #pragma warning restore 0649
 
+    [Header("Choice Buttons")]
     [SerializeField]
 #pragma warning disable 0649
     private GameObject choice1Button;
@@ -45,14 +47,10 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
-    private CanvasGroup clickToContinue;
+    private CanvasGroup clickToContinueText;
 #pragma warning restore 0649
 
-    [SerializeField]
-#pragma warning disable 0649
-    private GameObject tutorial;
-#pragma warning restore 0649
-
+    [Header("Various Menus, etc.")]
     [SerializeField]
 #pragma warning disable 0649
     private CanvasGroup almanacMenu;
@@ -80,6 +78,17 @@ public class Game : MonoBehaviour
 
     [SerializeField]
 #pragma warning disable 0649
+    private GameObject scrollToEndButton;
+#pragma warning restore 0649
+
+    [SerializeField]
+#pragma warning disable 0649
+    private GameObject tutorial;
+#pragma warning restore 0649
+
+    [Header("Feedback Form")]
+    [SerializeField]
+#pragma warning disable 0649
     private CanvasGroup feedbackFormParent;
 #pragma warning restore 0649
 
@@ -103,25 +112,21 @@ public class Game : MonoBehaviour
     private CanvasGroup feedbackThankYou;
 #pragma warning restore 0649
 
-    [SerializeField]
-#pragma warning disable 0649
-    private GameObject scrollToEndButton;
-#pragma warning restore 0649
+    private Story Story;
+    private NeverendingStory.Models.Scene currentScene = null;
+    private bool isWaitingForStory = false;
 
-    private static Story Story;
-    private static NeverendingStory.Models.Scene currentScene = null;
-    private static bool isWaiting = false;
+    //private static string newStoryText = "";
+    private string choice1Text = "";
+    private string choice2Text = "";
+    private bool choicesExist = false;
 
-    private static string newStoryText = "";
-    private static string choice1Text = "";
-    private static string choice2Text = "";
+    private float targetScrollY = 0;
+    private bool skipToChoice = false;
 
-    private static float targetScrollY = 0;
-    private static bool skipToChoice = false;
+    private bool buttonsFadedIn;
 
-    private static bool buttonsFadedIn;
-
-    private static string[] paragraphs = new string[0];
+    private List<string> paragraphs = new List<string>();
 
     /// <summary>
     /// RESET GAMEOBJECTS. LOAD FILEDATA AND PICK A STORY. RUN THE FIRST SCENE.
@@ -135,7 +140,7 @@ public class Game : MonoBehaviour
 
         choice1Button.SetActive(false);
         choice2Button.SetActive(false);
-        clickToContinue.gameObject.SetActive(false);
+        clickToContinueText.gameObject.SetActive(false);
 
         almanacMenu.gameObject.SetActive(false);
         inventoryMenu.gameObject.SetActive(false);
@@ -143,7 +148,7 @@ public class Game : MonoBehaviour
 
         // RESET VARIABLES
 
-        isWaiting = true;
+        isWaitingForStory = true;
         buttonsFadedIn = false;
         targetScrollY = 0;
 
@@ -177,7 +182,7 @@ public class Game : MonoBehaviour
         Story.You.Name = Data.PlayersName;
         Story.You.Sex = Data.PlayersSex;
 
-        RunNewScenes();
+        ContinueStory(loadNewScene: true); // The choice to start the story. :) Setting this to true loads a new scene.
     }
 
     /// <summary>
@@ -190,7 +195,7 @@ public class Game : MonoBehaviour
         // AFTER THEY CHOOSE.
         // ***********************
 
-        if (isWaiting)
+        if (isWaitingForStory)
         {
             scrollToEndButton.SetActive(false);
 
@@ -241,7 +246,7 @@ public class Game : MonoBehaviour
             int bottomLine = Math.Max(0, storyText.textInfo.lineCount - 3);
             // Checking the actual position here, not the targetScrollY,
             // because we want to know if the story has ACTUALLY cleared the buttons,
-            // Not just if it's going to.
+            // NOT just if it's going to.
             if (storyContainer.anchoredPosition.y > ScrollYForLine(bottomLine, Line.AtBottom))
             {
                 scrollToEndButton.SetActive(false);
@@ -287,8 +292,8 @@ public class Game : MonoBehaviour
 
         if (linePos == Line.AtBottom)
         {
-            float parentsHeight = storyContainer.rect.height;
-            scrollY -= (parentsHeight - storyText.margin.w - 40);
+            float parentsHeight = storyText.rectTransform.rect.height;
+            scrollY -= (parentsHeight - storyText.margin.w);
         }
 
         var storyTextOffset = storyText.rectTransform.anchoredPosition.y;
@@ -340,49 +345,17 @@ public class Game : MonoBehaviour
 
     public void ScrollToEnd()
     {
-        var lastLineScrollY = ScrollYForLine(storyText.textInfo.lineCount - 1, Line.AtBottom);
+        var lastLineScrollY = ScrollYForLine(storyText.textInfo.lineCount, Line.AtBottom);
 
         if (lastLineScrollY > targetScrollY)
         {
-            StartCoroutine(ScrollToSmooth(storyText.textInfo.lineCount - 1, Line.AtBottom));
+            StartCoroutine(ScrollToSmooth(storyText.textInfo.lineCount, Line.AtBottom));
         }
     }
 
     private static int currentCharacterInt = 0;
-    private void RunNewScenes()
+    private void ContinueStory(bool loadNewScene)
     {
-        void PresentChoices(string choice1, string choice2)
-        {
-            choice1Text = choice1;
-            choice2Text = choice2;
-        }
-
-        bool choicesExist = false;
-
-        do
-        {
-            currentScene = Run.NewScene(Data.FileData, Story, WriteMessage);
-
-            choicesExist = Run.PresentChoices(currentScene, PresentChoices, WriteMessage);
-
-            WriteMessage("");
-        }
-        while (!choicesExist && currentScene != null);
-
-        WriteMessage("");
-
-        if (currentScene == null)
-        {
-            WriteMessage("");
-            WriteMessage("THE END");
-
-            // WRITE STORY TO LOG FILE.
-            // TODO: IMPROVE THIS, MAYBE?
-            string filePath = Path.Combine(Application.persistentDataPath, $"story_log_{DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss")}.txt");
-            string storyContents = storyText.text;
-            File.WriteAllText(filePath, storyContents);
-        }
-
         IEnumerator WriteOutStory()
         {
             IEnumerator FadeInLetter(TMP_CharacterInfo letter, int characterIndex)
@@ -420,7 +393,7 @@ public class Game : MonoBehaviour
                 {
                     yield return null;
                 }
-                while (characterIndex >= currentCharacterInt && isWaiting);
+                while (characterIndex >= currentCharacterInt && isWaitingForStory);
 
                 // FADE IN AND MOVE DOWN.
 
@@ -456,13 +429,6 @@ public class Game : MonoBehaviour
                 yield return null;
             }
 
-            bool LineIsBelowBottom(int lineNumber)
-            {
-                var currentLineScrollY = ScrollYForLine(lineNumber, Line.AtBottom);
-
-                return currentLineScrollY > targetScrollY;
-            }
-
             // SCROLL DOWN TO THE END OF THE LAST LINE,
             // AND ADD THE NEW TEXT TO THE STORY.
 
@@ -471,32 +437,71 @@ public class Game : MonoBehaviour
 
             StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
 
-            // HOW MANY PARAGRAPHS SHOULD WE SHOW NOW?
+            if (paragraphs.Count == 0)
+            {
+                // TODO: WHEN YOU ADD A SCENE WITH NO MAIN CONTENT,
+                // LOOP THIS UNTIL YOU'VE GOT AT LEAST ONE PARAGRAPH IN "paragraphs".
+                currentScene = Run.NewScene(Data.FileData, Story, WriteMessage);
+
+                void PresentChoices(string choice1, string choice2)
+                {
+                    choice1Text = choice1;
+                    choice2Text = choice2;
+                }
+                choice1Text = "";
+                choice2Text = "";
+
+                choicesExist = Run.PresentChoices(currentScene, PresentChoices, WriteMessage);
+
+                if (currentScene == null)
+                {
+                    WriteMessage("");
+                    WriteMessage("THE END");
+
+                    // WRITE STORY TO LOG FILE.
+                    // TODO: IMPROVE THIS, MAYBE?
+                    string filePath = Path.Combine(Application.persistentDataPath, $"story_log_{DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss")}.txt");
+                    string storyContents = storyText.text;
+                    File.WriteAllText(filePath, storyContents);
+                }
+            }
+
             int numParagraphs = 0;
             foreach (var paragraph in paragraphs)
             {
-                string previousStoryText = storyText.text;
+                // MAKE A "SAVE POINT."
+                var prevSavedGame = Process.GetSavedGameFrom(Data.FileData, Story, storyText.text);
 
                 if (!string.IsNullOrWhiteSpace(storyText.text))
                 {
                     storyText.text += Environment.NewLine + Environment.NewLine;
                 }
-                storyText.text += paragraph;
+                string processedMessage = Process.Message(Data.FileData, Story, paragraph);
+                storyText.text += processedMessage;
                 storyText.ForceMeshUpdate(ignoreInactive: true);
 
-                if (LineIsBelowBottom(storyText.textInfo.characterInfo[storyText.textInfo.characterCount - 1].lineNumber))
+                // IF THE TEXT IS TOO LONG NOW....
+                if (storyText.textInfo.characterCount > 0
+                    && numParagraphs > 0)
                 {
-                    storyText.text = previousStoryText;
-                    storyText.ForceMeshUpdate(ignoreInactive: true);
+                    var currentLineScrollY = ScrollYForLine(storyText.textInfo.characterInfo[storyText.textInfo.characterCount - 1].lineNumber - 1, Line.AtBottom);
+                    float test = targetScrollY;
+                    if (currentLineScrollY > targetScrollY)
+                    {
+                        // RELOAD THE SAVE POINT.
+                        (Story, storyText.text) = Process.LoadStoryFrom(Data.FileData, prevSavedGame);
+                        storyText.ForceMeshUpdate(ignoreInactive: true);
+                        break;
+                    }
+                }
 
-                    break;
-                }
-                else
-                {
-                    numParagraphs += 1;
-                }
+                // OTHERWISE...
+                // GO GRAB THE NEXT PARAGRAPH
+                numParagraphs += 1;
             }
-            paragraphs = paragraphs.Skip(numParagraphs).ToArray();
+                
+            // REMOVE THE PARAGRAPHS WE ADDED.
+            paragraphs.RemoveRange(0, numParagraphs);
 
             // Note to future me: Do NOT depend on text.Length in this function.
             // The text variable has formatting info in it, which is NOT
@@ -511,7 +516,6 @@ public class Game : MonoBehaviour
             {
                 StartCoroutine(FadeInLetter(newLetter.letter, newLetter.index));
             }
-
 
             // FADE IN ALL NEW LETTERS ONE BY ONE
 
@@ -583,70 +587,65 @@ public class Game : MonoBehaviour
 
                 // ONCE WE GET TO THE END OF THE SCREEN,
                 // WAIT UNTIL THE PLAYER CLICKS.
-                int currentLineNumber = storyText.textInfo.characterInfo[currentCharacterInt].lineNumber;
+                //int currentLineNumber = storyText.textInfo.characterInfo[currentCharacterInt].lineNumber;
 
-                var currentLineScrollY = ScrollYForLine(currentLineNumber, Line.AtBottom);
+                //var currentLineScrollY = ScrollYForLine(currentLineNumber, Line.AtBottom);
 
-                if (currentLineScrollY > targetScrollY)
-                {
-                    // WAIT UNTIL THE USER HAS CLICKED TO CONTINUE.
-                    //waitingOnClickToContinue = true;
-                    //isWaiting = false;
+                //if (currentLineScrollY > targetScrollY)
+                //{
+                //    // WAIT UNTIL THE USER HAS CLICKED TO CONTINUE.
+                //    //waitingOnClickToContinue = true;
+                //    //isWaiting = false;
 
-                    //while (!Input.GetButton("Select"))
-                    //{
-                    //    storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-                    //    yield return null;
-                    //}
+                //    //while (!Input.GetButton("Select"))
+                //    //{
+                //    //    storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+                //    //    yield return null;
+                //    //}
 
-                    //yield return null;
+                //    //yield return null;
 
-                    //waitingOnClickToContinue = false;
-                    //isWaiting = true;
+                //    //waitingOnClickToContinue = false;
+                //    //isWaiting = true;
 
-                    int lineNumberNearTheBottom = Math.Max(0, currentLineNumber - 2);
-                    var newTargetScrollY = ScrollYForLine(lineNumberNearTheBottom, Line.AtTop);
+                //    int lineNumberNearTheBottom = Math.Max(0, currentLineNumber - 2);
+                //    var newTargetScrollY = ScrollYForLine(lineNumberNearTheBottom, Line.AtTop);
 
-                    int lastLine = storyText.textInfo.lineCount - 1;
-                    var lineEndScrollY = ScrollYForLine(lastLine, Line.AtBottom);
+                //    int lastLine = storyText.textInfo.lineCount - 1;
+                //    var lineEndScrollY = ScrollYForLine(lastLine, Line.AtBottom);
 
-                    if (newTargetScrollY > lineEndScrollY)
-                    {
-                        ScrollToEnd();
-                    }
-                    else
-                    {
-                        StartCoroutine(ScrollToSmooth(lineNumberNearTheBottom, Line.AtTop));
-                    }
-                }
+                //    if (newTargetScrollY > lineEndScrollY)
+                //    {
+                //        ScrollToEnd();
+                //    }
+                //    else
+                //    {
+                //        StartCoroutine(ScrollToSmooth(lineNumberNearTheBottom, Line.AtTop));
+                //    }
+                //}
 
                 storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-
                 yield return null;
             }
 
-            isWaiting = false;
+            choice1Text = Process.Message(Data.FileData, Story, choice1Text);
+            choice2Text = Process.Message(Data.FileData, Story, choice2Text);
+
+            isWaitingForStory = false;
 
             ScrollToEnd();
 
+            // KEEP UPDATING THE MESH ARBITRARILY FOR 5 SECONDS.
             {
                 float startingTime = Time.time;
 
                 while (Time.time < startingTime + 5)
                 {
                     storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
-
                     yield return null;
                 }
             }
         }
-
-        // PROCESS THE MESSAGES
-        newStoryText = Run.ProcessMessage(Data.FileData, Story, newStoryText);
-
-        // Split the newStoryText into paragraphs.
-        paragraphs = newStoryText.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-        newStoryText = "";
 
         //const string sentence = "The quick brown fox jumps over the lazy dog. ";
         //StartCoroutine(WriteToStory(string.Join(" ", Enumerable.Repeat(sentence, 10))));
@@ -657,12 +656,10 @@ public class Game : MonoBehaviour
 
     private void WriteMessage(string message)
     {
-        if (string.IsNullOrWhiteSpace(message))
-        {
-            message = Environment.NewLine;
-        }
+        // Split the newStoryText into paragraphs.
+        var newparagraphs = message.Split(new[] { "\n", "\r", "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
-        newStoryText += message;
+        paragraphs.AddRange(newparagraphs);
     }
 
     private IEnumerator FadeMenu(CanvasGroup menu, bool fadeIn)
@@ -811,7 +808,24 @@ public class Game : MonoBehaviour
 
     public void SkipToChoice()
     {
-        skipToChoice = true;
+        if (isWaitingForStory)
+        {
+            skipToChoice = true;
+        }
+    }
+
+    public void ClickToContinue()
+    {
+        if (isWaitingForStory || !clickToContinueText.gameObject.activeInHierarchy)
+        {
+            return;
+        }
+
+        isWaitingForStory = true;
+
+        StartCoroutine(FadeOutButtons());
+
+        ContinueStory(loadNewScene: false);
     }
 
     public void Choose1()
@@ -826,12 +840,12 @@ public class Game : MonoBehaviour
 
     private void Choose(Action runOutro, GameObject gameObject)
     {
-        if (isWaiting)
+        if (isWaitingForStory)
         {
             return;
         }
 
-        isWaiting = true;
+        isWaitingForStory = true;
 
         StartCoroutine(FadeOutButtons());
 
@@ -841,26 +855,25 @@ public class Game : MonoBehaviour
 
         WriteMessage($"<i><indent=50px>You {action}.</indent></i>");
 
-        WriteMessage("");
-        WriteMessage("");
-
         runOutro();
 
-        WriteMessage("");
+        choice1Text = "";
+        choice2Text = "";
+        choicesExist = false;
 
-        RunNewScenes();
+        ContinueStory(loadNewScene: true);
     }
-
-    private static bool waitingOnClickToContinue = false;
 
     private IEnumerator FadeInButtons()
     {
         buttonsFadedIn = true;
 
-        if (waitingOnClickToContinue)
+        // IF ONE OF THE CHOICE BUTTONS ISN'T FILLED IN,
+        // SHOW THE "CLICK TO CONTINUE..." TEXT INSTEAD.
+        if (paragraphs.Count > 0 || !choicesExist)
         {
-            const string clickToContinueText = "Click to continue...";
-            yield return FadeButton(clickToContinue.gameObject, clickToContinueText, buttonFadeInSeconds, fadeIn: true);
+            const string clickToContinueMessage = "Click to continue...";
+            yield return FadeButton(clickToContinueText.gameObject, clickToContinueMessage, buttonFadeInSeconds, fadeIn: true);
         }
         else
         {
@@ -876,9 +889,12 @@ public class Game : MonoBehaviour
     {
         buttonsFadedIn = false;
 
-        if (waitingOnClickToContinue)
+        // IF ONE OF THE CHOICE BUTTONS ISN'T FILLED IN,
+        // HIDE THE "CLICK TO CONTINUE..." TEXT INSTEAD.
+        if (paragraphs.Count > 0 || !choicesExist)
         {
-            yield return FadeButton(clickToContinue.gameObject, null, buttonFadeInSeconds, fadeIn: false);
+            const string clickToContinueMessage = "Click to continue...";
+            yield return FadeButton(clickToContinueText.gameObject, clickToContinueMessage, buttonFadeInSeconds, fadeIn: false);
         }
         else
         {
@@ -898,7 +914,7 @@ public class Game : MonoBehaviour
             var textMesh = button.GetComponentInChildren<TextMeshProUGUI>();
             if (textMesh != null)
             {
-                string processedText = Run.ProcessMessage(Data.FileData, Story, text);
+                string processedText = Process.Message(Data.FileData, Story, text);
                 textMesh.text = processedText;
             }
         }

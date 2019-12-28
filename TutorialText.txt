@@ -1,0 +1,8 @@
+Message - Hello, {name}! Welcome to the <b>Neverending Story</b>.
+Almanac - Read about people you've met and places you've been or heard of in your <b>Journal</b>.
+Pack - See what you're carrying with you in your <b>Pack</b>.
+Story Speed - Story moving too fast for you, or too slow? Click this to <b>change the story speed</b>.
+Give Feedback - Dislike something in the story or have some cool new idea? Please click here to <b>give me feedback</b>!
+Exit Story - Click here to <b>exit</b> your story. Sorry, there's no saving your story yet—it's coming soon!
+Message - <b>Scroll up</b> to see what's already been written in your story.
+That's all, good luck!

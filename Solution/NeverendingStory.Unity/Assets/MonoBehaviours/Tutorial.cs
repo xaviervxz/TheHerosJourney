@@ -5,25 +5,39 @@ using UnityEngine;
 public class Tutorial : MonoBehaviour
 {
     [SerializeField]
+#pragma warning disable 0649
     private bool alwaysRunTutorial;
+#pragma warning restore 0649
 
     [SerializeField]
+#pragma warning disable 0649
     private RectTransform cover;
+#pragma warning restore 0649
 
     [SerializeField]
+#pragma warning disable 0649
     private TextMeshProUGUI tutorialText;
+#pragma warning restore 0649
 
     [SerializeField]
+#pragma warning disable 0649
     private TextMeshProUGUI continueButtonText;
+#pragma warning restore 0649
 
     [SerializeField]
+#pragma warning disable 0649
     private string continueText;
+#pragma warning restore 0649
 
     [SerializeField]
+#pragma warning disable 0649
     private string doneText;
+#pragma warning restore 0649
 
     [SerializeField]
-    public TutorialStep[] steps;
+#pragma warning disable 0649
+    private TutorialStep[] steps;
+#pragma warning restore 0649
 
     private static int CurrentStep = 0;
 
