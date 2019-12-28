@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <RuntimeIdentifier>win10-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+    <PublishTrimmed>true</PublishTrimmed>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="CharacterData.json" />
+    <None Remove="Data\CharacterData.json" />
+    <None Remove="Data\LocationData.json" />
+    <None Remove="Data\Scenes.csv" />
+    <None Remove="Data\Scenes.ods" />
+    <None Remove="Data\Scenes.xlsx" />
+    <None Remove="LocationData.json" />
+    <None Remove="Scenes.xlsx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Data\CharacterData.json" />
+    <EmbeddedResource Include="Data\LocationData.json" />
+    <EmbeddedResource Include="Data\Scenes.ods" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TheHerosJourney\TheHerosJourney.csproj" />
+  </ItemGroup>
+
+</Project>
