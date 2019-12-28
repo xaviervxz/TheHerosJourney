@@ -12,6 +12,7 @@ using System.Linq;
 
 public class Menu : MonoBehaviour
 {
+    [Header("Root Menu Objects")]
     [SerializeField]
 #pragma warning disable 0649
     private GameObject mainMenu;
@@ -22,6 +23,7 @@ public class Menu : MonoBehaviour
     private GameObject newGameMenu;
 #pragma warning restore 0649
 
+    [Header("New Game Menu")]
     [SerializeField]
 #pragma warning disable 0649
     private TMP_InputField playersName;
