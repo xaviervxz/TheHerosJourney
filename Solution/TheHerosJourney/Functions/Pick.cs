@@ -61,6 +61,7 @@ namespace TheHerosJourney.Functions
 
                 if (nextScene != null)
                 {
+                    story.CurrentStage = nextScene.Stage.Value;
                     return nextScene;
                 }
                 else if (!string.IsNullOrWhiteSpace(nextSceneIdentifier))
@@ -348,7 +349,7 @@ namespace TheHerosJourney.Functions
 
             if (matchingStage.Equals(default(KeyValuePair<string, JourneyStage>)))
             {
-                return null;
+                throw new Exception("Scene (loaded from file) with ID " + code + " has no valid Journey Stage code.");
             }
 
             return matchingStage.Value;

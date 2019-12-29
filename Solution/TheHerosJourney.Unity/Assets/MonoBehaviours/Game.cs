@@ -183,7 +183,7 @@ namespace Assets.MonoBehaviours
             Story.You.Name = Data.PlayersName;
             Story.You.Sex = Data.PlayersSex;
 
-            ContinueStory(loadNewScene: true); // The choice to start the story. :) Setting this to true loads a new scene.
+            ContinueStory(justMadeChoice: false);
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Assets.MonoBehaviours
         }
 
         private static int currentCharacterInt = 0;
-        private void ContinueStory(bool loadNewScene)
+        private void ContinueStory(bool justMadeChoice)
         {
             IEnumerator WriteOutStory()
             {
@@ -436,8 +436,8 @@ namespace Assets.MonoBehaviours
                 currentCharacterInt = storyText.textInfo.characterCount;
                 int oldLineCount = storyText.textInfo.lineCount;
 
-                StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop)); // This needs to be AFTER the new text is added, otherwise the Y-coordinate clamping screws this up because the text mesh hasn't increased its size yet.
-
+                // IF THERE ARE NO PARAGRAPHS LEFT,
+                // GO GET NEW ONES.
                 if (paragraphs.Count == 0)
                 {
                     // TODO: WHEN YOU ADD A SCENE WITH NO MAIN CONTENT,
@@ -467,6 +467,12 @@ namespace Assets.MonoBehaviours
                     }
                 }
 
+                if (justMadeChoice)
+                {
+                    // ONLY SCROLL DOWN IF THE NEW LINE WOULD BE TOO MUCH.
+                    StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop));
+                }
+
                 int numParagraphs = 0;
                 foreach (var paragraph in paragraphs)
                 {
@@ -486,7 +492,6 @@ namespace Assets.MonoBehaviours
                         && numParagraphs > 0)
                     {
                         var currentLineScrollY = ScrollYForLine(storyText.textInfo.characterInfo[storyText.textInfo.characterCount - 1].lineNumber - 1, Line.AtBottom);
-                        float test = targetScrollY;
                         if (currentLineScrollY > targetScrollY)
                         {
                             // RELOAD THE SAVE POINT.
@@ -503,6 +508,12 @@ namespace Assets.MonoBehaviours
 
                 // REMOVE THE PARAGRAPHS WE ADDED.
                 paragraphs.RemoveRange(0, numParagraphs);
+
+                if (paragraphs.Count > 0)
+                {
+                    // ONLY SCROLL DOWN IF THE NEW LINE WOULD BE TOO MUCH.
+                    StartCoroutine(ScrollToSmooth(oldLineCount, Line.AtTop));
+                }
 
                 // Note to future me: Do NOT depend on text.Length in this function.
                 // The text variable has formatting info in it, which is NOT
@@ -632,6 +643,7 @@ namespace Assets.MonoBehaviours
                 choice1Text = Process.Message(Data.FileData, Story, choice1Text);
                 choice2Text = Process.Message(Data.FileData, Story, choice2Text);
 
+                var test = storyText.text;
                 isWaitingForStory = false;
 
                 ScrollToEnd();
@@ -826,7 +838,7 @@ namespace Assets.MonoBehaviours
 
             StartCoroutine(FadeOutButtons());
 
-            ContinueStory(loadNewScene: false);
+            ContinueStory(justMadeChoice: false);
         }
 
         public void Choose1()
@@ -862,7 +874,7 @@ namespace Assets.MonoBehaviours
             choice2Text = "";
             choicesExist = false;
 
-            ContinueStory(loadNewScene: true);
+            ContinueStory(justMadeChoice: true);
         }
 
         private IEnumerator FadeInButtons()
