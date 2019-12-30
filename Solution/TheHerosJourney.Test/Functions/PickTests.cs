@@ -110,24 +110,28 @@ namespace TheHerosJourney.Test
             Assert.IsTrue(selections.Contains(item2));
         }
 
-        [Test]
-        public void Pick_Character_RunsWithoutError()
+        [TestCase(PickMethod.Introduce)]
+        [TestCase(PickMethod.Reuse)]
+        [TestCase(PickMethod.Pick)]
+        public void Pick_Character_RunsWithoutError(PickMethod pickMethod)
         {
             // THIS TEST IS TO MAKE SURE THIS REUSABLE FUNCTION WORKS.
             SetUpForPickCharacter();
 
-            Action pickCharacter = () => Pick.Character(new List<Character>(), fileData);
+            Action pickCharacter = () => Pick.Character(new List<Character>(), fileData, pickMethod, null);
 
             Assert.DoesNotThrow(() => pickCharacter());
         }
 
-        [Test]
-        public void Pick_Character_ReturnsNotNull()
+        [TestCase(PickMethod.Introduce)]
+        [TestCase(PickMethod.Reuse)]
+        [TestCase(PickMethod.Pick)]
+        public void Pick_Character_ReturnsNotNull(PickMethod pickMethod)
         {
             // THIS TEST IS TO MAKE SURE THIS REUSABLE FUNCTION WORKS.
             SetUpForPickCharacter();
 
-            var character = Pick.Character(new List<Character>(), fileData);
+            var character = Pick.Character(new List<Character>(), fileData, pickMethod, null);
 
             Assert.IsNotNull(character);
         }
@@ -150,7 +154,7 @@ namespace TheHerosJourney.Test
             // THIS TEST IS TO MAKE SURE THIS REUSABLE FUNCTION WORKS.
             SetUpForPickLocation();
 
-            Action pickLocation = () => Pick.Location(givenType, new List<Location>(), fileData);
+            Action pickLocation = () => Pick.Location(new List<Location>(), fileData, givenType, PickMethod.Pick);
 
             Assert.DoesNotThrow(() => pickLocation());
         }
@@ -173,7 +177,7 @@ namespace TheHerosJourney.Test
             // THIS TEST IS TO MAKE SURE THIS REUSABLE FUNCTION WORKS.
             SetUpForPickLocation();
 
-            var location = Pick.Location(givenType, new List<Location>(), fileData);
+            var location = Pick.Location(new List<Location>(), fileData, givenType, PickMethod.Pick);
 
             Assert.IsNotNull(location);
         }

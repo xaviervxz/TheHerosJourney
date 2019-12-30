@@ -46,6 +46,10 @@ namespace TheHerosJourney.Models
         public string Goal { get; set; }
 
         public SavedItem[] Inventory { get; set; }
+
+        public Occupation Occupation { get; set; }
+        
+        public Age Age { get; set; }
     }
 
     public class SavedItem

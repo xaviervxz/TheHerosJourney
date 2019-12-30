@@ -36,19 +36,16 @@ namespace TheHerosJourney.Functions
 
         public static Story NewStory(FileData fileData, string storySeed, string[] reqSceneIds = null)
         {
-            if (string.IsNullOrWhiteSpace(storySeed))
+            int seed = Environment.TickCount;
+            if (!string.IsNullOrWhiteSpace(storySeed))
             {
-                int seed = Environment.TickCount;
-                Pick.StoryGenerator = new Random(seed);
-
-                storySeed = seed.ToString();
+                if (!int.TryParse(storySeed, out seed))
+                {
+                    seed = storySeed.Sum(letter => letter);
+                }
             }
-            else
-            {
-                int seed = storySeed.Sum(letter => letter);
 
-                Pick.StoryGenerator = new Random(seed);
-            }
+            Pick.StoryGenerator = new Random(seed);
 
             var story = Pick.Story(fileData);
 

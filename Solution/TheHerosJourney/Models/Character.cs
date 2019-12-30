@@ -18,7 +18,7 @@ namespace TheHerosJourney.Models
         
         public string PossPronoun => Sex == Sex.Female ? "her" : "his";
 
-        public string SexAge => Relationship == Relationship.Child ? (Sex == Sex.Female ? "girl" : "boy") : (Sex == Sex.Female ? "woman" : "man");
+        public string SexAge => Age == Age.Child ? (Sex == Sex.Female ? "girl" : "boy") : (Sex == Sex.Female ? "woman" : "man");
 
         public string Baron => Sex == Sex.Female ? "Baroness" : "Baron";
 
@@ -26,7 +26,11 @@ namespace TheHerosJourney.Models
 
         public string Name { get; set; }
 
-        public Relationship Relationship { get; set; }
+        public Relationship Relationship { get; set; } = Relationship.Friend;
+
+        public Occupation Occupation { get; set; } = Occupation.Worker;
+
+        public Age Age { get; set; } = Age.Adult;
 
         public List<Item> Inventory { get; } = new List<Item>();
 
@@ -43,21 +47,33 @@ namespace TheHerosJourney.Models
         }
 #endif
     }
+
     public enum Sex
     {
         Female,
         Male
     }
 
+    public enum Age
+    {
+        Adult,
+        Child
+    }
+
     public enum Relationship
     {
-        Self,
-        Stranger,
         Friend,
-        Mentor,
-        Antagonist,
-        Child,
-        Mysterious
+        Foe
+    }
+
+    public enum Occupation
+    {
+        Ranger,
+        Worker,
+        Noble,
+        Spirit,
+        Criminal,
+        Soldier
     }
 
     public class Item

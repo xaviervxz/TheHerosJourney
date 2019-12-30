@@ -41,14 +41,46 @@ namespace TheHerosJourney.Functions
 
             if (conditionPieces[0] == "character")
             {
-                if (conditionPieces.Length == 2)
+                if (conditionPieces.Length >= 2)
                 {
-                    if (Enum.TryParse(conditionPieces[1], out Relationship parsedRelationship))
-                    {
-                        bool characterTypeExists = story.Characters.Any(c => c.Relationship == parsedRelationship);
+                    //     0        1      2
+                    // {character:ranger:friend}
 
-                        return characterTypeExists;
+                    if (conditionPieces.Length == 3)
+                    {
+                        string occupation = conditionPieces[1];
+                        string relationship = conditionPieces[2];
+
+                        bool occupationIsValid = Enum.TryParse(occupation, out Occupation parsedOccupation);
+                        bool relationshipIsValid = Enum.TryParse(relationship, out Relationship parsedRelationship);
+
+                        if (occupation == "any" && relationshipIsValid)
+                        {
+                            bool characterTypeExists = story.Characters
+                                .Any(c => c.Relationship == parsedRelationship);
+
+                            return characterTypeExists;
+                        }
+
+                        if (relationship == "any" && occupationIsValid)
+                        {
+                            bool characterTypeExists = story.Characters
+                                .Any(c => c.Occupation == parsedOccupation);
+
+                            return characterTypeExists;
+                        }
+
+                        if (occupationIsValid && relationshipIsValid)
+                        {
+                            bool characterTypeExists = story.Characters
+                                .Any(c => c.Occupation == parsedOccupation && c.Relationship == parsedRelationship);
+
+                            return characterTypeExists;
+                        }
                     }
+
+                    //     0        1
+                    // {character:baron}
 
                     bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
 

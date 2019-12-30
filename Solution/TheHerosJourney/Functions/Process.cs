@@ -97,9 +97,9 @@ namespace TheHerosJourney.Functions
                         {
                             var item = new Item
                             {
-                                Identifier = commandOptions[1],
-                                Name = commandOptions[2],
-                                Description = commandOptions[3]
+                                Identifier = subMessage(commandOptions[1], story, fileData),
+                                Name = subMessage(commandOptions[2], story, fileData),
+                                Description = subMessage(commandOptions[3], story, fileData)
                             };
 
                             item.Description = subMessage(item.Description, story, fileData);
@@ -250,7 +250,7 @@ namespace TheHerosJourney.Functions
                     }
 
                     // PICK AND NAME A NEW LOCATION.
-                    if (keyPieces[1] == "pick")
+                    if (Enum.TryParse(keyPieces[1].CapitalizeFirstLetter(), out PickMethod pickMethod))
                     {
                         //     0       1        2        3          4          5                               6
                         // {location:pick:forest|swamp:current:pathtobaron:namewiththe:The home of [character|baron|baron] [character|baron|name].}
@@ -290,7 +290,7 @@ namespace TheHerosJourney.Functions
                         // IF NO NEARBY LOCATION EXISTS, CREATE/PICK A NEW ONE.
                         if (nearbyLocation == null)
                         {
-                            nearbyLocation = Pick.Location(validTypes.Random(), story.Locations, fileData);
+                            nearbyLocation = Pick.Location(story.Locations, fileData, validTypes.Random(), pickMethod);
 
                             story.NearbyLocations.Add(Tuple.Create(centerLocation.Name, nearbyLocation.Name));
                         }
@@ -365,18 +365,8 @@ namespace TheHerosJourney.Functions
                     }
                     else
                     {
-                        string rawLocationType = locationRelation.CapitalizeFirstLetter();
-                        bool locationTypeExists = Enum.TryParse(rawLocationType, out LocationType locationType);
-
-                        if (locationTypeExists)
-                        {
-                            town = Pick.Town(story.Locations, fileData);
-                        }
-                        else
-                        {
-                            bool namedLocationExists = story.NamedLocations.TryGetValue(locationRelation, out Location location);
-                            town = location as Town;
-                        }
+                        bool namedLocationExists = story.NamedLocations.TryGetValue(locationRelation, out Location location);
+                        town = location as Town;
 
                         if (town != null && keyPieces.Length == 3)
                         {
@@ -467,103 +457,92 @@ namespace TheHerosJourney.Functions
                         return value;
                     }
 
-                    if (keyPieces[1] == "pick")
+                    // IF WE'RE PICKING A NEW OR EXISTING CHARACTER...
+                    if (Enum.TryParse(keyPieces[1].CapitalizeFirstLetter(), out PickMethod pickMethod))
                     {
-                        //      0      1       2         3        4
-                        //                  location    role     tag
-                        // {character:pick:baronhome:antagonist:baron}
-
                         // PROPERTIES
                         // NAME=DEFAULT_VALUE
                         // location=current
-                        // relationship=stranger
+                        // relationship=friend
+                        // occupation=worker
+                        // age=adult
                         // tag=(none)
                         // sex=(random)
 
-                        /*static */Character updateCharacter(Character characterToUpdate, string property)
-                        {
-                            var propertyReplacement = Regex.Match(property, "(.*)=(.*)");
+                        var rawPropertyAssignments = keyPieces.Skip(2).ToArray();
 
-                            string propertyName = propertyReplacement.Groups[1].Value;
-                            string propertyValue = propertyReplacement.Groups[2].Value;
-
-                            switch (propertyName)
+                        var propertyAssignments = rawPropertyAssignments
+                            .Select(rpa =>
                             {
-                                case "location":
-                                    if (!story.NamedLocations.TryGetValue(propertyValue, out Location currentLocation))
-                                    {
-                                        switch (propertyValue)
-                                        {
-                                            case "hometown":
-                                                currentLocation = story.You.Hometown;
-                                                break;
-                                            case "current":
-                                                currentLocation = story.You.CurrentLocation;
-                                                break;
-                                            default:
-                                                break;
-                                        }
-                                    }
-                                    characterToUpdate.CurrentLocation = currentLocation;
-                                    break;
-                                case "relationship":
-                                    characterToUpdate.Relationship = propertyValue.ParseToValidType<Relationship>() ?? Relationship.Stranger;
-                                    break;
-                                case "tag":
-                                    // STORE IT IN NAMED CHARACTER.
-                                    story.NamedCharacters[propertyValue] = characterToUpdate;
-                                    break;
-                                case "sex":
-                                    if (propertyValue == "f")
-                                    {
-                                        characterToUpdate.Sex = Sex.Female;
-                                    }
+                                var propertyReplacement = Regex.Match(rpa, "(.*)=(.*)");
 
-                                    if (propertyValue == "m")
-                                    {
-                                        characterToUpdate.Sex = Sex.Male;
-                                    }
+                                string name = propertyReplacement.Groups[1].Value;
+                                string value = propertyReplacement.Groups[2].Value;
 
-                                    if (propertyValue == "opposite")
-                                    {
-                                        characterToUpdate.Sex = story.You.Sex == Sex.Female ? Sex.Male : Sex.Female;
-                                    }
-                                    break;
-                                default:
-                                    break;
-                            }
+                                return new
+                                {
+                                    name,
+                                    value
+                                };
+                            })
+                            .ToList();
 
-                            return characterToUpdate;
-                        }
-
-                        var propertyAssignments = keyPieces.Skip(2).ToArray();
-
-                        Func<Character, bool> selector = null;
-
-                        const string selectorPrefix = "selector=";
-                        if (propertyAssignments[0].StartsWith(selectorPrefix))
+                        var occupation = propertyAssignments.Where(pa => pa.name == "occupation").Select(pa => pa.value.ParseToValidType<Occupation>()).FirstOrDefault();
+                        var relationship = propertyAssignments.Where(pa => pa.name == "relationship").Select(pa => pa.value.ParseToValidType<Relationship>()).FirstOrDefault();
+                        
+                        // FIGURE OUT WHERE THIS CHARACTER NEEDS TO BE.
+                        Location currentLocation = story.You.CurrentLocation;
+                        var location = propertyAssignments.Where(pa => pa.name == "location").Select(pa => pa.value).FirstOrDefault();
+                        if (location != null)
                         {
-                            string rawSelector = propertyAssignments[0].Substring(selectorPrefix.Length);
-
-                            switch (rawSelector)
+                            if (!story.NamedLocations.TryGetValue(location, out currentLocation))
                             {
-                                case "relationship":
-                                    var relationshipProperty = propertyAssignments.FirstOrDefault(pa => pa.StartsWith("relationship"));
-                                    var cTemp = new Character();
-                                    cTemp = updateCharacter(cTemp, relationshipProperty);
-                                    selector = c => c.Relationship == cTemp.Relationship;
-                                    break;
-                                case "new":
-                                default:
-                                    break;
+                                switch (location)
+                                {
+                                    case "hometown":
+                                        currentLocation = story.You.Hometown;
+                                        break;
+                                    case "current":
+                                    default:
+                                        currentLocation = story.You.CurrentLocation;
+                                        break;
+                                }
                             }
                         }
 
-                        var character = Pick.Character(story.Characters, fileData, selector);
+                        var character = Pick.Character(story.Characters, fileData, pickMethod, currentLocation, occupation, relationship);
 
-                        foreach (var propertyAssignment in propertyAssignments)
+                        var age = propertyAssignments.Where(pa => pa.name == "age").Select(pa => pa.value.ParseToValidType<Age>()).FirstOrDefault();
+                        if (age != null)
                         {
-                            character = updateCharacter(character, propertyAssignment);
+                            character.Age = age.Value;
+                        }
+
+                        var tag = propertyAssignments.Where(pa => pa.name == "tag").Select(pa => pa.value).FirstOrDefault();
+                        if (tag != null)
+                        {
+                            // STORE IT IN NAMED CHARACTER.
+                            story.NamedCharacters[tag] = character;
+                        }
+
+                        var sex = propertyAssignments.Where(pa => pa.name == "sex").Select(pa => pa.value).FirstOrDefault();
+                        if (sex != null && pickMethod != PickMethod.Reuse)
+                        // TODO: Don't change the character's Sex IF pickMethod == Pick AND the character already existed.
+                        {
+                            if (sex == "f")
+                            {
+                                character.Sex = Sex.Female;
+                            }
+
+                            if (sex == "m")
+                            {
+                                character.Sex = Sex.Male;
+                            }
+
+                            if (sex == "opposite")
+                            {
+                                character.Sex = story.You.Sex == Sex.Female ? Sex.Male : Sex.Female;
+                            }
                         }
                     }
                     else
@@ -600,6 +579,8 @@ namespace TheHerosJourney.Functions
                     Name = character.Name,
                     Sex = character.Sex,
                     Relationship = character.Relationship,
+                    Occupation = character.Occupation,
+                    Age = character.Age,
                     Hometown = character.Hometown?.Name,
                     CurrentLocation = character.CurrentLocation?.Name,
                     Goal = character.Goal?.Name,
@@ -730,6 +711,8 @@ namespace TheHerosJourney.Functions
                     Name = savedCharacter.Name,
                     Sex = savedCharacter.Sex,
                     Relationship = savedCharacter.Relationship,
+                    Occupation = savedCharacter.Occupation,
+                    Age = savedCharacter.Age,
                     Hometown = (Town) FindLocation(savedCharacter.Hometown),
                     CurrentLocation = FindLocation(savedCharacter.CurrentLocation),
                     Goal = FindLocation(savedCharacter.Goal)

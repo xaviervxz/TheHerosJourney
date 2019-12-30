@@ -157,11 +157,10 @@ namespace TheHerosJourney.Functions
             var story = new Story();
 
             // CREATE THE PLAYER CHARACTER.
-            story.You = Pick.Character(story.Characters, fileData);
-            story.You.Relationship = Relationship.Self;
+            story.You = Pick.Character(new List<Character>(), fileData, PickMethod.Introduce, currentLocation: null);
 
             // CREATE THEIR HOMETOWN, START THEM THERE, AND ADD IT TO THE ALMANAC.
-            story.You.Hometown = Pick.Town(story.Locations, fileData);
+            story.You.Hometown = Pick.Town(story.Locations, fileData, PickMethod.Introduce);
             story.You.CurrentLocation = story.You.Hometown;
             story.Almanac[story.You.Hometown.NameWithThe] = "your hometown, " + story.You.Hometown.MainFeature.RelativePosition;
 
@@ -185,22 +184,26 @@ namespace TheHerosJourney.Functions
             return story;
         }
 
-        internal static Character Character(List<Character> characters, FileData fileData, Func<Character, bool> selector = null)
+        internal static Character Character(List<Character> characters, FileData fileData, PickMethod pickMethod, Location currentLocation, Occupation? occupation = null, Relationship? relationship = null)
         {
             Character character = null;
 
-            if (selector != null)
+            if (pickMethod != PickMethod.Introduce)
             {
-                character = characters.FirstOrDefault(selector);
+                character = characters.FirstOrDefault(c =>
+                    (c.CurrentLocation == currentLocation || currentLocation == null)
+                    && (c.Occupation == occupation || occupation == null)
+                    && (c.Relationship == relationship || relationship == null));
             }
 
-            if (character == null)
+            if (character == null && pickMethod != PickMethod.Reuse)
             {
-                character = new Character
-                {
-                    Relationship = Relationship.Stranger
-                };
+                character = new Character();
+
                 character.Name = Pick.NewCharacterName(character.Sex, fileData, characters);
+                character.CurrentLocation = currentLocation;
+                character.Occupation = occupation ?? Occupation.Worker;
+                character.Relationship = relationship ?? Relationship.Friend;
 
                 characters.Add(character);
             }
@@ -208,11 +211,16 @@ namespace TheHerosJourney.Functions
             return character;
         }
 
-        internal static Town Town(List<Location> locations, FileData data)
+        internal static Town Town(List<Location> locations, FileData data, PickMethod pickMethod)
         {
-            Town town = locations.FirstOrDefault(c => c.Type == LocationType.Town) as Town;
+            Town town = null;
 
-            if (town == null)
+            if (pickMethod != PickMethod.Introduce)
+            {
+                town = locations.FirstOrDefault(c => c.Type == LocationType.Town) as Town;
+            }
+
+            if (town == null && pickMethod != PickMethod.Reuse)
             {
                 // PICK A RANDOM TOWN
                 var townTemplate = data.LocationData.Towns.Random();
@@ -233,7 +241,7 @@ namespace TheHerosJourney.Functions
                 var featureLocations = new List<Location>();
                 foreach (var type in feature.Types)
                 {
-                    var location = Pick.Location(type, locations.Except(featureLocations).ToList(), data);
+                    var location = Pick.Location(locations.Except(featureLocations).ToList(), data, type, PickMethod.Pick);
 
                     featureLocations.Add(location);
                 }
@@ -273,16 +281,21 @@ namespace TheHerosJourney.Functions
             return town;
         }
 
-        internal static Location Location(LocationType type, List<Location> locations, FileData data)
+        internal static Location Location(List<Location> locations, FileData data, LocationType type, PickMethod pickMethod)
         {
             if (type == LocationType.Town)
             {
-                return Pick.Town(locations, data);
+                return Pick.Town(locations, data, pickMethod);
             }
 
-            var location = locations.FirstOrDefault(c => c.Type == type);
+            Location location = null;
 
-            if (location == null)
+            if (pickMethod != PickMethod.Introduce)
+            {
+                location = locations.FirstOrDefault(c => c.Type == type);
+            }
+
+            if (location == null && pickMethod != PickMethod.Reuse)
             {
                 string terrain = data.LocationData.Names.Terrain[type].SpecificTypes.Random();
                 string adjective = data.LocationData.Names.Adjectives.Random();
@@ -359,5 +372,12 @@ namespace TheHerosJourney.Functions
         {
             return Pick.Random(fileData.CharacterData[sex].Except(characters.Select(c => c.Name)).ToArray());
         }
+    }
+
+    public enum PickMethod
+    {
+        Pick, // Finds an existing one if possible, if not, introduces a new one.
+        Introduce, // Introduces a new one.
+        Reuse // Finds an existing one. Remember to put this in the conditions!
     }
 }

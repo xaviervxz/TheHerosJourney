@@ -149,7 +149,7 @@ namespace TheHerosJourney.Console
 
             string[] scenesToTest = null;// new []{ "MWG2" };
 
-            const string storySeed = null;// "540996750";
+            const string storySeed = null; // "1268416859";// "540996750";
             story = Run.NewStory(fileData, storySeed, scenesToTest);
 
             // DISPLAY INTRODUCTION
