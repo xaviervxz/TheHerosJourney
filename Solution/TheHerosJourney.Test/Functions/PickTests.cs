@@ -80,7 +80,7 @@ namespace TheHerosJourney.Test
             }
         }
 
-        [TestCase("Female", "Male", 10)]
+        [TestCase("Female", "Male", 100)]
         public void Pick_Random_FromTwoItemList_ContainsItem1<T>(T item1, T item2, int times)
         {
             var list = new T[] { item1, item2 };
@@ -95,7 +95,7 @@ namespace TheHerosJourney.Test
             Assert.IsTrue(selections.Contains(item1));
         }
 
-        [TestCase("Female", "Male", 10)]
+        [TestCase("Female", "Male", 100)]
         public void Pick_Random_FromTwoItemList_ContainsItem2<T>(T item1, T item2, int times)
         {
             var list = new T[] { item1, item2 };
@@ -124,8 +124,8 @@ namespace TheHerosJourney.Test
         }
 
         [TestCase(PickMethod.Introduce)]
-        [TestCase(PickMethod.Reuse)]
         [TestCase(PickMethod.Pick)]
+        //[TestCase(PickMethod.Reuse)] // IF THERE ARE NO CHARACTERS IN THE STORY, THIS TEST CASE WILL ALWAYS RETURN NULL.
         public void Pick_Character_ReturnsNotNull(PickMethod pickMethod)
         {
             // THIS TEST IS TO MAKE SURE THIS REUSABLE FUNCTION WORKS.

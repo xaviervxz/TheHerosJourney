@@ -41,7 +41,16 @@ namespace TheHerosJourney.Functions
 
             if (conditionPieces[0] == "character")
             {
-                if (conditionPieces.Length >= 2)
+                if (conditionPieces.Length == 2)
+                {
+                    //     0        1
+                    // {character:baron}
+
+                    bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
+
+                    return namedCharacterExists;
+                }
+                else if (conditionPieces.Length == 3)
                 {
                     //     0        1      2
                     // {character:ranger:friend}
@@ -51,8 +60,8 @@ namespace TheHerosJourney.Functions
                         string occupation = conditionPieces[1];
                         string relationship = conditionPieces[2];
 
-                        bool occupationIsValid = Enum.TryParse(occupation, out Occupation parsedOccupation);
-                        bool relationshipIsValid = Enum.TryParse(relationship, out Relationship parsedRelationship);
+                        bool occupationIsValid = Enum.TryParse(occupation.CapitalizeFirstLetter(), out Occupation parsedOccupation);
+                        bool relationshipIsValid = Enum.TryParse(relationship.CapitalizeFirstLetter(), out Relationship parsedRelationship);
 
                         if (occupation == "any" && relationshipIsValid)
                         {
@@ -79,15 +88,6 @@ namespace TheHerosJourney.Functions
                         }
                     }
 
-                    //     0        1
-                    // {character:baron}
-
-                    bool namedCharacterExists = story.NamedCharacters.ContainsKey(conditionPieces[1]);
-
-                    return namedCharacterExists;
-                }
-                else if (conditionPieces.Length == 3)
-                {
                     if (story.NamedCharacters.TryGetValue(conditionPieces[1], out Character namedCharacter))
                     {
                         if (conditionPieces[2] == "female" && namedCharacter.Sex == Sex.Female)

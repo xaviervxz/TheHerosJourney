@@ -68,8 +68,8 @@ namespace TheHerosJourney.Models
 
     public enum Occupation
     {
-        Ranger,
         Worker,
+        Ranger,
         Noble,
         Spirit,
         Criminal,
