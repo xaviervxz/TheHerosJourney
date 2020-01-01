@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Linq;
+using UnityEngine.Networking;
 
 namespace Assets.MonoBehaviours
 {
@@ -63,6 +64,7 @@ namespace Assets.MonoBehaviours
 
         internal static void LoadFileData(Action callback = null)
         {
+#if !UNITY_ANDROID
             Stream GenerateStreamFromStreamingAsset(string fileName)
             {
                 var filePath = Path.Combine(Application.streamingAssetsPath, fileName);
@@ -71,6 +73,32 @@ namespace Assets.MonoBehaviours
 
                 return stream;
             }
+#else
+
+            Stream GenerateStreamFromStreamingAsset(string fileName)
+            {
+                string text = "";
+
+                IEnumerator GetTextContentsFromStreamingAssetAndroid(string fileName)
+                {
+                    string fileUrl = Path.Combine(Application.streamingAssetsPath, fileName);
+                    var request = UnityWebRequest.Get(fileUrl);
+                    yield return request.SendWebRequest();
+                    text = request.downloadHandler.text;
+                }
+
+                GetTextContentsFromStreamingAssetAndroid(fileName);
+
+                // SOURCE: https://stackoverflow.com/a/1879470/3059182
+
+                var stream = new MemoryStream();
+                var writer = new StreamWriter(stream);
+                writer.Write(text);
+                writer.Flush();
+                stream.Position = 0;
+                return stream;
+            }
+#endif
 
             Stream characterDataStream = GenerateStreamFromStreamingAsset("CharacterData.json");
             Stream locationDataStream = GenerateStreamFromStreamingAsset("LocationData.json");
@@ -136,7 +164,9 @@ namespace Assets.MonoBehaviours
         {
             storySeedEntry.SetActive(true);
 
+#if !UNITY_ANDROID
             storySeed.Select();
+#endif
         }
 
         public void HideStorySeedEntry()

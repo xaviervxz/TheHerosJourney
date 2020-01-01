@@ -751,7 +751,9 @@ namespace Assets.MonoBehaviours
 
             StartCoroutine(FadeMenu(feedbackFormParent, fadeIn: true));
 
+#if !UNITY_ANDROID
             feedbackText.Select();
+#endif
         }
 
         public void SendFeedback()
