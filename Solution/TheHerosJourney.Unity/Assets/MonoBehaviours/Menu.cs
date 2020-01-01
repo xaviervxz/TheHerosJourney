@@ -79,9 +79,9 @@ namespace Assets.MonoBehaviours
             {
                 string text = "";
 
-                IEnumerator GetTextContentsFromStreamingAssetAndroid(string fileName)
+                IEnumerator GetTextContentsFromStreamingAssetAndroid(string pFileName)
                 {
-                    string fileUrl = Path.Combine(Application.streamingAssetsPath, fileName);
+                    string fileUrl = Path.Combine(Application.streamingAssetsPath, pFileName);
                     var request = UnityWebRequest.Get(fileUrl);
                     yield return request.SendWebRequest();
                     text = request.downloadHandler.text;
