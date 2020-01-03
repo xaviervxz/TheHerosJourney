@@ -259,6 +259,13 @@ namespace TheHerosJourney.Functions
                         var rawValidTypes = keyPieces[2].Split('|');
                         var validTypes = rawValidTypes.ParseToValidTypes<LocationType>();
 
+                        // pathtobaron=Forest
+                        var typeRestriction = Pick.ReqSceneIds.FirstOrDefault(id => id.StartsWith(keyPieces[4]));
+                        if (typeRestriction != null && Enum.TryParse(typeRestriction.Substring(keyPieces[4].Length + 1), out LocationType restrictedType))
+                        {
+                            validTypes = new[] { restrictedType };
+                        }
+
                         // WHAT LOCATION SHOULD THIS NEW LOCATION BE NEAR?
                         var nearbyLocationKey = keyPieces[3];
                         Location centerLocation = null;

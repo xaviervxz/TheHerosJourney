@@ -147,7 +147,7 @@ namespace TheHerosJourney.Console
 
             fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
 
-            string[] scenesToTest = null;// new []{ "MWG2" };
+            string[] scenesToTest = null;//new []{ "pathtobaron=Forest", "MTM3", "MWG2" };
 
             const string storySeed = null; // "1268416859";// "540996750";
             story = Run.NewStory(fileData, storySeed, scenesToTest);

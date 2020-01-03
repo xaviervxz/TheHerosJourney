@@ -7,7 +7,7 @@ namespace Assets.MonoBehaviours
     {
         [SerializeField]
 #pragma warning disable 0649
-        private bool alwaysRunTutorial;
+        private bool alwaysRunTutorialInDebug;
 #pragma warning restore 0649
 
         [SerializeField]
@@ -46,7 +46,11 @@ namespace Assets.MonoBehaviours
 
         private void Start()
         {
-            if (!PlayerPrefs.HasKey(PlayerPrefsHasRunTutorialKey) || alwaysRunTutorial)
+#if DEBUG
+            if (!PlayerPrefs.HasKey(PlayerPrefsHasRunTutorialKey) || alwaysRunTutorialInDebug)
+#else
+            if (!PlayerPrefs.HasKey(PlayerPrefsHasRunTutorialKey))
+#endif
             {
                 StartTutorial();
             }
@@ -91,7 +95,12 @@ namespace Assets.MonoBehaviours
 
             var currentStep = steps[CurrentStep];
 
-            cover.position = currentStep.targetObject.position + (Vector3)currentStep.targetObject.rect.center;
+            cover.anchorMin = currentStep.targetObject.anchorMin;
+            cover.anchorMax = currentStep.targetObject.anchorMax;
+            cover.anchoredPosition =
+                currentStep.targetObject.anchoredPosition
+                + currentStep.targetObject.rect.center
+                - cover.rect.center;
             tutorialText.text = currentStep.instructions.Replace("{name}", Data.PlayersName);
         }
     }
