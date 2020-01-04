@@ -3,10 +3,7 @@
 [RequireComponent(typeof(AudioSource))]
 public class BackgroundMusicPlayer : MonoBehaviour
 {
-    [SerializeField]
-#pragma warning disable 0649
     private AudioClip[] tracks;
-#pragma warning restore 0649
 
     private AudioSource audioSource;
 
@@ -14,6 +11,8 @@ public class BackgroundMusicPlayer : MonoBehaviour
 
     private void Start()
     {
+        tracks = Resources.LoadAll<AudioClip>("BackgroundMusic");
+
         audioSource = GetComponent<AudioSource>();
 
         DontDestroyOnLoad(gameObject);

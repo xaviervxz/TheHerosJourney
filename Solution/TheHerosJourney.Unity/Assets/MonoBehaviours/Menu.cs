@@ -54,12 +54,12 @@ namespace Assets.MonoBehaviours
         // Start is called before the first frame update
         private void Start()
         {
-            LoadFileData();
-
             playersName.text = Data.PlayersName;
             playersSex.value = Data.PlayersSex == Sex.Female ? 0 : 1;
 
             GotoMainMenu();
+
+            LoadFileData(() => Debug.LogError("Could not load FileData--the game will not run correctly."));
         }
 
         internal static void LoadFileData(Action callback = null)
@@ -74,35 +74,19 @@ namespace Assets.MonoBehaviours
                 return stream;
             }
 #else
+            BetterStreamingAssets.Initialize();
 
             Stream GenerateStreamFromStreamingAsset(string fileName)
             {
-                string text = "";
-
-                IEnumerator GetTextContentsFromStreamingAssetAndroid(string pFileName)
-                {
-                    string fileUrl = Path.Combine(Application.streamingAssetsPath, pFileName);
-                    var request = UnityWebRequest.Get(fileUrl);
-                    yield return request.SendWebRequest();
-                    text = request.downloadHandler.text;
-                }
-
-                GetTextContentsFromStreamingAssetAndroid(fileName);
-
-                // SOURCE: https://stackoverflow.com/a/1879470/3059182
-
-                var stream = new MemoryStream();
-                var writer = new StreamWriter(stream);
-                writer.Write(text);
-                writer.Flush();
-                stream.Position = 0;
+                var stream = BetterStreamingAssets.OpenRead(fileName);
+                
                 return stream;
             }
 #endif
 
-            Stream characterDataStream = GenerateStreamFromStreamingAsset("CharacterData.json");
-            Stream locationDataStream = GenerateStreamFromStreamingAsset("LocationData.json");
-            Stream scenesStream = GenerateStreamFromStreamingAsset("Scenes.ods");
+            Stream characterDataStream = GenerateStreamFromStreamingAsset("character_data.json");
+            Stream locationDataStream = GenerateStreamFromStreamingAsset("location_data.json");
+            Stream scenesStream = GenerateStreamFromStreamingAsset("scenes.ods");
 
             Data.FileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, callback);
 

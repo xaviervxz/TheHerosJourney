@@ -141,9 +141,9 @@ namespace TheHerosJourney.Console
                 return stream;
             }
 
-            var characterDataStream = GetDataResourceStream("CharacterData.json");
-            var locationDataStream = GetDataResourceStream("LocationData.json");
-            var scenesStream = GetDataResourceStream("Scenes.ods");
+            var characterDataStream = GetDataResourceStream("character_data.json");
+            var locationDataStream = GetDataResourceStream("location_data.json");
+            var scenesStream = GetDataResourceStream("scenes.ods");
 
             fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
 

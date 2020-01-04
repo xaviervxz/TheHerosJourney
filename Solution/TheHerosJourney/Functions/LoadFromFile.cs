@@ -31,6 +31,7 @@ namespace TheHerosJourney.Functions
                         lines.Add(line);
                     }
                 }
+                stream.Dispose();
 
                 string text = string.Join(Environment.NewLine, lines);
 
@@ -235,7 +236,7 @@ namespace TheHerosJourney.Functions
             }
 
             fileData.Scenes = scenes.ToArray();
-
+            scenesStream.Dispose();
 
             return fileData;
         }
