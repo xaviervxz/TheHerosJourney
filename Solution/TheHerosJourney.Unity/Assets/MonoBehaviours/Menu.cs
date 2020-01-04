@@ -10,6 +10,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
+using UnityEngine.EventSystems;
 
 namespace Assets.MonoBehaviours
 {
@@ -221,6 +222,9 @@ namespace Assets.MonoBehaviours
             var newName = Run.NewName(Data.FileData, SelectedPlayersSex);
 
             playersName.text = newName;
+#if UNITY_ANDROID
+            EventSystem.current.SetSelectedGameObject(null);
+#endif
 
             HighlightPlayersName();
         }
