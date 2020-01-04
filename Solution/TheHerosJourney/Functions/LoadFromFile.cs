@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using CsvHelper;
 
 namespace TheHerosJourney.Functions
 {
@@ -70,25 +71,25 @@ namespace TheHerosJourney.Functions
             // *************************
             // CSVREADER CODE BELOW
             // *************************
-            //using (var streamReader = new StreamReader(scenesStream))
-            //using (var csv = new CsvReader(streamReader))
-            //{
-            //    var scenes = csv.GetRecords<Scene>().ToArray();
+            using (var streamReader = new StreamReader(scenesStream))
+            using (var csv = new CsvReader(streamReader))
+            {
+                var scenes = csv.GetRecords<Scene>().ToArray();
 
-            //    foreach (var scene in scenes)
-            //    {
-            //        // For each scene we got, assign some calculated variables...
+                foreach (var scene in scenes)
+                {
+                    // For each scene we got, assign some calculated variables...
 
-            //        // The Stage
-            //        scene.Stage = Pick.StageFromCode(scene.Identifier);
+                    // The Stage
+                    scene.Stage = Pick.StageFromCode(scene.Identifier);
 
-            //        // IsSubStage
-            //        char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
-            //        scene.IsSubStage = char.IsLetter(lastCharacter);
-            //    }
+                    // IsSubStage
+                    char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
+                    scene.IsSubStage = char.IsLetter(lastCharacter);
+                }
 
-            //    fileData.Scenes = scenes;
-            //}
+                fileData.Scenes = scenes;
+            }
 
 
             // *************************
@@ -163,79 +164,79 @@ namespace TheHerosJourney.Functions
             // MANUAL ODS FILE PARSING CODE BELOW
             // *************************
 
-            var scenesOdsFile = new ZipArchive(scenesStream, ZipArchiveMode.Read, false);
+            //var scenesOdsFile = new ZipArchive(scenesStream, ZipArchiveMode.Read, false);
 
-            var contentFile = scenesOdsFile.Entries.First(e => e.Name == "content.xml");
+            //var contentFile = scenesOdsFile.Entries.First(e => e.Name == "content.xml");
 
-            XDocument scenesXmlDocument = XDocument.Load(contentFile.Open());
+            //XDocument scenesXmlDocument = XDocument.Load(contentFile.Open());
 
-            var columnNames = scenesXmlDocument.Descendants()
-                .First(row => row.Name.LocalName == "table-row" && row.Attributes().First(attr => attr.Name.LocalName == "style-name").Value == "ro1")
-                .Descendants().Where(cell => cell.Name.LocalName == "table-cell")
-                .Descendants().Where(paragraph => paragraph.Name.LocalName == "p").Select(column => column.Value)
-                .ToArray();
+            //var columnNames = scenesXmlDocument.Descendants()
+            //    .First(row => row.Name.LocalName == "table-row" && row.Attributes().First(attr => attr.Name.LocalName == "style-name").Value == "ro1")
+            //    .Descendants().Where(cell => cell.Name.LocalName == "table-cell")
+            //    .Descendants().Where(paragraph => paragraph.Name.LocalName == "p").Select(column => column.Value)
+            //    .ToArray();
 
-            var rows = scenesXmlDocument.Descendants()
-                .Where(row => row.Name.LocalName == "table-row" && row.Attributes().First(attr => attr.Name.LocalName == "style-name").Value != "ro1")
-                .Select(row => row.Descendants()
-                    .Where(cell => cell.Name.LocalName == "table-cell" && cell.Attributes().All(attr => attr.Name.LocalName != "number-columns-repeated"))
-                    .Select(cell => string.Join(Environment.NewLine, cell.Descendants()
-                        .Where(paragraph => paragraph.Name.LocalName == "p").Select(column => column.Value))
-                    )
-                    .ToArray()
-                )
-                .ToArray();
+            //var rows = scenesXmlDocument.Descendants()
+            //    .Where(row => row.Name.LocalName == "table-row" && row.Attributes().First(attr => attr.Name.LocalName == "style-name").Value != "ro1")
+            //    .Select(row => row.Descendants()
+            //        .Where(cell => cell.Name.LocalName == "table-cell" && cell.Attributes().All(attr => attr.Name.LocalName != "number-columns-repeated"))
+            //        .Select(cell => string.Join(Environment.NewLine, cell.Descendants()
+            //            .Where(paragraph => paragraph.Name.LocalName == "p").Select(column => column.Value))
+            //        )
+            //        .ToArray()
+            //    )
+            //    .ToArray();
 
-            List<Scene> scenes = new List<Scene>();
+            //List<Scene> scenes = new List<Scene>();
 
-            foreach (var row in rows)
-            {
-                var scene = new Scene();
+            //foreach (var row in rows)
+            //{
+            //    var scene = new Scene();
 
-                for (int column = 0; column < row.Length; column += 1)
-                {
-                    string value = row[column] ?? "";
-                    string columnName = columnNames[column];
+            //    for (int column = 0; column < row.Length; column += 1)
+            //    {
+            //        string value = row[column] ?? "";
+            //        string columnName = columnNames[column];
 
-                    switch (columnName)
-                    {
-                        case "Identifier":
-                            scene.Identifier = value;
-                            break;
-                        case "Conditions":
-                            scene.Conditions = value;
-                            break;
-                        case "Message":
-                            scene.Message = value;
-                            break;
-                        case "Choice1":
-                            scene.Choice1 = value;
-                            break;
-                        case "Choice2":
-                            scene.Choice2 = value;
-                            break;
-                        case "Outro1":
-                            scene.Outro1 = value;
-                            break;
-                        case "Outro2":
-                            scene.Outro2 = value;
-                            break;
-                    }
-                }
+            //        switch (columnName)
+            //        {
+            //            case "Identifier":
+            //                scene.Identifier = value;
+            //                break;
+            //            case "Conditions":
+            //                scene.Conditions = value;
+            //                break;
+            //            case "Message":
+            //                scene.Message = value;
+            //                break;
+            //            case "Choice1":
+            //                scene.Choice1 = value;
+            //                break;
+            //            case "Choice2":
+            //                scene.Choice2 = value;
+            //                break;
+            //            case "Outro1":
+            //                scene.Outro1 = value;
+            //                break;
+            //            case "Outro2":
+            //                scene.Outro2 = value;
+            //                break;
+            //        }
+            //    }
 
-                // For each scene we got, assign some calculated variables...
+            //    // For each scene we got, assign some calculated variables...
 
-                // The Stage
-                scene.Stage = Pick.StageFromCode(scene.Identifier);
+            //    // The Stage
+            //    scene.Stage = Pick.StageFromCode(scene.Identifier);
 
-                // IsSubStage
-                char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
-                scene.IsSubStage = char.IsLetter(lastCharacter);
+            //    // IsSubStage
+            //    char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
+            //    scene.IsSubStage = char.IsLetter(lastCharacter);
 
-                scenes.Add(scene);
-            }
+            //    scenes.Add(scene);
+            //}
+            //fileData.Scenes = scenes.ToArray();
 
-            fileData.Scenes = scenes.ToArray();
             scenesStream.Dispose();
 
             return fileData;

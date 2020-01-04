@@ -86,7 +86,12 @@ namespace Assets.MonoBehaviours
 
             Stream characterDataStream = GenerateStreamFromStreamingAsset("character_data.json");
             Stream locationDataStream = GenerateStreamFromStreamingAsset("location_data.json");
-            Stream scenesStream = GenerateStreamFromStreamingAsset("scenes.ods");
+            // SCENES ARE BEING LOADED FROM A CSV INSTEAD OF FROM AN .ODS
+            // BECAUSE ANDROID'S STREAMING ASSETS ARE A PAIN IN THE BUTT,
+            // AND THE TOOL I FOUND TO SOLVE THAT (BETTER STREAMING ASSETS)
+            // DOESN'T SUPPORT LOADING COMPRESSED FILES, AND AN .ODS FILE
+            // IS A COMPRESSED FILE.
+            Stream scenesStream = GenerateStreamFromStreamingAsset("scenes.csv");
 
             Data.FileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, callback);
 
