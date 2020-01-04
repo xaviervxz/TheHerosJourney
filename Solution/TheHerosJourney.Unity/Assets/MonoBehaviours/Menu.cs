@@ -9,12 +9,19 @@ using System.IO;
 using System.Collections;
 using System.Linq;
 using UnityEngine.Networking;
+using Newtonsoft.Json;
 
 namespace Assets.MonoBehaviours
 {
     public class Menu : MonoBehaviour
     {
         [Header("Root Menu Objects")]
+
+        [SerializeField]
+#pragma warning disable 0649
+        private GameObject title;
+#pragma warning restore 0649
+
         [SerializeField]
 #pragma warning disable 0649
         private GameObject mainMenu;
@@ -23,6 +30,11 @@ namespace Assets.MonoBehaviours
         [SerializeField]
 #pragma warning disable 0649
         private GameObject newGameMenu;
+#pragma warning restore 0649
+
+        [SerializeField]
+#pragma warning disable 0649
+        private GameObject loadGameMenu;
 #pragma warning restore 0649
 
         [Header("New Game Menu")]
@@ -49,6 +61,18 @@ namespace Assets.MonoBehaviours
         [SerializeField]
 #pragma warning disable 0649
         private Button startGameButton;
+#pragma warning restore 0649
+
+        [Header("Load Game Menu")]
+
+        [SerializeField]
+#pragma warning disable 0649
+        private Transform savedGameParent;
+#pragma warning restore 0649
+
+        [SerializeField]
+#pragma warning disable 0649
+        private Button savedGamePrefab;
 #pragma warning restore 0649
 
         // Start is called before the first frame update
@@ -111,6 +135,55 @@ namespace Assets.MonoBehaviours
             GenerateNewName();
 
             HighlightPlayersName();
+
+            title.SetActive(true);
+        }
+
+        public void GotoLoadGameMenu()
+        {
+            mainMenu.SetActive(false);
+
+            foreach (Transform oldButton in savedGameParent)
+            {
+                Destroy(oldButton.gameObject);
+            }
+
+            string saveFolder = Game.GetSaveFolderPath();
+            if (!Directory.Exists(saveFolder))
+            {
+                Directory.CreateDirectory(saveFolder);
+            }
+            var existingSaveFiles = Directory.GetFiles(saveFolder);
+
+            foreach (var saveFile in existingSaveFiles)
+            {
+                var rawJson = File.ReadAllText(saveFile);
+                var savedGame = JsonConvert.DeserializeObject<SavedGameData>(rawJson);
+
+                var newLoadGameButton = Instantiate(savedGamePrefab, savedGameParent);
+
+                // SET THE BUTTON ACTION.
+                newLoadGameButton.onClick.AddListener(() => LoadGame(Path.GetFileName(saveFile)));
+
+                // SET THE BUTTON TEXT.
+                var text = newLoadGameButton.GetComponentInChildren<TextMeshProUGUI>();
+                var currentLocation = savedGame.Locations.First(l => l.Name == savedGame.You.CurrentLocation);
+                var currentLocationName = (currentLocation.HasThe ? "the " : "") + currentLocation.Name;
+                text.text = $"#{Path.GetFileNameWithoutExtension(saveFile)} {savedGame.You.Name}, in {currentLocationName}"
+                    + Environment.NewLine
+                    + $"<size=75%>Last saved: {savedGame.TimeJourneyStarted.ToString("yyyy.MM.dd 'at' hh:mm tt")}</size>";
+            }
+
+            loadGameMenu.SetActive(true);
+
+            title.SetActive(false);
+        }
+
+        public void LoadGame(string saveFileName)
+        {
+            Data.SaveFileName = saveFileName;
+
+            SceneManager.LoadScene("Game");
         }
 
         private void HighlightPlayersName()
@@ -138,6 +211,9 @@ namespace Assets.MonoBehaviours
             mainMenu.SetActive(true);
 
             newGameMenu.SetActive(false);
+            loadGameMenu.SetActive(false);
+
+            title.SetActive(true);
         }
 
         public void GenerateNewName()
@@ -184,10 +260,11 @@ namespace Assets.MonoBehaviours
                 return;
             }
 
+            // SET THE PLAYER'S NAME AND SEX
             Data.PlayersName = playersName.text;
-
             Data.PlayersSex = SelectedPlayersSex;
 
+            // PARSE AND SET THE STORY SEED.
             const string testPrefix = "TEST:";
             if (storySeed.text.StartsWith(testPrefix))
             {
@@ -206,6 +283,24 @@ namespace Assets.MonoBehaviours
                 Data.StorySeed = storySeed.text;
             }
 
+            // CREATE A NEW SAVE FILE.
+            string saveFolder = Game.GetSaveFolderPath();
+            if (!Directory.Exists(saveFolder))
+            {
+                Directory.CreateDirectory(saveFolder);
+            }
+            var existingSaveFiles = Directory.GetFiles(saveFolder).Select(Path.GetFileName).ToArray();
+            string newSaveFileName = "";
+            int savedFileNumber = 1;
+            do
+            {
+                newSaveFileName = $"{savedFileNumber}.sav";
+                savedFileNumber += 1;
+            }
+            while (existingSaveFiles.Contains(newSaveFileName));
+            Data.SaveFileName = newSaveFileName;
+
+            // START THE GAME! :D
             SceneManager.LoadScene("Game");
         }
     }

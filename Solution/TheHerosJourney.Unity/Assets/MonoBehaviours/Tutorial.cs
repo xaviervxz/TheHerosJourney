@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections;
+using TMPro;
 using UnityEngine;
 
 namespace Assets.MonoBehaviours
@@ -73,7 +74,12 @@ namespace Assets.MonoBehaviours
 
             CurrentStep = -1;
 
-            ContinueTutorial();
+            IEnumerator startTutorialNextFrame()
+            {
+                yield return null;
+                ContinueTutorial();
+            }
+            StartCoroutine(startTutorialNextFrame());
 
             gameObject.SetActive(true);
         }

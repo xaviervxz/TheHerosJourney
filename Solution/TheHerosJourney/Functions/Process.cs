@@ -577,7 +577,7 @@ namespace TheHerosJourney.Functions
             return replacedMessage;
         }
 
-        public static SavedGameData GetSavedGameFrom(FileData fileData, Story story, string theStorySoFar)
+        public static SavedGameData GetSavedGameFrom(FileData fileData, Story story, string theStorySoFar, DateTime timeJourneyStarted)
         {
             SavedCharacter MapCharacter(Character character)
             {
@@ -606,6 +606,8 @@ namespace TheHerosJourney.Functions
 
             var savedGameData = new SavedGameData
             {
+                TimeJourneyStarted = timeJourneyStarted,
+                TimeLastSaved = DateTime.Now,
                 CompletedSceneIds = fileData.Scenes.Where(s => s.Done).Select(s => s.Identifier).ToArray(),
                 TheStorySoFar = theStorySoFar,
                 Seed = story.Seed,

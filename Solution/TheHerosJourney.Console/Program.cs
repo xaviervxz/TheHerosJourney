@@ -216,10 +216,12 @@ namespace TheHerosJourney.Console
             bool getNewScene = true;
             bool shownHelp = false;
 
+            var timeJourneyStarted = DateTime.Now;
+
             bool gameRunning = true;
             while (gameRunning)
             {
-                var savedGame = Process.GetSavedGameFrom(fileData, story, "");
+                var savedGame = Process.GetSavedGameFrom(fileData, story, "", timeJourneyStarted);
                 string ignore;
                 (story, ignore) = Process.LoadStoryFrom(fileData, savedGame);
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TheHerosJourney.Models
 {
@@ -15,6 +16,10 @@ namespace TheHerosJourney.Models
         public int CurrentStageNumber = 1;
 
         public string NextSceneIdentifier = "";
+
+        public DateTime TimeJourneyStarted;
+
+        public DateTime TimeLastSaved;
 
         public Dictionary<string, string> Almanac = new Dictionary<string, string>();
 

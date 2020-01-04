@@ -10,6 +10,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Newtonsoft.Json;
 
 namespace Assets.MonoBehaviours
 {
@@ -129,6 +130,8 @@ namespace Assets.MonoBehaviours
 
         private List<string> paragraphs = new List<string>();
 
+        private DateTime timeJourneyStarted = DateTime.Now;
+
         /// <summary>
         /// RESET GAMEOBJECTS. LOAD FILEDATA AND PICK A STORY. RUN THE FIRST SCENE.
         /// </summary>
@@ -171,17 +174,47 @@ namespace Assets.MonoBehaviours
             }
 #endif
 
-            Story = Run.NewStory(Data.FileData, Data.StorySeed, Data.ScenesToTest);
-
-            // IF THE NAME IS BLANK, MAKE ONE UP.
-            // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.
-            if (string.IsNullOrWhiteSpace(Data.PlayersName))
+            if (!string.IsNullOrWhiteSpace(Data.SaveFileName))
             {
-                Data.PlayersName = "Marielle";
+                var saveFolderPath = GetSaveFolderPath();
+                var saveFilePath = Path.Combine(saveFolderPath, Data.SaveFileName);
+
+                try
+                {
+                    string rawJson = File.ReadAllText(saveFilePath);
+                    var savedGameData = JsonConvert.DeserializeObject<SavedGameData>(rawJson);
+                    (Story, storyText.text) = Process.LoadStoryFrom(Data.FileData, savedGameData);
+
+                    Data.PlayersName = Story.You.Name;
+                    Data.PlayersSex = Story.You.Sex;
+                    timeJourneyStarted = savedGameData.TimeJourneyStarted;
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogWarning(exception.Message);
+
+                    // DO NOTHING IN HERE, IT'S ENOUGH THAT THE STORY IS NULL.
+                    // THAT MEANS THAT IT GETS ASSIGNED TO A NEW STORY BELOW.
+                }
             }
 
-            Story.You.Name = Data.PlayersName;
-            Story.You.Sex = Data.PlayersSex;
+            // IF A STORY COULDN'T BE LOADED ABOVE, FOR ANY REASON...
+            if (Story == null)
+            {
+                Story = Run.NewStory(Data.FileData, Data.StorySeed, Data.ScenesToTest);
+
+                // IF THE NAME IS BLANK, MAKE ONE UP.
+                // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.
+                if (string.IsNullOrWhiteSpace(Data.PlayersName))
+                {
+                    Data.PlayersName = "Marielle";
+                }
+
+                Story.You.Name = Data.PlayersName;
+                Story.You.Sex = Data.PlayersSex;
+            }
+
+            SaveGame();
 
             ContinueStory(justMadeChoice: false);
         }
@@ -477,7 +510,7 @@ namespace Assets.MonoBehaviours
                 foreach (var paragraph in paragraphs)
                 {
                     // MAKE A "SAVE POINT."
-                    var prevSavedGame = Process.GetSavedGameFrom(Data.FileData, Story, storyText.text);
+                    var prevSavedGame = Process.GetSavedGameFrom(Data.FileData, Story, storyText.text, timeJourneyStarted);
 
                     if (!string.IsNullOrWhiteSpace(storyText.text))
                     {
@@ -876,6 +909,8 @@ namespace Assets.MonoBehaviours
             choice2Text = "";
             choicesExist = false;
 
+            SaveGame();
+
             ContinueStory(justMadeChoice: true);
         }
 
@@ -962,6 +997,21 @@ namespace Assets.MonoBehaviours
             {
                 button.SetActive(false);
             }
+        }
+
+        private void SaveGame()
+        {
+            var saveFolderPath = GetSaveFolderPath();
+            var saveFilePath = Path.Combine(saveFolderPath, Data.SaveFileName);
+
+            var savedGameData = Process.GetSavedGameFrom(Data.FileData, Story, storyText.text, timeJourneyStarted);
+            string rawJson = JsonConvert.SerializeObject(savedGameData);
+            File.WriteAllText(saveFilePath, rawJson);
+        }
+
+        internal static string GetSaveFolderPath()
+        {
+            return Path.Combine(Application.persistentDataPath, "Saves");
         }
     }
 }
