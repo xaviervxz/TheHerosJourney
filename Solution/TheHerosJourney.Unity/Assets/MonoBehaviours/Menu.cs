@@ -76,7 +76,6 @@ namespace Assets.MonoBehaviours
         private Button savedGamePrefab;
 #pragma warning restore 0649
 
-        // Start is called before the first frame update
         private void Start()
         {
             playersName.text = Data.PlayersName;
@@ -135,7 +134,9 @@ namespace Assets.MonoBehaviours
 
             GenerateNewName();
 
+#if !UNITY_ANDROID
             HighlightPlayersName();
+#endif
 
             title.SetActive(true);
         }
@@ -222,11 +223,10 @@ namespace Assets.MonoBehaviours
             var newName = Run.NewName(Data.FileData, SelectedPlayersSex);
 
             playersName.text = newName;
-#if UNITY_ANDROID
-            EventSystem.current.SetSelectedGameObject(null);
-#endif
 
+#if !UNITY_ANDROID
             HighlightPlayersName();
+#endif
         }
 
         public void ShowStorySeedEntry()
