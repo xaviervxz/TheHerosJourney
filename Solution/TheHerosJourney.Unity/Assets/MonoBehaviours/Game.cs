@@ -517,6 +517,7 @@ namespace Assets.MonoBehaviours
                         storyText.text += Environment.NewLine + Environment.NewLine;
                     }
                     string processedMessage = Process.Message(Data.FileData, Story, paragraph);
+                    SaveGame();
                     storyText.text += processedMessage;
                     storyText.ForceMeshUpdate(ignoreInactive: true);
 

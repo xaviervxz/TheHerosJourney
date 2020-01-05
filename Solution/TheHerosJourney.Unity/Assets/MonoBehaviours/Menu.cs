@@ -173,7 +173,7 @@ namespace Assets.MonoBehaviours
                 var currentLocationName = (currentLocation.HasThe ? "the " : "") + currentLocation.Name;
                 text.text = $"#{Path.GetFileNameWithoutExtension(saveFile)} {savedGame.You.Name}, in {currentLocationName}"
                     + Environment.NewLine
-                    + $"<size=75%>Last saved: {savedGame.TimeJourneyStarted.ToString("yyyy.MM.dd 'at' hh:mm tt")}</size>";
+                    + $"<size=75%>Last saved: {savedGame.TimeLastSaved.ToString("yyyy.MM.dd 'at' hh:mm tt")}</size>";
             }
 
             loadGameMenu.SetActive(true);
