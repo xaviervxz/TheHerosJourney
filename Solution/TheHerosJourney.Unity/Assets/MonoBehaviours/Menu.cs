@@ -3,7 +3,6 @@ using TheHerosJourney.Models;
 using TheHerosJourney.Functions;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using System;
 using System.IO;
 using System.Collections;
@@ -186,7 +185,7 @@ namespace Assets.MonoBehaviours
         {
             Data.SaveFileName = saveFileName;
 
-            SceneManager.LoadScene("Game");
+            FadeScene.In("Game");
         }
 
         private void HighlightPlayersName()
@@ -306,7 +305,7 @@ namespace Assets.MonoBehaviours
             Data.SaveFileName = newSaveFileName;
 
             // START THE GAME! :D
-            SceneManager.LoadScene("Game");
+            FadeScene.In("Game");
         }
     }
 }

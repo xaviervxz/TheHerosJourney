@@ -11,11 +11,11 @@ public class BackgroundMusicPlayer : MonoBehaviour
 
     private void Start()
     {
+        DontDestroyOnLoad(gameObject);
+
         tracks = Resources.LoadAll<AudioClip>("BackgroundMusic");
 
         audioSource = GetComponent<AudioSource>();
-
-        DontDestroyOnLoad(gameObject);
 
         if (tracks.Length > 0)
         {

@@ -469,6 +469,12 @@ namespace Assets.MonoBehaviours
                 currentCharacterInt = storyText.textInfo.characterCount;
                 int oldLineCount = storyText.textInfo.lineCount;
 
+                if (oldLineCount == 0)
+                {
+                    storyText.text = "";
+                    yield return new WaitForSeconds(1.5F);
+                }
+
                 // IF THERE ARE NO PARAGRAPHS LEFT,
                 // GO GET NEW ONES.
                 if (paragraphs.Count == 0)
@@ -839,7 +845,7 @@ namespace Assets.MonoBehaviours
 
         public void ExitToMainMenu()
         {
-            SceneManager.LoadScene("Menu");
+            FadeScene.In("Menu");
         }
 
         public void CloseMenus()
