@@ -201,7 +201,7 @@ namespace Assets.MonoBehaviours
             // IF A STORY COULDN'T BE LOADED ABOVE, FOR ANY REASON...
             if (Story == null)
             {
-                Story = Run.NewStory(Data.FileData, Data.StorySeed, Data.ScenesToTest);
+                Story = Run.NewStory(Data.FileData, null, Data.StorySeed, Data.ScenesToTest);
 
                 // IF THE NAME IS BLANK, MAKE ONE UP.
                 // TODO: MAKE UP A NAME RANDOMLY. MAYBE HAVE THIS HAPPEN IN Run.LoadGame? Name could be an extra parameter.

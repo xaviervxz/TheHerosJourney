@@ -116,8 +116,9 @@ namespace Assets.MonoBehaviours
             // DOESN'T SUPPORT LOADING COMPRESSED FILES, AND AN .ODS FILE
             // IS A COMPRESSED FILE.
             Stream scenesStream = GenerateStreamFromStreamingAsset("scenes.csv");
+            Stream adventuresStream = GenerateStreamFromStreamingAsset("adventures.csv");
 
-            Data.FileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, callback);
+            Data.FileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, adventuresStream, callback);
 
             characterDataStream.Close();
             locationDataStream.Close();
