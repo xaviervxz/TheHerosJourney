@@ -163,7 +163,7 @@ namespace TheHerosJourney.Functions
                 you = Pick.Character(new List<Character>(), fileData, PickMethod.Introduce, currentLocation: null);
 
                 // CREATE THEIR HOMETOWN, START THEM THERE, AND ADD IT TO THE ALMANAC.
-                you.Hometown = Pick.Town(story.Locations, fileData, PickMethod.Introduce);
+                you.Hometown = Pick.NewTown(story.Locations, fileData);
                 you.CurrentLocation = you.Hometown;
                 story.Almanac[you.Hometown.NameWithThe] = "your hometown, " + you.Hometown.MainFeature.RelativePosition;
 
@@ -221,92 +221,111 @@ namespace TheHerosJourney.Functions
             return character;
         }
 
-        internal static Town Town(List<Location> locations, FileData data, PickMethod pickMethod)
+        internal static Town NewTown(List<Location> locations, FileData data)
         {
-            Town town = null;
+            // PICK A RANDOM TOWN
+            var townTemplate = data.LocationData.Towns
+                //.Where(t => t.Name == "Sycamore Hollow")
+                .Random();
+            // TODO: If the town needs to be BY a certain kind of region,
+            // make sure that it CAN be by that kind of region (ala NearbyRegions).
 
-            if (pickMethod != PickMethod.Introduce)
+            // CREATE THE TOWN WITH ITS NAME
+            var town = new Town
             {
-                town = locations.FirstOrDefault(c => c.Type == LocationType.Town) as Town;
+                Name = townTemplate.Name
+            };
+
+            // GENERATE A MAIN FEATURE
+            if (!data.LocationData.MainFeatures.ContainsKey(townTemplate.MainFeature))
+            {
+                throw new Exception("Missing Town Feature: The town \"" + townTemplate.Name + "\" has the non-existent Main Feature \"" + townTemplate.MainFeature + ".\"");
             }
+            var feature = data.LocationData.MainFeatures[townTemplate.MainFeature];
 
-            if (town == null && pickMethod != PickMethod.Reuse)
+            var featureLocations = new List<Location>();
+            foreach (var type in feature.Types)
             {
-                // PICK A RANDOM TOWN
-                var townTemplate = data.LocationData.Towns.Random();
+                var location = Pick.Location(locations.Except(featureLocations).ToList(), data, PickMethod.Pick, type);
 
-                // CREATE THE TOWN WITH ITS NAME
-                town = new Town
-                {
-                    Name = townTemplate.Name
-                };
+                featureLocations.Add(location);
+            }
+            locations.AddRange(featureLocations.Except(locations));
 
-                // GENERATE A MAIN FEATURE
-                if (!data.LocationData.MainFeatures.ContainsKey(townTemplate.MainFeature))
-                {
-                    throw new Exception("Missing Town Feature: The town \"" + townTemplate.Name + "\" has the non-existent Main Feature \"" + townTemplate.MainFeature + ".\"");
-                }
-                var feature = data.LocationData.MainFeatures[townTemplate.MainFeature];
+            town.MainFeature = new Feature
+            {
+                Locations = featureLocations.ToArray(),
+                RelativePosition = feature.RelativePosition
+            };
 
-                var featureLocations = new List<Location>();
-                foreach (var type in feature.Types)
-                {
-                    var location = Pick.Location(locations.Except(featureLocations).ToList(), data, type, PickMethod.Pick);
+            if (town.MainFeature.Locations.Length > 0)
+            {
+                town.MainFeature.RelativePosition = town.MainFeature.RelativePosition
+                    .Replace("{name}", town.MainFeature.Locations[0].NameWithThe)
+                    .Replace("{name1}", town.MainFeature.Locations[0].NameWithThe);
 
-                    featureLocations.Add(location);
-                }
-                locations.AddRange(featureLocations.Except(locations));
-
-                town.MainFeature = new Feature
-                {
-                    Locations = featureLocations.ToArray(),
-                    RelativePosition = feature.RelativePosition
-                };
-
-                if (town.MainFeature.Locations.Length > 0)
+                if (town.MainFeature.Locations.Length > 1)
                 {
                     town.MainFeature.RelativePosition = town.MainFeature.RelativePosition
-                        .Replace("{name}", town.MainFeature.Locations[0].NameWithThe)
-                        .Replace("{name1}", town.MainFeature.Locations[0].NameWithThe);
-
-                    if (town.MainFeature.Locations.Length > 1)
-                    {
-                        town.MainFeature.RelativePosition = town.MainFeature.RelativePosition
-                            .Replace("{name2}", town.MainFeature.Locations[1].NameWithThe);
-                    }
+                        .Replace("{name2}", town.MainFeature.Locations[1].NameWithThe);
                 }
-
-                // PICK AN INDUSTRY
-                if (!data.LocationData.Industries.ContainsKey(townTemplate.Industry))
-                {
-                    throw new Exception("Missing Town Industry: The town \"" + townTemplate.Name + "\" has the non-existent Industry \"" + townTemplate.Industry + ".\"");
-                }
-                town.MainIndustry = townTemplate.Industry;
-                town.MainIndustryData = data.LocationData.Industries[town.MainIndustry];
-
-                // ADD THE TOWN TO THE LIST OF LOCATIONS
-                locations.Add(town);
             }
+
+            // MAKE SURE THE NEARBY REGION EXISTS
+            if (townTemplate.NearbyRegion.HasValue)
+            {
+                switch (townTemplate.NearbyRegion.Value)
+                {
+                    case NearbyRegion.InForest:
+                    case NearbyRegion.NearForest:
+                        var forest = Pick.Location(locations, data, PickMethod.Pick, LocationType.Forest);
+                        break;
+                    case NearbyRegion.InMountains:
+                    case NearbyRegion.NearMountains:
+                        var mountains = Pick.Location(locations, data, PickMethod.Pick, LocationType.Mountain);
+                        break;
+                    case NearbyRegion.InSwamp:
+                    case NearbyRegion.NearSwamp:
+                        var swamp = Pick.Location(locations, data, PickMethod.Pick, LocationType.Swamp);
+                        break;
+                    case NearbyRegion.InPlains:
+                        var plains = Pick.Location(locations, data, PickMethod.Pick, LocationType.Plains);
+                        break;
+                }
+            }
+
+            // PICK AN INDUSTRY
+            if (!data.LocationData.Industries.ContainsKey(townTemplate.Industry))
+            {
+                throw new Exception("Missing Town Industry: The town \"" + townTemplate.Name + "\" has the non-existent Industry \"" + townTemplate.Industry + ".\"");
+            }
+            town.MainIndustry = townTemplate.Industry;
+            town.MainIndustryData = data.LocationData.Industries[town.MainIndustry];
+
+            // ADD THE TOWN TO THE LIST OF LOCATIONS
+            locations.Add(town);
 
             return town;
         }
 
-        internal static Location Location(List<Location> locations, FileData data, LocationType type, PickMethod pickMethod)
+        internal static Location Location(List<Location> locations, FileData data, PickMethod pickMethod, params LocationType[] validTypes)
         {
-            if (type == LocationType.Town)
-            {
-                return Pick.Town(locations, data, pickMethod);
-            }
-
             Location location = null;
 
             if (pickMethod != PickMethod.Introduce)
             {
-                location = locations.FirstOrDefault(c => c.Type == type);
+                location = locations.FirstOrDefault(c => validTypes.Contains(c.Type));
             }
 
             if (location == null && pickMethod != PickMethod.Reuse)
             {
+                var type = validTypes.Random();
+
+                if (type == LocationType.Town)
+                {
+                    return Pick.NewTown(locations, data);
+                }
+
                 string terrain = data.LocationData.Names.Terrain[type].SpecificTypes.Random();
                 string adjective = data.LocationData.Names.Adjectives.Random();
                 string noun = data.LocationData.Names.Nouns.Concat(data.LocationData.Names.TheNouns).Random();

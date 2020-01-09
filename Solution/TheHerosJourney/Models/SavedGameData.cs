@@ -83,7 +83,7 @@ namespace TheHerosJourney.Models
 
         // TOWNS ONLY
 
-        public Industry TownIndustry { get; set; }
+        public string TownIndustry { get; set; }
 
         public string TownFeatureRelativePosition { get; set; }
 

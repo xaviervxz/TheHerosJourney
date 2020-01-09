@@ -114,7 +114,7 @@
         "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
       },
       "Lake": {
-        "SpecificTypes": [ "Lake" ],
+        "SpecificTypes": [ "Lake", "Lake", "Pool", "Pond" ],
         "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ]
       },
       "Spring": {
@@ -269,6 +269,38 @@
       "Name": "Rosemary Rock",
       "MainFeature": "RiverTown",
       "Industry": "CopperOre"
+    },
+    {
+      "Name": "Mossdale",
+      "MainFeature": "RiverConfluenceTown",
+      "Industry": "Morels"
+    },
+    {
+      "Name": "Hillcrest",
+      "MainFeature": "RiverTown",
+      "NearbyRegion": "NearMountains",
+      "Industry": "Goats"
+    },
+    {
+      "Name": "The Forgotten Hamlet",
+      "MainFeature": "SpringTown",
+      "Industry": "Sulphur"
+    },
+    {
+      "Name": "The City of Pearls",
+      "MainFeature": "RiverMouthTown",
+      "Industry": "Barley"
+    },
+    {
+      "Name": "Sugar Cane Creek",
+      "MainFeature": "RiverTown",
+      "Industry": "Sugar Cane"
+    },
+    {
+      "Name": "Sycamore Hollow",
+      "MainFeature": "RiverTown",
+      "NearbyRegion": "InForest",
+      "Industry": "Baskets"
     }
   ],
   "MainFeatures": {
@@ -313,6 +345,15 @@
       "RelativePosition": "between the well-travelled {name1} and {name2}"
     }
   },
+  "NearbyRegions": {
+    "NearMountains":  "at the foot of {name}",
+    "NearForest": "at the edge of {name}",
+    "NearSwamp": "at the edge of {name}",
+    "InMountains": "deep in {name}",
+    "InForest": "deep within {name}",
+    "InSwamp": "deep within {name}",
+    "InPlains": "in the middle of {name}"
+  },
   "Industries": {
     "Fishing": {
       "WorkGer": "fishing",
@@ -335,6 +376,15 @@
     "Oats": {
       "WorkGer": "working in the oat fields",
       "Workplace": "in the oat fields",
+      "GoodsGer": "growing",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
+      "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
+    },
+    "Barley": {
+      "WorkGer": "working in the barley fields",
+      "Workplace": "in the barley fields",
       "GoodsGer": "growing",
       "Goods": "food",
       "Purpose": "to feed",
@@ -422,6 +472,15 @@
       "GoodDay": "In the quarry, work goes quickly and efficiently. Quality granite is extracted, and you know it will get a good price in the markets.",
       "GoodDayFinal": "Granite extraction continues without any interruptions or accidents. Everyone is happy to see the fine stone being mined from the quarry."
     },
+    "Sulphur": {
+      "WorkGer": "mining sulphur",
+      "Workplace": "at the sulphur mine",
+      "GoodsGer": "bringing up",
+      "Goods": "sulphur",
+      "Purpose": "to trade to other villages for food and supplies, which provides for",
+      "GoodDay": "In the mines, work goes quickly and efficiently. Good sulphur is extracted, and you know it can be processed into high quality sulphur powder.",
+      "GoodDayFinal": "In the mines, you run into a new vein of sulphur. Everyone's very excited. You all prepare to excavate the new vein."
+    },
     "Salt": {
       "WorkGer": "mining salt",
       "Workplace": "it the salt mines",
@@ -441,13 +500,22 @@
       "GoodDayFinal": "Clay collecting continues without any interruptions or accidents. Everyone is happy to see the fine clay being gathered from the flats."
     },
     "Cattle": {
-      "WorkGer": "working in the fields",
+      "WorkGer": "tending to the cattle",
       "Workplace": "in the fields",
       "GoodsGer": "looking after",
       "Goods": "cattle",
       "Purpose": "to provide food and leather for",
-      "GoodDay": "The sun is shining today and you find fresh grass for the cattle the graze. The cattle are very happy.",
+      "GoodDay": "The sun is shining today and you find fresh grass for the cattle to graze. The cattle are very happy.",
       "GoodDayFinal": "The cattle are thriving, and they graze happily as they often do under the warm sun. A new calf was born this week."
+    },
+    "Goats": {
+      "WorkGer": "tending to the goats",
+      "Workplace": "in the foothills",
+      "GoodsGer": "looking after",
+      "Goods": "goats",
+      "Purpose": "to provide milk and meat for",
+      "GoodDay": "The sun is shining today and you find a fresh hill for the goats to graze, full of green grass. The goats are very happy.",
+      "GoodDayFinal": "The goats are thriving, and they frolick happily as they often do under the warm sun. A new kid was born this week."
     },
     "HardwoodLumber": {
       "WorkGer": "working in the forest",
@@ -458,6 +526,15 @@
       "GoodDay": "Working in the forest is safe and today, and fortune smiles upon you. Several good clumps of trees are discovered that are ready to be felled.",
       "GoodDayFinal": "The forest is alive, and your axes are sharp. You'll bring in the best lumber this week, and there will be plenty next season as well."
     },
+    "Morels": {
+      "WorkGer": "hunting morels in the forest",
+      "Workplace": "in the forest",
+      "GoodsGer": "hunting",
+      "Goods": "morels",
+      "Purpose": "to trade to other villages and feed",
+      "GoodDay": "Working in the forest is safe and today, and fortune smiles upon you. You find a particularly good patch of morels.",
+      "GoodDayFinal": "The forest is alive, and your collecting baskets are ready. You'll bring in plenty of morels this week, and you have your eye on a few patches that are coming along quite nicely."
+    },
     "SugarCane": {
       "WorkGer": "working in the sugar cane fields",
       "Workplace": "in the sugar cane fields",
@@ -466,6 +543,15 @@
       "Purpose": "to trade to nearby villages for food and supplies to feed",
       "GoodDay": "It's harvest time, and the work goes quickly. You begin to process the first crop of sugar cane.",
       "GoodDayFinal": "The fields are full and sugar is being extracted from the sugar cane as fast as you can harvest it."
+    },
+    "Baskets": {
+      "WorkGer": "gathering bark",
+      "Workplace": "in the forest",
+      "GoodsGer": "weaving",
+      "Goods": "baskets",
+      "Purpose": "to weave baskets to trade with nearby villages, which provides for what little you lack in",
+      "GoodDay": "Working in the forest is safe and today, and fortune smiles upon you. Several good recently-felled trees are discovered that are ready to be stripped of their bark.",
+      "GoodDayFinal": "The forest is alive, and the bark you collected is turning into baskets. The one you're working on now, you think, will turn out to be particularly beautiful."
     }
   }
 }

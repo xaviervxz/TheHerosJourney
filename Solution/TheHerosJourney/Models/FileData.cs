@@ -29,7 +29,9 @@ namespace TheHerosJourney.Models
 
         public Dictionary<string, MainFeature> MainFeatures { get; set; }
 
-        public Dictionary<Industry, IndustryData> Industries { get; set; }
+        public Dictionary<NearbyRegion, string> NearbyRegions { get; set; }
+
+        public Dictionary<string, IndustryData> Industries { get; set; }
     }
 
     public class LocationNames
@@ -49,7 +51,9 @@ namespace TheHerosJourney.Models
 
         public string MainFeature { get; set; }
 
-        public Industry Industry { get; set; }
+        public NearbyRegion? NearbyRegion { get; set; }
+
+        public string Industry { get; set; }
     }
 
     public class LocationTerrain

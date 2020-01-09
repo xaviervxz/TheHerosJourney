@@ -297,7 +297,7 @@ namespace TheHerosJourney.Functions
                         // IF NO NEARBY LOCATION EXISTS, CREATE/PICK A NEW ONE.
                         if (nearbyLocation == null)
                         {
-                            nearbyLocation = Pick.Location(story.Locations, fileData, validTypes.Random(), pickMethod);
+                            nearbyLocation = Pick.Location(story.Locations, fileData, pickMethod, validTypes);
 
                             story.NearbyLocations.Add(Tuple.Create(centerLocation.Name, nearbyLocation.Name));
                         }

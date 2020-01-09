@@ -6,7 +6,9 @@
 
         public Feature MainFeature { get; set; }
 
-        public Industry MainIndustry { get; set; }
+        public NearbyRegion? NearbyRegion { get; set; }
+
+        public string MainIndustry { get; set; }
 
         public IndustryData MainIndustryData { get; set; }
     }
@@ -35,35 +37,14 @@
         public string GoodDayFinal { get; set; }
     }
 
-    public enum Industry
+    public enum NearbyRegion
     {
-        IronOre,
-        CopperOre,
-        Gold,
-        Silver,
-        Clay,
-        Granite,
-        Quartz,
-        Salt,
-        Peat,
-        Coal,
-        HardwoodLumber,
-        Barley,
-        Oats,
-        Beans,
-        Corn,
-        NutsAndOlives,
-        Rice,
-        Wheat,
-        PotatoesAndLeeks,
-        SugarCane,
-        Tobacco,
-        Cotton,
-        FruitTrees,
-        CabbageAndBeets,
-        Cattle,
-        DairyCows,
-        Sheep,
-        Fishing
+        NearMountains,
+        NearForest,
+        NearSwamp,
+        InMountains,
+        InForest,
+        InSwamp,
+        InPlains
     }
 }

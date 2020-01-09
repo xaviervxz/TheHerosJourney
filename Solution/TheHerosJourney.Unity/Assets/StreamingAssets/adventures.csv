@@ -1,5 +1,5 @@
 "Id","Name","Conditions","RequiredScenes","Transitions"
-1,"The Baron",,"CTA1, ROC1, AWF1.1, AWF1.2, A1.1, A1.2, UB1, MOTW1, FTL1","MTM:type=forest|swamp|mountain|plains:tag=pathtobaron:You enter {namewiththe}.
-AWF:type=fortress:tag=baronhome:You finally arrive at {namewiththe}.
+1,"The Baron",,"CTA1, ROC1, AWF1.1, AWF1.2, A1.1, A1.2, UB1, MOTW1, FTL1","MTM:type=forest|swamp|mountain|plains:tag=pathtobaron
+AWF:You finally arrive at {namewiththe}.
 MF:pathtobaron:You leave {location:baronhome:namewiththe}.
 CRT:hometown:You return to {namewiththe}."
