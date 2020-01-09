@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Data\adventures.csv" />
+    <None Remove="Data\adventures.ods" />
     <None Remove="Data\character_data.json" />
     <None Remove="Data\LocationData.json" />
     <None Remove="Data\location_data.json" />
@@ -16,6 +18,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Data\adventures.csv" />
+    <EmbeddedResource Include="Data\adventures.ods" />
     <EmbeddedResource Include="Data\character_data.json" />
     <EmbeddedResource Include="Data\location_data.json" />
     <EmbeddedResource Include="Data\scenes.ods" />

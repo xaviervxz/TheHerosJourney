@@ -7,7 +7,7 @@ namespace TheHerosJourney.Functions
 {
     public static class Run
     {
-        public static FileData LoadGameData(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Action showLoadGameFilesError)
+        public static FileData LoadGameData(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Stream adventuresStream, Action showLoadGameFilesError)
         {
             // ----------------
             // DATA SET UP AND INTRODUCTION
@@ -17,7 +17,7 @@ namespace TheHerosJourney.Functions
             FileData fileData;
             try
             {
-                fileData = LoadFromFile.Data(characterDataStream, locationDataStream, scenesStream);
+                fileData = LoadFromFile.Data(characterDataStream, locationDataStream, scenesStream, adventuresStream);
             }
             catch (Exception exception)
             {
@@ -34,26 +34,24 @@ namespace TheHerosJourney.Functions
             return fileData;
         }
 
-        public static Story NewStory(FileData fileData, string storySeed, string[] reqSceneIds = null)
+        public static Story NewStory(FileData fileData, Character you = null, string storySeed = null, string[] reqSceneIds = null)
         {
-            int seed = Environment.TickCount;
             if (!string.IsNullOrWhiteSpace(storySeed))
             {
-                if (!int.TryParse(storySeed, out seed))
+                if (!int.TryParse(storySeed, out int seed))
                 {
                     seed = storySeed.Sum(letter => letter);
                 }
+                Pick.StoryGenerator = new Random(seed);
             }
 
-            Pick.StoryGenerator = new Random(seed);
-
-            var story = Pick.Story(fileData);
+            var story = Pick.Story(fileData, you);
 
             story.Seed = storySeed;
 
             if (reqSceneIds != null)
             {
-                Pick.ReqSceneIds = reqSceneIds;
+                story.ReqSceneIds = reqSceneIds;
             }
 
             return story;

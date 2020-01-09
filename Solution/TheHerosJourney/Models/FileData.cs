@@ -9,6 +9,8 @@ namespace TheHerosJourney.Models
         public LocationData LocationData { get; set; }
 
         public Scene[] Scenes { get; set; }
+
+        public Adventure[] Adventures { get; set; }
     }
 
     public enum PeopleNameOrigin

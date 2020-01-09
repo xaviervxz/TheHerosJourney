@@ -3,17 +3,15 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 using CsvHelper;
 
 namespace TheHerosJourney.Functions
 {
     internal static class LoadFromFile
     {
-        internal static FileData Data(Stream characterDataStream, Stream locationDataStream, Stream scenesStream)
+        internal static FileData Data(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Stream adventuresStream)
         {
             /*static */string ReadAllText(Stream stream)
             {
@@ -71,6 +69,8 @@ namespace TheHerosJourney.Functions
             // *************************
             // CSVREADER CODE BELOW
             // *************************
+
+            // LOAD SCENES
             using (var streamReader = new StreamReader(scenesStream))
             using (var csv = new CsvReader(streamReader))
             {
@@ -89,6 +89,34 @@ namespace TheHerosJourney.Functions
                 }
 
                 fileData.Scenes = scenes;
+            }
+
+            // LOAD ADVENTURES
+            using (var streamReader = new StreamReader(adventuresStream))
+            using (var csv = new CsvReader(streamReader))
+            {
+                var adventures = csv.GetRecords<Adventure>().ToArray();
+
+                foreach (var adventure in adventures)
+                {
+                    // For each scene we got, assign some calculated variables...
+
+                    // The Stage
+                    adventure.RequiredSceneIds = adventure.RawRequiredScenes.Split(',');
+
+                    // IsSubStage
+                    var parsedTransitions = adventure.RawTransitions
+                        .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                        .Select(transition => transition.Split(':'))
+                        .ToArray();
+                    adventure.Transitions = parsedTransitions
+                        .ToDictionary(
+                            transition => Pick.StageFromCode(transition.First()).Value,
+                            transition => transition.Skip(1).ToArray()
+                        );
+                }
+
+                fileData.Adventures = adventures;
             }
 
 

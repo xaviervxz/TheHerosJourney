@@ -7,19 +7,22 @@ namespace TheHerosJourney.Models
     {
         // STAGE-TRACKING
 
-        public JourneyStage CurrentStage { get; set; } = JourneyStage.CallToAdventure;
+        public JourneyStage CurrentStage { get; internal set; } = JourneyStage.CallToAdventure;
 
-        public int CurrentStageNumber { get; set; } = 0;
+        public int CurrentStageNumber { get; internal set; } = 0;
 
 
-        public string NextSceneIdentifier { get; set; } = null;
+        public string NextSceneIdentifier { get; internal set; } = null;
 
-        public string Seed = null;
+        public string Seed { get; set; } = null;
 
+        public string[] ReqSceneIds { get; internal set; } = new string[0];
+
+        public Adventure Adventure { get; internal set; }
 
         // STORY DATA
 
-        public Character You { get; set; }
+        public Character You { get; internal set; }
 
 
         // ***********
@@ -57,6 +60,7 @@ namespace TheHerosJourney.Models
         // ALMANAC
         // ***********
         public Dictionary<string, string> Almanac { get; set; } = new Dictionary<string, string>();
+
 
 #if DEBUG
         public override string ToString()

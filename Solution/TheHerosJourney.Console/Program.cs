@@ -144,13 +144,14 @@ namespace TheHerosJourney.Console
             var characterDataStream = GetDataResourceStream("character_data.json");
             var locationDataStream = GetDataResourceStream("location_data.json");
             var scenesStream = GetDataResourceStream("scenes.csv");
+            var adventuresStream = GetDataResourceStream("adventures.csv");
 
-            fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, ShowLoadGameFilesError);
+            fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, adventuresStream, ShowLoadGameFilesError);
 
             string[] scenesToTest = null;//new []{ "pathtobaron=Forest", "MTM3", "MWG2" };
 
             const string storySeed = null; // "1268416859";// "540996750";
-            story = Run.NewStory(fileData, storySeed, scenesToTest);
+            story = Run.NewStory(fileData, you: null, storySeed: storySeed, reqSceneIds: scenesToTest);
 
             // DISPLAY INTRODUCTION
             // LET THE PLAYER PICK THEIR NAME AND SEX

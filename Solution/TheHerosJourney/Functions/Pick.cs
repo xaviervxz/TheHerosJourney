@@ -7,8 +7,6 @@ namespace TheHerosJourney.Functions
 {
     internal static class Pick
     {
-        internal static string[] ReqSceneIds = new string[0];
-
         internal static Random StoryGenerator = null;
 
         internal static T Random<T>(this IEnumerable<T> list)
@@ -132,7 +130,10 @@ namespace TheHerosJourney.Functions
             var validScenes = scenes
                 .Where(s => SceneCanBeUsedHere(s, story.CurrentStage));
 
-            var scene = validScenes.FirstOrDefault(s => ReqSceneIds.Contains(s.Identifier));
+            var scene = validScenes.FirstOrDefault(s =>
+                                        story.ReqSceneIds.Contains(s.Identifier)
+                                        || story.Adventure.RequiredSceneIds.Contains(s.Identifier)
+                                    );
 
             if (scene == null)
             { 
@@ -152,34 +153,43 @@ namespace TheHerosJourney.Functions
             return scene;
         }
 
-        internal static Story Story(FileData fileData)
+        internal static Story Story(FileData fileData, Character you)
         {
             var story = new Story();
 
-            // CREATE THE PLAYER CHARACTER.
-            story.You = Pick.Character(new List<Character>(), fileData, PickMethod.Introduce, currentLocation: null);
-
-            // CREATE THEIR HOMETOWN, START THEM THERE, AND ADD IT TO THE ALMANAC.
-            story.You.Hometown = Pick.Town(story.Locations, fileData, PickMethod.Introduce);
-            story.You.CurrentLocation = story.You.Hometown;
-            story.Almanac[story.You.Hometown.NameWithThe] = "your hometown, " + story.You.Hometown.MainFeature.RelativePosition;
-
-            // GIVE THEM CLOTHES AND A TRAVEL PACK.
-            story.You.Inventory.AddRange(new[]
+            if (you == null)
             {
-                new Item
+                // CREATE THE PLAYER CHARACTER.
+                you = Pick.Character(new List<Character>(), fileData, PickMethod.Introduce, currentLocation: null);
+
+                // CREATE THEIR HOMETOWN, START THEM THERE, AND ADD IT TO THE ALMANAC.
+                you.Hometown = Pick.Town(story.Locations, fileData, PickMethod.Introduce);
+                you.CurrentLocation = you.Hometown;
+                story.Almanac[you.Hometown.NameWithThe] = "your hometown, " + you.Hometown.MainFeature.RelativePosition;
+
+                // GIVE THEM CLOTHES AND A TRAVEL PACK.
+                you.Inventory.AddRange(new[]
                 {
-                    Identifier = "clothes",
-                    Name = "Clothes",
-                    Description = "shirt, pants, shoes, and a cloak"
-                },
-                new Item
-                {
-                    Identifier = "pack",
-                    Name = "Travel pack",
-                    Description = "food, bedroll, etc."
-                }
-            });
+                    new Item
+                    {
+                        Identifier = "clothes",
+                        Name = "Clothes",
+                        Description = "shirt, pants, shoes, and a cloak"
+                    },
+                    new Item
+                    {
+                        Identifier = "pack",
+                        Name = "Travel pack",
+                        Description = "food, bedroll, etc."
+                    }
+                });
+            }
+            story.You = you;
+
+            // PICK THE ADVENTURE FOR THIS STORY.
+            var nextAdventure = fileData.Adventures.Where(adventure => !adventure.Done).Random();
+
+            story.Adventure = nextAdventure;
 
             return story;
         }

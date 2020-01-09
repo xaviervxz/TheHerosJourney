@@ -5,17 +5,22 @@ namespace TheHerosJourney.Models
 {
     public class SavedGameData
     {
-        public string[] CompletedSceneIds = new string[0];
 
         public string TheStorySoFar = "";
 
         public string Seed = "";
-        
+
+        public string CurrentAdventureId;
+
         public JourneyStage CurrentStage;
 
         public int CurrentStageNumber = 1;
 
         public string NextSceneIdentifier = "";
+
+        public string[] CompletedSceneIds = new string[0];
+        
+        public string[] CompletedAdventureIds = new string[0];
 
         public DateTime TimeJourneyStarted;
 

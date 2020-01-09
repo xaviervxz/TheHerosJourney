@@ -260,7 +260,7 @@ namespace TheHerosJourney.Functions
                         var validTypes = rawValidTypes.ParseToValidTypes<LocationType>();
 
                         // pathtobaron=Forest
-                        var typeRestriction = Pick.ReqSceneIds.FirstOrDefault(id => id.StartsWith(keyPieces[4]));
+                        var typeRestriction = story.ReqSceneIds.FirstOrDefault(id => id.StartsWith(keyPieces[4]));
                         if (typeRestriction != null && Enum.TryParse(typeRestriction.Substring(keyPieces[4].Length + 1), out LocationType restrictedType))
                         {
                             validTypes = new[] { restrictedType };
@@ -609,6 +609,8 @@ namespace TheHerosJourney.Functions
                 TimeJourneyStarted = timeJourneyStarted,
                 TimeLastSaved = DateTime.Now,
                 CompletedSceneIds = fileData.Scenes.Where(s => s.Done).Select(s => s.Identifier).ToArray(),
+                CompletedAdventureIds = fileData.Adventures.Where(s => s.Done).Select(s => s.Id).ToArray(),
+                CurrentAdventureId = story.Adventure.Id,
                 TheStorySoFar = theStorySoFar,
                 Seed = story.Seed,
                 CurrentStage = story.CurrentStage,
@@ -753,6 +755,18 @@ namespace TheHerosJourney.Functions
             {
                 loadedStory.NamedCharacters.Add(namedCharacter.Key, loadedStory.Characters.FirstOrDefault(c => c.Name == namedCharacter.Value));
             }
+
+            foreach (var scene in fileData.Scenes)
+            {
+                scene.Done = savedGameData.CompletedSceneIds.Contains(scene.Identifier);
+            }
+
+            foreach (var adventure in fileData.Adventures)
+            {
+                adventure.Done = savedGameData.CompletedAdventureIds.Contains(adventure.Id);
+            }
+
+            loadedStory.Adventure = fileData.Adventures.FirstOrDefault(adventure => adventure.Id == savedGameData.CurrentAdventureId);
 
             return new Tuple<Story, string>(loadedStory, savedGameData.TheStorySoFar);
         }
