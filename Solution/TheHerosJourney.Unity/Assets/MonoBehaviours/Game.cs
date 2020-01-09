@@ -1003,7 +1003,12 @@ namespace Assets.MonoBehaviours
         private void SaveGame()
         {
             var saveFolderPath = GetSaveFolderPath();
-            var saveFilePath = Path.Combine(saveFolderPath, Data.SaveFileName);
+            string saveFileName = Data.SaveFileName;
+            if (string.IsNullOrWhiteSpace(saveFileName))
+            {
+                saveFileName = "Test.sav";
+            }
+            var saveFilePath = Path.Combine(saveFolderPath, saveFileName);
 
             var savedGameData = Process.GetSavedGameFrom(Data.FileData, Story, storyText.text, timeJourneyStarted);
             string rawJson = JsonConvert.SerializeObject(savedGameData);
