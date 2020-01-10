@@ -52,6 +52,12 @@ namespace Assets.MonoBehaviours
         private CanvasGroup clickToContinueText;
 #pragma warning restore 0649
 
+        [Header("Sound Effects")]
+        [SerializeField]
+#pragma warning disable 0649
+        private SoundEffects soundEffects;
+#pragma warning restore 0649
+
         [Header("Various Menus, etc.")]
         [SerializeField]
 #pragma warning disable 0649
@@ -748,6 +754,8 @@ namespace Assets.MonoBehaviours
 
         public void ShowAlmanac()
         {
+            soundEffects.PlayJournalOpen();
+
             var almanacLines = Story.Almanac
                         .Select(i => "* <indent=15px><b>" + i.Key + "</b> - " + i.Value + "</indent>")
                         .ToArray();
