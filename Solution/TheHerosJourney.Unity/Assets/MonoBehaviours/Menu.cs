@@ -130,6 +130,7 @@ namespace Assets.MonoBehaviours
 
             ValidateNewStory();
 
+            HideStorySeedEntry();
             newGameMenu.SetActive(true);
 
             GenerateNewName();
