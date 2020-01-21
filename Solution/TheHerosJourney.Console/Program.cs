@@ -265,6 +265,7 @@ namespace TheHerosJourney.Console
 
                 if (!choicesExist)
                 {
+                    WriteMessage("");
                     continue;
                 }
 
@@ -311,12 +312,14 @@ exit - exit the story");
                 else if (input == "1")
                 {
                     Run.Outro1(currentScene, WriteMessage);
+                    WriteMessage("");
 
                     getNewScene = true;
                 }
                 else if (input == "2")
                 {
                     Run.Outro2(currentScene, WriteMessage);
+                    WriteMessage("");
 
                     getNewScene = true;
                 }

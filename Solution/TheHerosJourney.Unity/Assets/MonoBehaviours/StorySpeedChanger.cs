@@ -27,7 +27,7 @@ namespace Assets.MonoBehaviours
 
         [SerializeField]
 #pragma warning disable 0649
-        private Game game;
+        private StoryScroll storyScroll;
 #pragma warning restore 0649
 
         public StorySpeed startingStorySpeed;
@@ -76,7 +76,7 @@ namespace Assets.MonoBehaviours
                     break;
             }
 
-            game.SetLettersPerSecond(currentStorySpeed);
+            storyScroll.SetLettersPerSecond(currentStorySpeed);
         }
     }
 

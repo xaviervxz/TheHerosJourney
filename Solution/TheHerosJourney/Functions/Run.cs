@@ -91,7 +91,6 @@ namespace TheHerosJourney.Functions
             string outro = outroNum == 1 ? currentScene.Outro1 : currentScene.Outro2;
 
             addTextToStory(outro);
-            addTextToStory("");
 
             currentScene.Done = true;
         }
@@ -107,7 +106,6 @@ namespace TheHerosJourney.Functions
             // SKIP TO THE NEXT SCENE.
             if (string.IsNullOrWhiteSpace(currentScene.Choice1) || string.IsNullOrWhiteSpace(currentScene.Choice2))
             {
-                addTextToStory("");
                 return false;
             }
 

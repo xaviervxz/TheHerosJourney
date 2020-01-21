@@ -46,7 +46,7 @@ namespace TheHerosJourney.Functions
             return null;
         }
 
-        public static string Message(FileData fileData, Story story, string message)
+        public static string Message(FileData fileData, Story story, string message, bool skipCommands = false)
         {
             /*static */string subMessage(string subMessageText, Story pStory, FileData pFileData)
             {
@@ -55,17 +55,6 @@ namespace TheHerosJourney.Functions
                 string processedSubMessage = Process.Message(pFileData, pStory, replacedSubMessage);
 
                 return processedSubMessage;
-            }
-
-            // WORK IN PROGRESS
-            // BASICALLY, HAVE A PREPART OF THE FIRST CALL TO ADVENTURE
-
-            if (message.StartsWith("ADVENTURE:"))
-            {
-                const string beginMarker = "BEGIN:";
-                int beginIndex = message.IndexOf(beginMarker);
-
-                message = message.Substring(beginIndex + beginMarker.Length).TrimStart();
             }
 
             var replacements = Regex.Matches(message, "\\{.+?\\}");
@@ -83,6 +72,11 @@ namespace TheHerosJourney.Functions
 
                 if (key.StartsWith("|") && key.EndsWith("|"))
                 {
+                    if (skipCommands)
+                    {
+                        continue;
+                    }
+
                     var command = key.Substring(1, key.Length - 2);
 
                     var commandOptions = command.Split(':');
@@ -199,8 +193,13 @@ namespace TheHerosJourney.Functions
                         replacementValue = subMessage(keyPieces.Last(), story, fileData);
                     }
                 }
-                else if (primaryKey == "almanac" && keyPieces.Length >= 3)
+                else if (!skipCommands && primaryKey == "almanac" && keyPieces.Length >= 3)
                 {
+                    if (skipCommands)
+                    {
+                        continue;
+                    }
+
                     // STORE THE LOCATION IN THE ALMANAC.
                     string almanacTitle = subMessage(keyPieces[1], story, fileData).CapitalizeFirstLetter();
                     string almanacDescription = subMessage(keyPieces[2], story, fileData);
