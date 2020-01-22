@@ -21,11 +21,6 @@ namespace Assets.MonoBehaviours
         private GameUi gameUi;
 #pragma warning restore 0649
 
-        [SerializeField]
-#pragma warning disable 0649
-        private StoryScroll storyScroll;
-#pragma warning restore 0649
-
         private Story Story;
 
         private TheHerosJourney.Models.Scene currentScene = null;
@@ -34,7 +29,7 @@ namespace Assets.MonoBehaviours
         private string choice2Text = "";
         private bool choicesExist = false;
 
-        private bool buttonsFadedIn;
+        private bool buttonsFading;
 
         private DateTime timeJourneyStarted = DateTime.Now;
 
@@ -55,18 +50,18 @@ namespace Assets.MonoBehaviours
 
             // RESET VARIABLES
 
-            buttonsFadedIn = false;
+            buttonsFading = false;
 
             // LOAD THE STORY
 
 #if DEBUG
             void ShowLoadGameFilesError()
             {
-                storyScroll.AddText("");
-                storyScroll.AddText("Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
-                storyScroll.AddText("First, make sure you're running the most current version.");
-                storyScroll.AddText("Then, if you are and this still happens, contact the developer and tell him to fix it.");
-                storyScroll.AddText("Thanks! <3");
+                StoryScroll.AddText(gameUi, "");
+                StoryScroll.AddText(gameUi, "Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
+                StoryScroll.AddText(gameUi, "First, make sure you're running the most current version.");
+                StoryScroll.AddText(gameUi, "Then, if you are and this still happens, contact the developer and tell him to fix it.");
+                StoryScroll.AddText(gameUi, "Thanks! <3");
             }
 
             if (Data.FileData == null)
@@ -86,7 +81,7 @@ namespace Assets.MonoBehaviours
                     var savedGameData = JsonConvert.DeserializeObject<SavedGameData>(rawJson);
                     string storyText;
                     (Story, storyText) = Process.LoadStoryFrom(Data.FileData, savedGameData);
-                    storyScroll.AddText(storyText);
+                    StoryScroll.AddText(gameUi, storyText);
 
                     Data.PlayersName = Story.You.Name;
                     Data.PlayersSex = Story.You.Sex;
@@ -127,53 +122,61 @@ namespace Assets.MonoBehaviours
         /// </summary>
         private void Update()
         {
-            // ***********************
-            // READING AND NAVIGATING MODE,
-            // BEFORE THEY CHOOSE.
-            // ***********************
-
-            if (storyScroll.GetChoicesShowing())
+            if (!gameUi.stillRevealingText)
             {
-                // CHECK FOR KEYBOARD SHORTCUTS
-                // TO MAKE CHOICES.
-
-                if (!gameUi.feedbackFormParent.isActiveAndEnabled)
+                if (StoryScroll.GetChoicesShowing(gameUi))
                 {
-                    if (Input.GetButton("Choose1"))
+                    // CHECK FOR KEYBOARD SHORTCUTS
+                    // TO MAKE CHOICES.
+
+                    if (!gameUi.feedbackFormParent.isActiveAndEnabled)
                     {
-                        gameUi.choice1Button.GetComponent<Button>().onClick.Invoke();
+                        if (Input.GetButton("Choose1"))
+                        {
+                            gameUi.choice1Button.GetComponent<Button>().onClick.Invoke();
+                        }
+                        else if (Input.GetButton("Choose2"))
+                        {
+                            gameUi.choice2Button.GetComponent<Button>().onClick.Invoke();
+                        }
                     }
-                    else if (Input.GetButton("Choose2"))
+
+                    // FADE IN CHOICE BUTTONS
+
+                    gameUi.scrollToEndButton.SetActive(false);
+
+                    if (!buttonsFading && !ChoiceButtonsAreShowing(gameUi) && currentScene != null)
                     {
-                        gameUi.choice2Button.GetComponent<Button>().onClick.Invoke();
+                        StartCoroutine(FadeInButtons());
+                    }
+
+                }
+                else
+                {
+                    // FADE OUT CHOICE BUTTONS
+
+                    gameUi.scrollToEndButton.SetActive(true);
+
+                    if (!buttonsFading && ChoiceButtonsAreShowing(gameUi))
+                    {
+                        StartCoroutine(FadeOutButtons());
                     }
                 }
-
-                // FADE IN CHOICE BUTTONS
-
-                gameUi.scrollToEndButton.SetActive(false);
-
-                if (!buttonsFadedIn && currentScene != null)
-                {
-                    StopCoroutine("FadeOutButtons");
-
-                    StartCoroutine(FadeInButtons());
-                }
-
             }
             else
             {
-                // FADE OUT CHOICE BUTTONS
-
-                gameUi.scrollToEndButton.SetActive(true);
-
-                if (buttonsFadedIn)
-                {
-                    StopCoroutine("FadeInButtons");
-
-                    StartCoroutine(FadeOutButtons());
-                }
+                gameUi.scrollToEndButton.SetActive(false);
             }
+        }
+
+        private static bool ChoiceButtonsAreShowing(GameUi gameUi)
+        {
+            bool choiceButtonsAreShowing =
+                (gameUi.choice1Button.activeInHierarchy
+                && gameUi.choice2Button.activeInHierarchy)
+                || gameUi.clickToContinueText.gameObject.activeInHierarchy;
+
+            return choiceButtonsAreShowing;
         }
 
         /// <summary>
@@ -191,7 +194,7 @@ namespace Assets.MonoBehaviours
 
             var paragraphs = processedMessage.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            storyScroll.AddText(paragraphs);
+            StoryScroll.AddText(gameUi, paragraphs);
         }
 
         //private static int currentCharacterInt = 0;
@@ -215,12 +218,12 @@ namespace Assets.MonoBehaviours
 
             if (currentScene == null)
             {
-                storyScroll.AddText("", "THE END");
+                StoryScroll.AddText(gameUi, "", "THE END");
 
                 // WRITE STORY TO LOG FILE.
                 // TODO: IMPROVE THIS, MAYBE?
                 string filePath = Path.Combine(Application.persistentDataPath, $"story_log_{DateTime.Now.ToString("yyyy-MM-dd-hh.mm.ss")}.txt");
-                string storyContents = storyScroll.GetText();
+                string storyContents = StoryScroll.GetScrollText(gameUi);
                 File.WriteAllText(filePath, storyContents);
             }
 
@@ -637,7 +640,7 @@ namespace Assets.MonoBehaviours
                 { "Seed", Story.Seed },
                 { "Name", Story.You.Name },
                 { "Sex", Story.You.Sex.ToString() },
-                { "StorySoFar", storyScroll.GetText() }
+                { "StorySoFar", StoryScroll.GetScrollText(gameUi) }
             };
 
             IEnumerator sendFeedbackPost(Dictionary<string, string> postData)
@@ -693,7 +696,7 @@ namespace Assets.MonoBehaviours
 
             StartCoroutine(FadeOutButtons());
 
-            storyScroll.ContinueRevealing();
+            StoryScroll.ContinueRevealing(gameUi);
         }
 
         public void Choose1()
@@ -714,7 +717,10 @@ namespace Assets.MonoBehaviours
             string action = gameObject.GetComponentInChildren<TextMeshProUGUI>().text;
             action = action.Substring(0, 1).ToLower() + action.Substring(1);
 
-            storyScroll.AddText($"<i><indent=50px>You {action}.</indent></i>");
+            int oldLineCount = gameUi.storyText.textInfo.lineCount;
+            StoryScroll.ScrollToSmooth(gameUi, oldLineCount, Line.AtTop);
+
+            StoryScroll.AddText(gameUi, $"<i><indent=50px>You {action}.</indent></i>");
 
             runOutro();
 
@@ -729,7 +735,8 @@ namespace Assets.MonoBehaviours
 
         private IEnumerator FadeInButtons()
         {
-            buttonsFadedIn = true;
+            buttonsFading = true;
+            StopCoroutine("FadeOutButtons");
 
             // IF ONE OF THE CHOICE BUTTONS ISN'T FILLED IN,
             // SHOW THE "CLICK TO CONTINUE..." TEXT INSTEAD.
@@ -746,11 +753,15 @@ namespace Assets.MonoBehaviours
                 yield return button1Fade;
                 yield return button2Fade;
             }
+
+            yield return null;
+            buttonsFading = false;
         }
 
         private IEnumerator FadeOutButtons()
         {
-            buttonsFadedIn = false;
+            buttonsFading = true;
+            StopCoroutine("FadeInButtons");
 
             // IF ONE OF THE CHOICE BUTTONS ISN'T FILLED IN,
             // HIDE THE "CLICK TO CONTINUE..." TEXT INSTEAD.
@@ -767,6 +778,9 @@ namespace Assets.MonoBehaviours
                 yield return button1Fade;
                 yield return button2Fade;
             }
+
+            yield return null;
+            buttonsFading = false;
         }
 
         private IEnumerator FadeButton(GameObject button, string text, float secondsToFade, bool fadeIn)
@@ -822,7 +836,7 @@ namespace Assets.MonoBehaviours
             }
             var saveFilePath = Path.Combine(saveFolderPath, saveFileName);
 
-            var savedGameData = Process.GetSavedGameFrom(Data.FileData, Story, storyScroll.GetText(), timeJourneyStarted);
+            var savedGameData = Process.GetSavedGameFrom(Data.FileData, Story, StoryScroll.GetScrollText(gameUi), timeJourneyStarted);
             string rawJson = JsonConvert.SerializeObject(savedGameData);
             File.WriteAllText(saveFilePath, rawJson);
         }

@@ -11,11 +11,9 @@ namespace Assets.MonoBehaviours
         public float menuFadeInSeconds = 0.5F;
         public float menuFadeOutSeconds = 0.1F;
 
-        [Header("The Story")]
-        [SerializeField]
-#pragma warning disable 0649
-        internal StoryScroll storyScroll;
-#pragma warning restore 0649
+        public int lettersPerSecond = 25;
+        public float currentCharacterIndex = 0F;
+        public bool stillRevealingText = true;
 
         [Header("Choice Buttons")]
         [SerializeField]
@@ -99,6 +97,18 @@ namespace Assets.MonoBehaviours
         [SerializeField]
 #pragma warning disable 0649
         internal CanvasGroup feedbackThankYou;
+#pragma warning restore 0649
+
+        [Header("Story Scroll")]
+
+        [SerializeField]
+#pragma warning disable 0649
+        internal TextMeshProUGUI storyText;
+#pragma warning restore 0649
+
+        [SerializeField]
+#pragma warning disable 0649
+        internal RectTransform scrollContainer;
 #pragma warning restore 0649
     }
 }

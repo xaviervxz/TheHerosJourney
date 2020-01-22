@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -9,110 +10,204 @@ namespace Assets.MonoBehaviours
     {
         public float scrollSpeed = 5F;
 
-        private int lettersPerSecond = 25;
-
-        private bool isWaitingForStory = true;
-
-        private bool skipToChoice = true;
-
         [SerializeField]
 #pragma warning disable 0649
-        private GameUi gameUi;
-#pragma warning restore 0649
-
-        [SerializeField]
-#pragma warning disable 0649
-        private TextMeshProUGUI storyText;
-#pragma warning restore 0649
-
-        [SerializeField]
-#pragma warning disable 0649
-        private RectTransform storyContainer;
+        private GameUi instanceGameUi;
 #pragma warning restore 0649
 
         private void Start()
         {
-            storyText.text = "";
-            isWaitingForStory = true;
+            instanceGameUi.storyText.text = "";
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            // ***********************
-            // WAITING FOR STORY MODE,
-            // AFTER THEY CHOOSE.
-            // ***********************
-
-            if (isWaitingForStory)
+            // IF WE'RE DONE REVEALING TEXT,
+            // CHECK FOR INPUT.
+            if (!instanceGameUi.stillRevealingText)
             {
-                gameUi.scrollToEndButton.SetActive(false);
-
                 // CHECK FOR THE "ENTER" KEYPRESS
-                if (Input.GetButton("Submit") && !gameUi.feedbackFormParent.isActiveAndEnabled)
+                if (Input.GetButton("Submit") && !instanceGameUi.feedbackFormParent.isActiveAndEnabled)
                 {
                     SkipToChoice();
                 }
+                
+                // SCROLL IF THEY USE THE SCROLL WHEEL.
+                float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
+                if (!Mathf.Approximately(scrollAmount, 0))
+                {
+                    StopCoroutine("ScrollToSmooth");
+
+                    var currentY = instanceGameUi.scrollContainer.anchoredPosition.y;
+                    ScrollToNow(instanceGameUi, currentY - scrollAmount * scrollSpeed * 10 * (instanceGameUi.storyText.fontSize + 4));
+                }
             }
 
-            // CHANGE THE TARGET SCROLL Y IF THE SCROLL WHEEL WAS USED.
-            float scrollAmount = Input.GetAxis("Mouse ScrollWheel");
-            if (!Mathf.Approximately(scrollAmount, 0))
-            {
-                StopCoroutine("ScrollToSmooth");
+            // ***********************
+            // FADE IN A BUNCH OF LETTERS IF WE NEED TO.
+            // ***********************
 
-                var currentY = storyContainer.anchoredPosition.y;
-                ScrollToNow(currentY - scrollAmount * scrollSpeed * 10 * (storyText.fontSize + 4));
-                var targetScrollY = storyContainer.anchoredPosition.y;
-            }
+            // START FADING IN THE NEXT LETTER, IF WE AREN'T AT THE END.
+            instanceGameUi.currentCharacterIndex += instanceGameUi.lettersPerSecond * Time.deltaTime;
+            instanceGameUi.currentCharacterIndex = Mathf.Min(
+                    instanceGameUi.currentCharacterIndex,
+                    instanceGameUi.storyText.textInfo.characterCount
+                );
+            int intCurrentCharacterIndex = Math.Min(
+                    Mathf.FloorToInt(instanceGameUi.currentCharacterIndex),
+                    instanceGameUi.storyText.textInfo.characterCount
+                );
+
+            instanceGameUi.stillRevealingText = intCurrentCharacterIndex < instanceGameUi.storyText.textInfo.characterCount;
+
+            instanceGameUi.storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
         }
 
-        internal bool GetChoicesShowing()
+        internal static bool GetChoicesShowing(GameUi gameUi)
         {
-            return true;
-            // int bottomLine = Math.Max(0, storyText.textInfo.lineCount - 3);
-            //storyContainer.anchoredPosition.y > ScrollYForLine(bottomLine, Line.AtBottom)
+            if (gameUi.stillRevealingText)
+            {
+                return false;
+            }
+
+            // AHHH the offset here (the -1 part in lineCount - 1) is kind of fragile, unfortunately.
+            // You've been warned.
+            int bottomLine = Math.Max(0, gameUi.storyText.textInfo.lineCount - 1);
+            bool lastLineIsHighEnough = gameUi.scrollContainer.anchoredPosition.y > ScrollYForLine(gameUi, bottomLine, Line.AtBottom);
+
+            return lastLineIsHighEnough;
         }
 
         // ************
         // TEXT
         // ************
 
-        internal void AddText(params string[] newParagraphs)
+        private static IEnumerator FadeInLetter(GameUi gameUi, int characterIndex)
         {
+            TMP_CharacterInfo letter = gameUi.storyText.textInfo.characterInfo[characterIndex];
+
+            if (!letter.isVisible)
+            {
+                yield break;
+            }
+
+            // Get the index of the material used by the current character.
+            int materialIndex = letter.materialReferenceIndex;
+
+            // Get the vertex colors of the mesh used by this text element (character or sprite).
+            var newVertexColors = gameUi.storyText.textInfo.meshInfo[materialIndex].colors32;
+
+            // Get the index of the first vertex used by this text element.
+            int vertexIndex = letter.vertexIndex;
+
+            // MAKE CLEAR TO START.
+
+            var color = newVertexColors[vertexIndex + 0];
+            color.a = 0;
+
+            newVertexColors[vertexIndex + 0] = color;
+            newVertexColors[vertexIndex + 1] = color;
+            newVertexColors[vertexIndex + 2] = color;
+            newVertexColors[vertexIndex + 3] = color;
+
+            // NOTE TO FUTURE SELF:
+            // NEVER call UpdateVertexData in this function.
+            // It makes the scrolling lag a ton if you skip forward about 4-5 choices in.
+            // NEVER CALL THIS storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+
+            do
+            {
+                yield return null;
+            }
+            while (characterIndex >= gameUi.currentCharacterIndex);
+
+            // FADE IN AND MOVE DOWN.
+
+            // TODO: REPLACE 3 BELOW WITH AN ACTUAL CALCULATED letterFadeInDuration VARIABLE
+            var alphaPerSecond = 255F / (3F / gameUi.lettersPerSecond);
+
+            while (color.a < 255)
+            {
+                int previousAlpha = color.a;
+                color.a += (byte)Mathf.RoundToInt(alphaPerSecond * Time.deltaTime);
+                if (previousAlpha > color.a)
+                {
+                    // We've looped around, break out of this loop.
+                    break;
+                }
+
+                newVertexColors[vertexIndex + 0] = color;
+                newVertexColors[vertexIndex + 1] = color;
+                newVertexColors[vertexIndex + 2] = color;
+                newVertexColors[vertexIndex + 3] = color;
+
+                yield return null;
+            }
+
+            // SET BACK TO ORIGINAL COLOR TO END.
+
+            color.a = 255;
+
+            newVertexColors[vertexIndex + 0] = color;
+            newVertexColors[vertexIndex + 1] = color;
+            newVertexColors[vertexIndex + 2] = color;
+            newVertexColors[vertexIndex + 3] = color;
+
+            yield return null;
+        }
+
+        private struct FadeInLetterData
+        {
+            internal TMP_CharacterInfo letter;
+            internal int index;
+            public override string ToString()
+            {
+                return letter.character.ToString();
+            }
+        }
+
+        internal static void AddText(GameUi gameUi, params string[] newParagraphs)
+        {
+            gameUi.stillRevealingText = true;
+
             string twoBlankLines = Environment.NewLine + Environment.NewLine;
 
             string newText = string.Join(twoBlankLines, newParagraphs);
 
-            if (!string.IsNullOrWhiteSpace(storyText.text))
+            if (!string.IsNullOrWhiteSpace(gameUi.storyText.text))
             {
-                storyText.text += twoBlankLines;
+                gameUi.storyText.text += twoBlankLines;
             }
 
-            storyText.text += newText;
+            int oldCharacterCount = gameUi.storyText.textInfo.characterCount;
 
-            // TODO: Get rid of this line and move it somewhere it actually belongs.
-            ScrollToEnd();
+            gameUi.storyText.text += newText;
+            gameUi.storyText.ForceMeshUpdate();
+
+            // START FADING IN **ALL** THE NEW LETTERS.
+            // TO START, THIS HIDES THEM, HOPEFULLY BEFORE THE NEXT UPDATE.
+            var newLetterIndexes = gameUi.storyText.textInfo.characterInfo
+                .Select((characterInfo, index) => index)
+                // NOTE: You HAVE to Select BEFORE you Skip on this command.
+                // If you Skip first, all of the indexes will be off. :/
+                .Skip(oldCharacterCount)
+                .Take(gameUi.storyText.textInfo.characterCount - oldCharacterCount)
+                .ToArray();
+
+            foreach (var newLetterIndex in newLetterIndexes)
+            {
+                gameUi.StartCoroutine(FadeInLetter(gameUi, newLetterIndex));
+            }
         }
 
-        internal string GetText()
+        internal static string GetScrollText(GameUi gameUi)
         {
-            return storyText.text;
+            return gameUi.storyText.text;
         }
 
-        internal void ContinueRevealing()
+        internal static void ContinueRevealing(GameUi gameUi)
         {
-            // TODO: Get rid of this line and move it somewhere it actually belongs.
-            ScrollToEnd();
-        }
-
-        // ************
-        // ANIMATING
-        // ************
-
-        public void SetLettersPerSecond(StorySpeed newLettersPerSecond)
-        {
-            lettersPerSecond = (int)newLettersPerSecond;
+            //ScrollToNow(storyText.textInfo.lineCount - 2, Line.AtTop);
         }
 
         // ************
@@ -121,23 +216,14 @@ namespace Assets.MonoBehaviours
 
         public void SkipToChoice()
         {
-            if (isWaitingForStory)
-            {
-                skipToChoice = true;
-            }
+            instanceGameUi.currentCharacterIndex = instanceGameUi.storyText.textInfo.characterCount;
         }
 
         // ************
         // SCROLLING
         // ************
 
-        private enum Line
-        {
-            AtTop,
-            AtBottom
-        }
-
-        private float ScrollYForLine(int lineNumber, Line linePos)
+        private static float ScrollYForLine(GameUi gameUi, int lineNumber, Line linePos)
         {
             // EDGE CASE FOR THE FIRST LINE,
             // TO SHOW OFF THE TOP OF THE PARCHMENT SCROLL.
@@ -146,23 +232,33 @@ namespace Assets.MonoBehaviours
                 return 0;
             }
 
-            float lineHeight = (storyText.font.faceInfo.lineHeight + storyText.lineSpacing) / (storyText.font.faceInfo.pointSize / storyText.fontSize);
+            float lineHeight =
+                (gameUi.storyText.font.faceInfo.lineHeight + gameUi.storyText.lineSpacing)
+                /
+                (gameUi.storyText.font.faceInfo.pointSize / gameUi.storyText.fontSize);
             var scrollY = (lineNumber - 1) * lineHeight + 45;
 
             if (linePos == Line.AtBottom)
             {
-                float parentsHeight = storyText.rectTransform.rect.height;
-                scrollY -= (parentsHeight - storyText.margin.w);
+                float parentsHeight = gameUi.storyText.rectTransform.rect.height;
+                scrollY -= (parentsHeight - gameUi.storyText.margin.w);
             }
 
-            var storyTextOffset = storyText.rectTransform.anchoredPosition.y;
+            var storyTextOffset = gameUi.storyText.rectTransform.anchoredPosition.y;
             return scrollY - storyTextOffset;
         }
 
-        private void ScrollToNow(float newScrollY)
+        private static void ScrollToNow(GameUi gameUi, int lineNumber, Line linePos)
         {
-            int bottomLine = Math.Max(0, storyText.textInfo.lineCount - 3);
-            float scrollYForBottomLine = ScrollYForLine(bottomLine, Line.AtTop);
+            var newY = ScrollYForLine(gameUi, lineNumber, linePos);
+
+            ScrollToNow(gameUi, newY);
+        }
+
+        private static void ScrollToNow(GameUi gameUi, float newScrollY)
+        {
+            int bottomLine = Math.Max(0, gameUi.storyText.textInfo.lineCount - 3);
+            float scrollYForBottomLine = ScrollYForLine(gameUi, bottomLine, Line.AtTop);
 
             if (scrollYForBottomLine > 0 && newScrollY > scrollYForBottomLine)
             {
@@ -174,16 +270,21 @@ namespace Assets.MonoBehaviours
                 newScrollY = 0;
             }
 
-            storyContainer.anchoredPosition = new Vector2(storyContainer.anchoredPosition.x, newScrollY);
+            gameUi.scrollContainer.anchoredPosition = new Vector2(gameUi.scrollContainer.anchoredPosition.x, newScrollY);
         }
 
-        private IEnumerator ScrollToSmooth(int lineNumber, Line linePos)
+        internal static void ScrollToSmooth(GameUi gameUi, int lineNumber, Line linePos)
         {
-            StopCoroutine("ScrollToSmooth");
+            var targetScrollY = ScrollYForLine(gameUi, lineNumber, linePos);
 
-            var targetScrollY = ScrollYForLine(lineNumber, linePos);
+            gameUi.StartCoroutine(ScrollToSmooth(gameUi, targetScrollY));
+        }
 
-            float startingY = storyContainer.anchoredPosition.y;
+        private static IEnumerator ScrollToSmooth(GameUi gameUi, float targetScrollY)
+        {
+            gameUi.StopCoroutine("ScrollToSmooth");
+
+            float startingY = gameUi.scrollContainer.anchoredPosition.y;
 
             float startingTime = Time.time;
 
@@ -194,12 +295,12 @@ namespace Assets.MonoBehaviours
             {
                 currentY = Mathf.SmoothStep(startingY, targetScrollY, (Time.time - startingTime) / secondsToScrollFor);
 
-                ScrollToNow(currentY);
+                ScrollToNow(gameUi, currentY);
 
                 yield return null;
             }
 
-            ScrollToNow(targetScrollY);
+            ScrollToNow(gameUi, targetScrollY);
         }
 
         /// <summary>
@@ -207,13 +308,20 @@ namespace Assets.MonoBehaviours
         /// </summary>
         public void ScrollToEnd()
         {
-            var lastLineScrollY = ScrollYForLine(storyText.textInfo.lineCount, Line.AtBottom);
+            int currentLineCount = instanceGameUi.storyText.textInfo.lineCount;
+            var lastLineScrollY = ScrollYForLine(instanceGameUi, currentLineCount, Line.AtBottom);
 
             // TODO: Figure out what to put here instead of "0"!
-            if (lastLineScrollY > 0)//targetScrollY)
+            if (lastLineScrollY > instanceGameUi.scrollContainer.anchoredPosition.y)
             {
-                StartCoroutine(ScrollToSmooth(storyText.textInfo.lineCount, Line.AtBottom));
+                ScrollToSmooth(instanceGameUi, currentLineCount, Line.AtBottom);
             }
         }
+    }
+
+    internal enum Line
+    {
+        AtTop,
+        AtBottom
     }
 }

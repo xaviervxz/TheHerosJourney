@@ -7,6 +7,12 @@ namespace Assets.MonoBehaviours
     {
         [SerializeField]
 #pragma warning disable 0649
+        private GameUi gameUi;
+#pragma warning restore 0649
+
+        [Header("Images")]
+        [SerializeField]
+#pragma warning disable 0649
         private Sprite slowSprite;
 #pragma warning restore 0649
 
@@ -23,11 +29,6 @@ namespace Assets.MonoBehaviours
         [SerializeField]
 #pragma warning disable 0649
         private Image speedImage;
-#pragma warning restore 0649
-
-        [SerializeField]
-#pragma warning disable 0649
-        private StoryScroll storyScroll;
 #pragma warning restore 0649
 
         public StorySpeed startingStorySpeed;
@@ -76,7 +77,8 @@ namespace Assets.MonoBehaviours
                     break;
             }
 
-            storyScroll.SetLettersPerSecond(currentStorySpeed);
+            // SET LETTERS PER SECOND
+            gameUi.lettersPerSecond = (int) currentStorySpeed;
         }
     }
 
