@@ -59,7 +59,11 @@ namespace Assets.MonoBehaviours
                 );
 
             instanceGameUi.stillRevealingText = intCurrentCharacterIndex < instanceGameUi.storyText.textInfo.characterCount;
+        }
 
+        
+        private void LateUpdate()
+        {
             instanceGameUi.storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
         }
 
@@ -91,24 +95,28 @@ namespace Assets.MonoBehaviours
                 yield break;
             }
 
-            // Get the index of the material used by the current character.
-            int materialIndex = letter.materialReferenceIndex;
-
-            // Get the vertex colors of the mesh used by this text element (character or sprite).
-            var newVertexColors = gameUi.storyText.textInfo.meshInfo[materialIndex].colors32;
-
             // Get the index of the first vertex used by this text element.
             int vertexIndex = letter.vertexIndex;
 
+            // UPDATE THE VERTEX COLORS ARRAY.
+            // Get the vertex colors of the mesh used by this text element (character or sprite).
+            int materialIndex = letter.materialReferenceIndex;
+
             // MAKE CLEAR TO START.
 
-            var color = newVertexColors[vertexIndex + 0];
+            var vertexColors = gameUi.storyText.textInfo.meshInfo[materialIndex].colors32;
+            var color = vertexColors[vertexIndex + 0];
             color.a = 0;
 
-            newVertexColors[vertexIndex + 0] = color;
-            newVertexColors[vertexIndex + 1] = color;
-            newVertexColors[vertexIndex + 2] = color;
-            newVertexColors[vertexIndex + 3] = color;
+            void UpdateVertexColor(Color32 newColor)
+            {
+                vertexColors = gameUi.storyText.textInfo.meshInfo[materialIndex].colors32;
+
+                vertexColors[vertexIndex + 0] = newColor;
+                vertexColors[vertexIndex + 1] = newColor;
+                vertexColors[vertexIndex + 2] = newColor;
+                vertexColors[vertexIndex + 3] = newColor;
+            }
 
             // NOTE TO FUTURE SELF:
             // NEVER call UpdateVertexData in this function.
@@ -117,14 +125,19 @@ namespace Assets.MonoBehaviours
 
             do
             {
+                UpdateVertexColor(color);
+
                 yield return null;
             }
-            while (characterIndex >= gameUi.currentCharacterIndex);
+            while (characterIndex >= gameUi.currentCharacterIndex
+                && gameUi.stillRevealingText); // This part of the condition makes sure that
+                                               // ALL the letters fade in at once when you
+                                               // skip to the end.
 
             // FADE IN AND MOVE DOWN.
-
-            // TODO: REPLACE 3 BELOW WITH AN ACTUAL CALCULATED letterFadeInDuration VARIABLE
-            var alphaPerSecond = 255F / (3F / gameUi.lettersPerSecond);
+            
+            var alphaPerSecond = 255F / (30F / gameUi.lettersPerSecond);
+            // TODO: REPLACE THE "3" ABOVE WITH AN ACTUAL CALCULATED letterFadeInDuration VARIABLE
 
             while (color.a < 255)
             {
@@ -136,10 +149,7 @@ namespace Assets.MonoBehaviours
                     break;
                 }
 
-                newVertexColors[vertexIndex + 0] = color;
-                newVertexColors[vertexIndex + 1] = color;
-                newVertexColors[vertexIndex + 2] = color;
-                newVertexColors[vertexIndex + 3] = color;
+                UpdateVertexColor(color);
 
                 yield return null;
             }
@@ -148,26 +158,15 @@ namespace Assets.MonoBehaviours
 
             color.a = 255;
 
-            newVertexColors[vertexIndex + 0] = color;
-            newVertexColors[vertexIndex + 1] = color;
-            newVertexColors[vertexIndex + 2] = color;
-            newVertexColors[vertexIndex + 3] = color;
+            UpdateVertexColor(color);
 
             yield return null;
         }
 
-        private struct FadeInLetterData
-        {
-            internal TMP_CharacterInfo letter;
-            internal int index;
-            public override string ToString()
-            {
-                return letter.character.ToString();
-            }
-        }
-
         internal static void AddText(GameUi gameUi, params string[] newParagraphs)
         {
+            int oldCharacterCount = gameUi.storyText.textInfo.characterCount;
+
             gameUi.stillRevealingText = true;
 
             string twoBlankLines = Environment.NewLine + Environment.NewLine;
@@ -179,8 +178,7 @@ namespace Assets.MonoBehaviours
                 gameUi.storyText.text += twoBlankLines;
             }
 
-            int oldCharacterCount = gameUi.storyText.textInfo.characterCount;
-
+            // ADD THE TEXT AND UPDATE THE TEXT COMPONENT.
             gameUi.storyText.text += newText;
             gameUi.storyText.ForceMeshUpdate();
 

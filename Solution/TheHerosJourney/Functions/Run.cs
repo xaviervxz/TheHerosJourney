@@ -70,17 +70,17 @@ namespace TheHerosJourney.Functions
             return newScene;
         }
 
-        public static void Outro1(Scene currentScene, Action<string> addTextToStory)
+        public static void Outro1(Scene currentScene, string actionText, Action<string> addTextToStory)
         {
-            Outro(1, currentScene, addTextToStory);
+            Outro(1, currentScene, actionText, addTextToStory);
         }
 
-        public static void Outro2(Scene currentScene, Action<string> addTextToStory)
+        public static void Outro2(Scene currentScene, string actionText, Action<string> addTextToStory)
         {
-            Outro(2, currentScene, addTextToStory);
+            Outro(2, currentScene, actionText, addTextToStory);
         }
 
-        private static void Outro(byte outroNum, Scene currentScene, Action<string> addTextToStory)
+        private static void Outro(byte outroNum, Scene currentScene, string actionText, Action<string> addTextToStory)
         {
             if (currentScene == null)
             {
@@ -90,7 +90,7 @@ namespace TheHerosJourney.Functions
 
             string outro = outroNum == 1 ? currentScene.Outro1 : currentScene.Outro2;
 
-            addTextToStory(outro);
+            addTextToStory(actionText + Environment.NewLine + Environment.NewLine + outro);
 
             currentScene.Done = true;
         }

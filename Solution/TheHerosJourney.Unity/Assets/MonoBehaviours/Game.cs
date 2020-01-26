@@ -57,11 +57,13 @@ namespace Assets.MonoBehaviours
 #if DEBUG
             void ShowLoadGameFilesError()
             {
-                StoryScroll.AddText(gameUi, "");
-                StoryScroll.AddText(gameUi, "Sorry, the Neverending Story couldn't load because it can't find the files it needs.");
-                StoryScroll.AddText(gameUi, "First, make sure you're running the most current version.");
-                StoryScroll.AddText(gameUi, "Then, if you are and this still happens, contact the developer and tell him to fix it.");
-                StoryScroll.AddText(gameUi, "Thanks! <3");
+                StoryScroll.AddText(
+                        gameUi,
+                        "Sorry, the Neverending Story couldn't load because it can't find the files it needs.",
+                        "First, make sure you're running the most current version.",
+                        "Then, if you are and this still happens, contact the developer and tell him to fix it.",
+                        "Thanks! <3"
+                    );
             }
 
             if (Data.FileData == null)
@@ -681,6 +683,16 @@ namespace Assets.MonoBehaviours
 
         public void CloseMenus()
         {
+            if (gameUi.almanacMenu.gameObject.activeInHierarchy)
+            {
+                gameUi.soundEffects.PlayJournalClose();
+            }
+
+            if (gameUi.inventoryMenu.gameObject.activeInHierarchy)
+            {
+                gameUi.soundEffects.PlayPackClose();
+            }
+
             StartCoroutine(FadeMenu(gameUi.almanacMenu, fadeIn: false));
             StartCoroutine(FadeMenu(gameUi.inventoryMenu, fadeIn: false));
             StartCoroutine(FadeMenu(gameUi.exitWarning, fadeIn: false));
@@ -701,15 +713,15 @@ namespace Assets.MonoBehaviours
 
         public void Choose1()
         {
-            Choose(() => Run.Outro1(currentScene, WriteMessage), gameUi.choice1Button.gameObject);
+            Choose(actionText => Run.Outro1(currentScene, actionText, WriteMessage), gameUi.choice1Button.gameObject);
         }
 
         public void Choose2()
         {
-            Choose(() => Run.Outro2(currentScene, WriteMessage), gameUi.choice2Button.gameObject);
+            Choose(actionText => Run.Outro2(currentScene, actionText, WriteMessage), gameUi.choice2Button.gameObject);
         }
 
-        private void Choose(Action runOutro, GameObject gameObject)
+        private void Choose(Action<string> runOutro, GameObject gameObject)
         {
             StartCoroutine(FadeOutButtons());
 
@@ -720,9 +732,7 @@ namespace Assets.MonoBehaviours
             int oldLineCount = gameUi.storyText.textInfo.lineCount;
             StoryScroll.ScrollToSmooth(gameUi, oldLineCount, Line.AtTop);
 
-            StoryScroll.AddText(gameUi, $"<i><indent=50px>You {action}.</indent></i>");
-
-            runOutro();
+            runOutro($"<i><indent=50px>You {action}.</indent></i>");
 
             choice1Text = "";
             choice2Text = "";

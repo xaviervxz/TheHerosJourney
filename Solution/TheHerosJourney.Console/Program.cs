@@ -311,15 +311,13 @@ exit - exit the story");
                 }
                 else if (input == "1")
                 {
-                    Run.Outro1(currentScene, WriteMessage);
-                    WriteMessage("");
+                    Run.Outro1(currentScene, "(You chose 1.)", WriteMessage);
 
                     getNewScene = true;
                 }
                 else if (input == "2")
                 {
-                    Run.Outro2(currentScene, WriteMessage);
-                    WriteMessage("");
+                    Run.Outro2(currentScene, "(You chose 2.)", WriteMessage);
 
                     getNewScene = true;
                 }
