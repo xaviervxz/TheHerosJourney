@@ -157,22 +157,29 @@ namespace Assets.MonoBehaviours
                 Directory.CreateDirectory(saveFolder);
             }
             var existingSaveFiles = Directory.GetFiles(saveFolder);
-
-            foreach (var saveFile in existingSaveFiles)
+            var parsedSaveFiles = existingSaveFiles.Select(saveFile =>
             {
                 var rawJson = File.ReadAllText(saveFile);
                 var savedGame = JsonConvert.DeserializeObject<SavedGameData>(rawJson);
 
+                savedGame.FileName = Path.GetFileName(saveFile);
+                
+                return savedGame;
+            })
+                .OrderByDescending(savedGame => savedGame.TimeLastSaved.Ticks);
+
+            foreach (var savedGame in parsedSaveFiles)
+            {
                 var newLoadGameButton = Instantiate(savedGamePrefab, savedGameParent);
 
                 // SET THE BUTTON ACTION.
-                newLoadGameButton.onClick.AddListener(() => LoadGame(Path.GetFileName(saveFile)));
+                newLoadGameButton.onClick.AddListener(() => LoadGame(savedGame.FileName));
 
                 // SET THE BUTTON TEXT.
                 var text = newLoadGameButton.GetComponentInChildren<TextMeshProUGUI>();
                 var currentLocation = savedGame.Locations.First(l => l.Name == savedGame.You.CurrentLocation);
                 var currentLocationName = (currentLocation.HasThe ? "the " : "") + currentLocation.Name;
-                text.text = $"#{Path.GetFileNameWithoutExtension(saveFile)} {savedGame.You.Name}, in {currentLocationName}"
+                text.text = $"{savedGame.You.Name}, in {currentLocationName}"
                     + Environment.NewLine
                     + $"<size=75%>Last saved: {savedGame.TimeLastSaved.ToString("yyyy.MM.dd 'at' hh:mm tt")}</size>";
             }

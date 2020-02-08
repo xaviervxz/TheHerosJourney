@@ -151,7 +151,6 @@ namespace Assets.MonoBehaviours
                     {
                         StartCoroutine(FadeInButtons());
                     }
-
                 }
                 else
                 {

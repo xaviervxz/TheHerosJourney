@@ -53,15 +53,21 @@ namespace Assets.MonoBehaviours
                     instanceGameUi.currentCharacterIndex,
                     instanceGameUi.storyText.textInfo.characterCount
                 );
-            int intCurrentCharacterIndex = Math.Min(
-                    Mathf.FloorToInt(instanceGameUi.currentCharacterIndex),
-                    instanceGameUi.storyText.textInfo.characterCount
-                );
+            int intCurrentCharacterIndex = RoundCurrentCharacterIndex(instanceGameUi);
 
             instanceGameUi.stillRevealingText = intCurrentCharacterIndex < instanceGameUi.storyText.textInfo.characterCount;
         }
 
-        
+        private static int RoundCurrentCharacterIndex(GameUi gameUi)
+        {
+            int rounded = Math.Min(
+                    Mathf.FloorToInt(gameUi.currentCharacterIndex),
+                    gameUi.storyText.textInfo.characterCount
+                );
+
+            return rounded;
+        }
+
         private void LateUpdate()
         {
             instanceGameUi.storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
@@ -181,6 +187,10 @@ namespace Assets.MonoBehaviours
             // ADD THE TEXT AND UPDATE THE TEXT COMPONENT.
             gameUi.storyText.text += newText;
             gameUi.storyText.ForceMeshUpdate();
+
+            gameUi.currentCharacterIndex += gameUi.storyText.textInfo.characterInfo
+                .Skip(RoundCurrentCharacterIndex(gameUi))
+                .Count(c => c.style == FontStyles.Italic);
 
             // START FADING IN **ALL** THE NEW LETTERS.
             // TO START, THIS HIDES THEM, HOPEFULLY BEFORE THE NEXT UPDATE.

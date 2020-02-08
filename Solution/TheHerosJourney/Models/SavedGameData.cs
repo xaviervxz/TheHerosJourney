@@ -5,6 +5,7 @@ namespace TheHerosJourney.Models
 {
     public class SavedGameData
     {
+        public string FileName = "";
 
         public string TheStorySoFar = "";
 
