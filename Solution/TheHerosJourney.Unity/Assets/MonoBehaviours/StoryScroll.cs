@@ -56,6 +56,16 @@ namespace Assets.MonoBehaviours
             int intCurrentCharacterIndex = RoundCurrentCharacterIndex(instanceGameUi);
 
             instanceGameUi.stillRevealingText = intCurrentCharacterIndex < instanceGameUi.storyText.textInfo.characterCount;
+
+            instanceGameUi.storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
+        }
+
+        private void LateUpdate()
+        {
+            // Not sure why we need this one AND the one at the end of the Update method,
+            // but having both in here prevents the new text from flashing visible
+            // as much right after a choice is made.
+            instanceGameUi.storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
         }
 
         private static int RoundCurrentCharacterIndex(GameUi gameUi)
@@ -66,11 +76,6 @@ namespace Assets.MonoBehaviours
                 );
 
             return rounded;
-        }
-
-        private void LateUpdate()
-        {
-            instanceGameUi.storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
         }
 
         internal static bool GetChoicesShowing(GameUi gameUi)
@@ -171,6 +176,11 @@ namespace Assets.MonoBehaviours
 
         internal static void AddText(GameUi gameUi, params string[] newParagraphs)
         {
+            AddText(gameUi, newParagraphs, isLoading: false);
+        }
+
+        internal static void AddText(GameUi gameUi, string[] newParagraphs, bool isLoading)
+        {
             int oldCharacterCount = gameUi.storyText.textInfo.characterCount;
 
             gameUi.stillRevealingText = true;
@@ -188,6 +198,15 @@ namespace Assets.MonoBehaviours
             gameUi.storyText.text += newText;
             gameUi.storyText.ForceMeshUpdate();
 
+            if (isLoading)
+            {
+                gameUi.currentCharacterIndex = gameUi.storyText.textInfo.characterInfo.Reverse()
+                    .SkipWhile(c => c.character == '\0')
+                    .SkipWhile(c => c.style != FontStyles.Italic)
+                    .First().index;
+            }
+
+            // SKIP THE ACTION TEXT
             gameUi.currentCharacterIndex += gameUi.storyText.textInfo.characterInfo
                 .Skip(RoundCurrentCharacterIndex(gameUi))
                 .Count(c => c.style == FontStyles.Italic);
@@ -206,6 +225,8 @@ namespace Assets.MonoBehaviours
             {
                 gameUi.StartCoroutine(FadeInLetter(gameUi, newLetterIndex));
             }
+
+            gameUi.storyText.UpdateVertexData(TMP_VertexDataUpdateFlags.Colors32);
         }
 
         internal static string GetScrollText(GameUi gameUi)

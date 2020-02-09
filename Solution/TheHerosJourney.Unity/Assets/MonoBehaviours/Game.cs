@@ -83,7 +83,17 @@ namespace Assets.MonoBehaviours
                     var savedGameData = JsonConvert.DeserializeObject<SavedGameData>(rawJson);
                     string storyText;
                     (Story, storyText) = Process.LoadStoryFrom(Data.FileData, savedGameData);
-                    StoryScroll.AddText(gameUi, storyText);
+                    
+                    // ADD THE TEXT OF THE PREVIOUS STORY TO THE SCREEN
+                    // AND SCROLL TO THE BOTTOM.
+                    StoryScroll.AddText(gameUi, new[] { storyText }, isLoading: true);
+
+                    var targetLine = gameUi.storyText.textInfo.characterInfo.Reverse()
+                        .SkipWhile(c => c.character == '\0')
+                        .SkipWhile(c => c.style != FontStyles.Italic)
+                        .SkipWhile(c => c.style == FontStyles.Italic)
+                        .First().lineNumber;
+                    StoryScroll.ScrollToSmooth(gameUi, targetLine, Line.AtTop);
 
                     Data.PlayersName = Story.You.Name;
                     Data.PlayersSex = Story.You.Sex;
