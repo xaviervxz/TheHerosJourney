@@ -10,6 +10,7 @@ using System.Linq;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
 using UnityEngine.EventSystems;
+using System.Text.RegularExpressions;
 
 namespace Assets.MonoBehaviours
 {
@@ -72,7 +73,7 @@ namespace Assets.MonoBehaviours
 
         [SerializeField]
 #pragma warning disable 0649
-        private Button savedGamePrefab;
+        private Transform savedGamePrefab;
 #pragma warning restore 0649
 
         private void Start()
@@ -157,26 +158,28 @@ namespace Assets.MonoBehaviours
                 Directory.CreateDirectory(saveFolder);
             }
             var existingSaveFiles = Directory.GetFiles(saveFolder);
-            var parsedSaveFiles = existingSaveFiles.Select(saveFile =>
-            {
-                var rawJson = File.ReadAllText(saveFile);
-                var savedGame = JsonConvert.DeserializeObject<SavedGameData>(rawJson);
+            var parsedSaveFiles = existingSaveFiles
+                .Select(saveFile =>
+                {
+                    var rawJson = File.ReadAllText(saveFile);
+                    var savedGame = JsonConvert.DeserializeObject<SavedGameData>(rawJson);
 
-                savedGame.FileName = Path.GetFileName(saveFile);
-                
-                return savedGame;
-            })
+                    savedGame.FileName = Path.GetFileName(saveFile);
+
+                    return savedGame;
+                })
                 .OrderByDescending(savedGame => savedGame.TimeLastSaved.Ticks);
 
             foreach (var savedGame in parsedSaveFiles)
             {
-                var newLoadGameButton = Instantiate(savedGamePrefab, savedGameParent);
+                var newSavedGameRow = Instantiate(savedGamePrefab, savedGameParent);
 
                 // SET THE BUTTON ACTION.
-                newLoadGameButton.onClick.AddListener(() => LoadGame(savedGame.FileName));
+                newSavedGameRow.Find("Load Game Button").GetComponent<Button>().onClick.AddListener(() => LoadGame(savedGame.FileName));
+                newSavedGameRow.Find("Delete Game Button").GetComponent<Button>().onClick.AddListener(() => ConfirmDeleteGame(savedGame.FileName));
 
                 // SET THE BUTTON TEXT.
-                var text = newLoadGameButton.GetComponentInChildren<TextMeshProUGUI>();
+                var text = newSavedGameRow.GetComponentInChildren<TextMeshProUGUI>();
                 var currentLocation = savedGame.Locations.First(l => l.Name == savedGame.You.CurrentLocation);
                 var currentLocationName = (currentLocation.HasThe ? "the " : "") + currentLocation.Name;
                 text.text = $"{savedGame.You.Name}, in {currentLocationName}"
@@ -194,6 +197,22 @@ namespace Assets.MonoBehaviours
             Data.SaveFileName = saveFileName;
 
             FadeScene.In("Game");
+        }
+
+        public void ConfirmDeleteGame(string saveFileName)
+        {
+            // TODO: OPEN A CONFIRMATION MENU THAT CONFIRMS YOU WANT TO DELETE.
+
+            // FIND AND DELETE THE SAVE FILE.
+            string saveFolder = Game.GetSaveFolderPath();
+            if (!Directory.Exists(saveFolder))
+            {
+                return;
+            }
+            string saveFile = Path.Combine(saveFolder, saveFileName);
+            File.Delete(saveFile);
+
+            GotoLoadGameMenu();
         }
 
         private void HighlightPlayersName()
@@ -306,7 +325,9 @@ namespace Assets.MonoBehaviours
             int savedFileNumber = 1;
             do
             {
-                newSaveFileName = $"{savedFileNumber}.sav";
+                var regex = new Regex("[^a-zA-Z0-9-]");
+                string strippedPlayersName = regex.Replace(Data.PlayersName, "").Replace(' ', '_');
+                newSaveFileName = $"{savedFileNumber}_{strippedPlayersName}.sav";
                 savedFileNumber += 1;
             }
             while (existingSaveFiles.Contains(newSaveFileName));
