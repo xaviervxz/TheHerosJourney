@@ -1,0 +1,55 @@
+﻿@page
+@model SixteenThousandStories.Pages.Characters.NPCs.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>NPC</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NPC.Age)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NPC.Age)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NPC.Subj_Pronoun)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NPC.Subj_Pronoun)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NPC.Obj_Pronoun)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NPC.Obj_Pronoun)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NPC.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NPC.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NPC.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NPC.Description)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.NPC.Created_At)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.NPC.Created_At)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.NPC.ID">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

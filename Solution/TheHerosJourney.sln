@@ -14,6 +14,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheHerosJourney.Console", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TheHerosJourney", "TheHerosJourney\TheHerosJourney.csproj", "{43D62E11-10E6-4FB5-9EDA-5778B8BA4584}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SixteenThousandStories", "SixteenThousandStories\SixteenThousandStories.csproj", "{8A323B73-EC8E-4171-AEC2-9312BB61F17F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,12 @@ Global
 		{43D62E11-10E6-4FB5-9EDA-5778B8BA4584}.DevTest|Any CPU.Build.0 = Debug|Any CPU
 		{43D62E11-10E6-4FB5-9EDA-5778B8BA4584}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43D62E11-10E6-4FB5-9EDA-5778B8BA4584}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A323B73-EC8E-4171-AEC2-9312BB61F17F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A323B73-EC8E-4171-AEC2-9312BB61F17F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A323B73-EC8E-4171-AEC2-9312BB61F17F}.DevTest|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A323B73-EC8E-4171-AEC2-9312BB61F17F}.DevTest|Any CPU.Build.0 = Debug|Any CPU
+		{8A323B73-EC8E-4171-AEC2-9312BB61F17F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A323B73-EC8E-4171-AEC2-9312BB61F17F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

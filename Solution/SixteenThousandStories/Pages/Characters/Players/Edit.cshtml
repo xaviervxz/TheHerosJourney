@@ -1,0 +1,45 @@
+﻿@page
+@model SixteenThousandStories.Pages.Characters.Players.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PlayCharacter</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="PlayCharacter.ID" />
+            <div class="form-group">
+                <label asp-for="PlayCharacter.Name" class="control-label"></label>
+                <input asp-for="PlayCharacter.Name" class="form-control" />
+                <span asp-validation-for="PlayCharacter.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlayCharacter.Description" class="control-label"></label>
+                <input asp-for="PlayCharacter.Description" class="form-control" />
+                <span asp-validation-for="PlayCharacter.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlayCharacter.Created_At" class="control-label"></label>
+                <input asp-for="PlayCharacter.Created_At" class="form-control" />
+                <span asp-validation-for="PlayCharacter.Created_At" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

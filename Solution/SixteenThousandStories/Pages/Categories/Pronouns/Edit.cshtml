@@ -1,0 +1,75 @@
+﻿@page
+@model SixteenThousandStories.Pages.Categories.Pronouns.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Pronoun</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Subject" class="control-label"></label>
+                <input asp-for="Pronoun.Subject" class="form-control" />
+                <span asp-validation-for="Pronoun.Subject" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Object" class="control-label"></label>
+                <input asp-for="Pronoun.Object" class="form-control" />
+                <span asp-validation-for="Pronoun.Object" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Adj_Possessive" class="control-label"></label>
+                <input asp-for="Pronoun.Adj_Possessive" class="form-control" />
+                <span asp-validation-for="Pronoun.Adj_Possessive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Pro_Possessive" class="control-label"></label>
+                <input asp-for="Pronoun.Pro_Possessive" class="form-control" />
+                <span asp-validation-for="Pronoun.Pro_Possessive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Reflexive" class="control-label"></label>
+                <input asp-for="Pronoun.Reflexive" class="form-control" />
+                <span asp-validation-for="Pronoun.Reflexive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Ordering_Int" class="control-label"></label>
+                <input asp-for="Pronoun.Ordering_Int" class="form-control" />
+                <span asp-validation-for="Pronoun.Ordering_Int" class="text-danger"></span>
+            </div>
+            <input type="hidden" asp-for="Pronoun.ID" />
+            <div class="form-group">
+                <label asp-for="Pronoun.Name" class="control-label"></label>
+                <input asp-for="Pronoun.Name" class="form-control" />
+                <span asp-validation-for="Pronoun.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Description" class="control-label"></label>
+                <input asp-for="Pronoun.Description" class="form-control" />
+                <span asp-validation-for="Pronoun.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pronoun.Created_At" class="control-label"></label>
+                <input asp-for="Pronoun.Created_At" class="form-control" />
+                <span asp-validation-for="Pronoun.Created_At" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

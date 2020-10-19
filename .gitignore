@@ -332,3 +332,5 @@ ASALocalRun/
 # Custom Additions
 /Solution/NeverendingStory.Console/Data/.~lock.Scenes.ods#
 /Solution/NeverendingStory.Unity/Assets/StreamingAssets/.~lock.Scenes.ods#
+Solution/.dockerignore
+Solution/SixteenThousandStories/Dockerfile

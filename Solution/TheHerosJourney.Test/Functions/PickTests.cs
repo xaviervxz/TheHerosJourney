@@ -22,7 +22,7 @@ namespace TheHerosJourney.Test
             fileData.CharacterData = new Dictionary<Sex, string[]>();
             fileData.LocationData = new LocationData
             {
-                Industries = new Dictionary<Industry, IndustryData>(),
+                Industries = new Dictionary<String, IndustryData>(),
                 MainFeatures = new Dictionary<string, MainFeature>(),
                 Names = new LocationNames
                 {
