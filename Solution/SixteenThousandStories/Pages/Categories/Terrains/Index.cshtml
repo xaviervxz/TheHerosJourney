@@ -14,9 +14,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Terrain[0].Ordering_Int)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Terrain[0].Name)
             </th>
             <th>
@@ -31,9 +28,6 @@
     <tbody>
 @foreach (var item in Model.Terrain) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ordering_Int)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>

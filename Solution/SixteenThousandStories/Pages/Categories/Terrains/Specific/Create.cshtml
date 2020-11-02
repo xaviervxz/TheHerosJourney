@@ -1,0 +1,49 @@
+﻿@page
+@model SixteenThousandStories.Pages.Categories.Terrains.Specific.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>SpecificTerrain</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SpecificTerrain.Argb" class="control-label"></label>
+                <input asp-for="SpecificTerrain.Argb" class="form-control" />
+                <span asp-validation-for="SpecificTerrain.Argb" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificTerrain.Name" class="control-label"></label>
+                <input asp-for="SpecificTerrain.Name" class="form-control" />
+                <span asp-validation-for="SpecificTerrain.Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificTerrain.Description" class="control-label"></label>
+                <input asp-for="SpecificTerrain.Description" class="form-control" />
+                <span asp-validation-for="SpecificTerrain.Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificTerrain.Created_At" class="control-label"></label>
+                <input asp-for="SpecificTerrain.Created_At" class="form-control" />
+                <span asp-validation-for="SpecificTerrain.Created_At" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

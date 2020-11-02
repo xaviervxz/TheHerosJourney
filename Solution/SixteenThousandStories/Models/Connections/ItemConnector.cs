@@ -10,5 +10,6 @@ namespace SixteenThousandStories.Models
     {
         public new Item Target { get; set; }
 
+        public int Quantity { get; set; }
     }
 }

@@ -9,33 +9,137 @@ using CsvHelper;
 
 namespace TheHerosJourney.Functions
 {
-    internal static class LoadFromFile
+    public static class LoadFromFile
     {
+        /*static */
+        public static string ReadAllText(Stream stream)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var lines = new List<string>();
+
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
+            {
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
+                    lines.Add(line);
+                }
+            }
+            stream.Dispose();
+
+            string text = string.Join(Environment.NewLine, lines);
+
+            return text;
+        }
+
+        public static Dictionary<Sex, string[]> CharacterData(Stream characterDataStream)
+        {
+
+            // **************************
+            // LOADING PEOPLE'S NAMES ETC.
+            // **************************
+
+            // Read the JSON file.
+            string peopleNamesFileContents = ReadAllText(characterDataStream);
+
+            // Deserialize the JSON file.
+            return JsonConvert.DeserializeObject<Dictionary<Sex, string[]>>(peopleNamesFileContents);
+
+        }
+
+        public static LocationData LocationData(Stream locationDataStream)
+        {
+            // **************************
+            // LOADING LOCATION NAMES, INDUSTRIES, LAYOUTS, ETC.
+            // **************************
+
+            // Read the JSON file.
+            string locationDataFileContents = ReadAllText(locationDataStream);
+
+            // Deserialize the JSON file.
+            return JsonConvert.DeserializeObject<LocationData>(locationDataFileContents);
+
+        }
+
+        public static Scene[] SceneData(Stream scenesStream)
+        {
+            // **************************
+            // LOADING SCENES
+            // **************************
+
+            // Read the .csv file.
+            // TODO: Read from an .ods file instead, or at least from an .xlsx file again.
+
+            // *************************
+            // CSVREADER CODE BELOW
+            // *************************
+
+            // LOAD SCENES
+            using (var streamReader = new StreamReader(scenesStream))
+            {
+                using (var csv = new CsvReader(streamReader))
+                {
+                    Scene[] scenes = csv.GetRecords<Scene>().ToArray();
+
+                    foreach (var scene in scenes)
+                    {
+                        // For each scene we got, assign some calculated variables...
+
+                        // The Stage
+                        scene.Stage = Pick.StageFromCode(scene.Identifier);
+
+                        // IsSubStage
+                        char lastCharacter = scene.Identifier[scene.Identifier.Length - 1];
+                        scene.IsSubStage = char.IsLetter(lastCharacter);
+                    }
+
+                    return scenes;
+                }
+            }
+
+        }
+
+        public static Adventure[] AdventureData(Stream adventuresStream)
+        {
+
+            // LOAD ADVENTURES
+            using (var streamReader = new StreamReader(adventuresStream))
+            {
+                using (var csv = new CsvReader(streamReader))
+                {
+                    Adventure[] adventures = csv.GetRecords<Adventure>().ToArray();
+
+                    foreach (var adventure in adventures)
+                    {
+                        // For each scene we got, assign some calculated variables...
+
+                        // The Stage
+                        adventure.RequiredSceneIds = adventure.RawRequiredScenes.Split(',');
+
+                        // IsSubStage
+                        var parsedTransitions = adventure.RawTransitions
+                            .Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(transition => transition.Split(':'))
+                            .ToArray();
+                        adventure.Transitions = parsedTransitions
+                            .ToDictionary(
+                                transition => Pick.StageFromCode(transition.First()).Value,
+                                transition => transition.Skip(1).ToArray()
+                            );
+                    }
+
+                    return adventures;
+                }
+            }
+
+        }
         internal static FileData Data(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Stream adventuresStream)
         {
-            /*static */string ReadAllText(Stream stream)
-            {
-                if (stream == null)
-                {
-                    throw new ArgumentNullException();
-                }
-
-                var lines = new List<string>();
-
-                using (var reader = new StreamReader(stream, Encoding.UTF8))
-                {
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
-                    {
-                        lines.Add(line);
-                    }
-                }
-                stream.Dispose();
-
-                string text = string.Join(Environment.NewLine, lines);
-
-                return text;
-            }
+            
 
             var fileData = new FileData();
 

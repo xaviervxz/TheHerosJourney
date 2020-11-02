@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SixteenThousandStories.Models
 {
-    public class Pronoun : Category
+    public class Pronoun : Word
     {
         public string Subject { get; set; }
         public string Object { get; set; }

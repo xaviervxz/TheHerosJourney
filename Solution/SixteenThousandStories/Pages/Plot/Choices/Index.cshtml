@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{searchString?}"
 @model SixteenThousandStories.Pages.Plot.Choices.IndexModel
 
 @{
@@ -10,14 +10,19 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<table class="table">
+<form>
+    <p>
+        <select asp-for="ChoiceMood" asp-items="Model.Moods">
+            <option value="">All</option>
+        </select>
+        Name: <input type="text" asp-for="SearchString" />
+        <input type="submit" value="Filter" />
+    </p>
+</form><table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Choice[0].Message_Template)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Choice[0].Meta_Description)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Choice[0].Name)
@@ -32,29 +37,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Choice) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Message_Template)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Meta_Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created_At)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Choice)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Message_Template)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created_At)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

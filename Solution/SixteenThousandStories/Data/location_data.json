@@ -1,0 +1,557 @@
+{
+  "Names": {
+    "Adjectives": [
+      "Ageless",
+      "Ashen",
+      "Black",
+      "Blessed",
+      "Blighted",
+      "Blue",
+      "Broken",
+      "Burning",
+      "Cold",
+      "Cursed",
+      "Dark",
+      "Dead",
+      "Deadly",
+      "Deep",
+      "Desolate",
+      "Diamond",
+      "Dim",
+      "Dismal",
+      "Dun",
+      "Eerie",
+      "Endless",
+      "Fallen",
+      "Far",
+      "Fell",
+      "Flaming",
+      "Forgotten",
+      "Forsaken",
+      "Frozen",
+      "Glittering",
+      "Golden",
+      "Green",
+      "Grim",
+      "Holy",
+      "Impassable",
+      "Jagged",
+      "Light",
+      "Long",
+      "Misty",
+      "Perilous",
+      "Purple",
+      "Red",
+      "Savage",
+      "Shadowy",
+      "Shattered",
+      "Shifting",
+      "Shining",
+      "Silver",
+      "White",
+      "Wicked",
+      "Yellow"
+    ],
+    "Nouns": [
+      "{name}",
+      "Ash",
+      "Blood",
+      "Death",
+      "Doom",
+      "Fear",
+      "Fire",
+      "God",
+      "Gold",
+      "Hope",
+      "Silver",
+      "Smoke",
+      "Souls",
+      "Spirit",
+      "Stone"
+    ],
+    "TheNouns": [
+      "Crystal",
+      "Cinder",
+      "Dagger",
+      "Demon",
+      "Devil",
+      "Giant",
+      "Ghost",
+      "Goblin",
+      "Knave",
+      "Knight",
+      "Priest",
+      "Sailor",
+      "Skull",
+      "Spear",
+      "Thief",
+      "Troll",
+      "Warrior",
+      "Witch",
+      "Wizard"
+    ],
+    "Terrain": {
+      "Forest": {
+        "SpecificTypes": [ "Forest", "Wood", "Thicket" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}", "the {terrain} of {nounwiththe}" ]
+      },
+      "Swamp": {
+        "SpecificTypes": [ "Swamp", "Bog", "Mire", "Marsh", "Morass", "Quagmire" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
+      },
+      "Mountain": {
+        "SpecificTypes": [ "Mountains", "Peaks" ],
+        "DescType": "mountain range",
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}" ]
+      },
+      "Desert": {
+        "SpecificTypes": [ "Desert", "Waste" ],
+        "Formats": [ "the {adjective} {terrain}", "the {terrain} of {nounwiththe}", "{nounwiththe} {terrain}" ]
+      },
+      "Plains": {
+        "SpecificTypes": [ "Plains", "Flats" ],
+        "DescType": "plain",
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
+      },
+      "Lake": {
+        "SpecificTypes": [ "Lake", "Lake", "Pool", "Pond" ],
+        "Formats": [ "the {adjective} {terrain}", "{noun} {terrain}", "{terrain} {noun}" ]
+      },
+      "Spring": {
+        "SpecificTypes": [ "Springs" ],
+        "DescType": "spring",
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
+      },
+      "River": {
+        "SpecificTypes": [ "River", "Stream", "Creek" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
+      },
+      "Bay": {
+        "SpecificTypes": [ "Bay", "Harbor" ],
+        "Formats": [ "the {adjective} {terrain}", "{terrain} of {nounwiththe}", "{noun} {terrain}", "{nounwiththe} {terrain}", "{nounwiththe}'s {terrain}" ]
+      },
+      "Fortress": {
+        "SpecificTypes": [ "Castle", "Castle", "Tower", "Tower", "Fort", "Fortress" ],
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{terrain} {noun}", "{nounwiththe} {terrain}" ]
+      },
+      "Sea": {
+        "SpecificTypes": [ "Sea", "Ocean" ],
+        "Formats": [ "the {terrain}", "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
+      },
+      "Road": {
+        "SpecificTypes": [ "Road", "Road", "Way", "Path" ],
+        "Formats": [ "the {adjective} {terrain}", "{nounwiththe} {terrain}" ]
+      }
+    }
+  },
+  "Towns": [
+    {
+      "Name": "Lakeville",
+      "MainFeature": "LakeTown",
+      "Industry": "Fishing"
+    },
+    {
+      "Name": "Coalwood",
+      "MainFeature": "RiverTown",
+      "Industry": "Coal"
+    },
+    {
+      "Name": "Silver Bay",
+      "MainFeature": "BayTown",
+      "Industry": "Wheat"
+    },
+    {
+      "Name": "Rafter",
+      "MainFeature": "DeltaTown",
+      "Industry": "Fishing"
+    },
+    {
+      "Name": "Diamond Town",
+      "MainFeature": "RiverMouthTown",
+      "Industry": "Coal"
+    },
+    {
+      "Name": "Rivervale",
+      "MainFeature": "RiverConfluenceTown",
+      "Industry": "Wheat"
+    },
+    {
+      "Name": "Coal Springs",
+      "MainFeature": "SpringTown",
+      "Industry": "Coal"
+    },
+    {
+      "Name": "Cattle Crossing",
+      "MainFeature": "CrossroadTown",
+      "Industry": "Cattle"
+    },
+    {
+      "Name": "Bekageville",
+      "MainFeature": "RiverTown",
+      "Industry": "CabbageAndBeets"
+    },
+    {
+      "Name": "Sunn Marsh",
+      "MainFeature": "LakeTown",
+      "Industry": "Rice"
+    },
+    {
+      "Name": "Helmark",
+      "MainFeature": "RiverMouthTown",
+      "Industry": "Granite"
+    },
+    {
+      "Name": "Catch Cod",
+      "MainFeature": "BayTown",
+      "Industry": "Fishing"
+    },
+    {
+      "Name": "Quakshmiville",
+      "MainFeature": "RiverTown",
+      "Industry": "CabbageAndBeets"
+    },
+    {
+      "Name": "Giornovah",
+      "MainFeature": "CrossroadTown",
+      "Industry": "NutsAndOlives"
+    },
+    {
+      "Name": "Thorella",
+      "MainFeature": "SpringTown",
+      "Industry": "IronOre"
+    },
+    {
+      "Name": "Solomon's Fork",
+      "MainFeature": "RiverConfluenceTown",
+      "Industry": "Wheat"
+    },
+    {
+      "Name": "Potteryboise",
+      "MainFeature": "DeltaTown",
+      "Industry": "Clay"
+    },
+    {
+      "Name": "Dabsaltmaes",
+      "MainFeature": "BayTown",
+      "Industry": "Salt"
+    },
+    {
+      "Name": "Corduroy O Vey",
+      "MainFeature": "RiverConfluenceTown",
+      "Industry": "HardwoodLumber"
+    },
+    {
+      "Name": "Dekusville",
+      "MainFeature": "RoadAndLakeTown",
+      "Industry": "Beans"
+    },
+    {
+      "Name": "Deathococo",
+      "MainFeature": "SpringTown",
+      "Industry": "SugarCane"
+    },
+    {
+      "Name": "Marijoy Marion",
+      "MainFeature": "BayTown",
+      "Industry": "Fishing"
+    },
+    {
+      "Name": "Rocks O Lee",
+      "MainFeature": "RoadAndRiverTown",
+      "Industry": "Rice"
+    },
+    {
+      "Name": "Rocks O Man",
+      "MainFeature": "LakeTown",
+      "Industry": "Granite"
+    },
+    {
+      "Name": "Rosemary Rock",
+      "MainFeature": "RiverTown",
+      "Industry": "CopperOre"
+    },
+    {
+      "Name": "Mossdale",
+      "MainFeature": "RiverConfluenceTown",
+      "Industry": "Morels"
+    },
+    {
+      "Name": "Hillcrest",
+      "MainFeature": "RiverTown",
+      "NearbyRegion": "NearMountains",
+      "Industry": "Goats"
+    },
+    {
+      "Name": "The Forgotten Hamlet",
+      "MainFeature": "SpringTown",
+      "Industry": "Sulphur"
+    },
+    {
+      "Name": "The City of Pearls",
+      "MainFeature": "RiverMouthTown",
+      "Industry": "Barley"
+    },
+    {
+      "Name": "Sugar Cane Creek",
+      "MainFeature": "RiverTown",
+      "Industry": "SugarCane"
+    },
+    {
+      "Name": "Sycamore Hollow",
+      "MainFeature": "RiverTown",
+      "NearbyRegion": "InForest",
+      "Industry": "Baskets"
+    }
+  ],
+  "MainFeatures": {
+    "BayTown": {
+      "Types": [ "Bay" ],
+      "RelativePosition": "on {name}"
+    },
+    "LakeTown": {
+      "Types": [ "Lake" ],
+      "RelativePosition": "on the edge of {name}"
+    },
+    "RiverTown": {
+      "Types": [ "River" ],
+      "RelativePosition": "along {name}"
+    },
+    "RiverMouthTown": {
+      "Types": [ "River" ],
+      "RelativePosition": "at the mouth of {name}"
+    },
+    "RiverConfluenceTown": {
+      "Types": [ "River", "River" ],
+      "RelativePosition": "where {name1} runs into {name2}"
+    },
+    "DeltaTown": {
+      "Types": [ "River", "Sea" ],
+      "RelativePosition": "along {name1} where it runs into {name2}"
+    },
+    "SpringTown": {
+      "Types": [ "Spring" ],
+      "RelativePosition": "built around {name}"
+    },
+    "CrossroadTown": {
+      "Types": [ "Road", "Road" ],
+      "RelativePosition": "at the crossroads of {name1} and {name2}"
+    },
+    "RoadAndRiverTown": {
+      "Types": [ "Road", "River" ],
+      "RelativePosition": "between the well-travelled {name1} and {name2}"
+    },
+    "RoadAndLakeTown": {
+      "Types": [ "Road", "Lake" ],
+      "RelativePosition": "between the well-travelled {name1} and {name2}"
+    }
+  },
+  "NearbyRegions": {
+    "NearMountains":  "at the foot of {name}",
+    "NearForest": "at the edge of {name}",
+    "NearSwamp": "at the edge of {name}",
+    "InMountains": "deep in {name}",
+    "InForest": "deep within {name}",
+    "InSwamp": "deep within {name}",
+    "InPlains": "in the middle of {name}"
+  },
+  "Industries": {
+    "Fishing": {
+      "WorkGer": "fishing",
+      "Workplace": "on the fishing boats",
+      "GoodsGer": "bringing back",
+      "Goods": "fish",
+      "Purpose": "to feed",
+      "GoodDay": "The fish are biting, just like they always are this time of year. It's a good haul.",
+      "GoodDayFinal": "The lake is peaceful and calm, and the fish are biting just like they always have."
+    },
+    "Wheat": {
+      "WorkGer": "working in the wheat fields",
+      "Workplace": "in the wheat fields",
+      "GoodsGer": "growing",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
+      "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
+    },
+    "Oats": {
+      "WorkGer": "working in the oat fields",
+      "Workplace": "in the oat fields",
+      "GoodsGer": "growing",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
+      "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
+    },
+    "Barley": {
+      "WorkGer": "working in the barley fields",
+      "Workplace": "in the barley fields",
+      "GoodsGer": "growing",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to fill the storehouses for the winter.",
+      "GoodDayFinal": "The fields are full and the storehouses are filling fast. You'll be ready for the winter in no time."
+    },
+    "Beans": {
+      "WorkGer": "working in the bean fields",
+      "Workplace": "in the bean fields",
+      "GoodsGer": "growing",
+      "Goods": "food",
+      "Purpose": "to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to dry the first bean crops to be stored in the storehouses.",
+      "GoodDayFinal": "The fields are full, beans are drying, and the storehouses will be filled quickly. You'll be ready for the winter in no time."
+    },
+    "Rice": {
+      "WorkGer": "working in the rice flats",
+      "Workplace": "in the rice flats",
+      "GoodsGer": "growing",
+      "Goods": "rice",
+      "Purpose": "to feed",
+      "GoodDay": "Wading through the flats, you're heartened to see that the rice crop is coming along nicely. The sun warms your back.",
+      "GoodDayFinal": "The rice flats are doing well. The water levels are high, the sun is shining, and the harvest will be excellent this year."
+    },
+    "CabbageAndBeets": {
+      "WorkGer": "working in the fields",
+      "Workplace": "in the fields",
+      "GoodsGer": "growing",
+      "Goods": "cabbages and beets",
+      "Purpose": "to feed",
+      "GoodDay": "The sun is shining and the crops are doing well. You weed the cabbages and beets and allow them all to grow large and healthy.",
+      "GoodDayFinal": "The cabbage season is coming up fast, and the harvest looks like it will be very good. Everyone's feeling good about the work in the fields."
+    },
+    "NutsAndOlives": {
+      "WorkGer": "tending to the orchards",
+      "Workplace": "in the orchards",
+      "GoodsGer": "growing",
+      "Goods": "nuts and olives",
+      "Purpose": "to feed",
+      "GoodDay": "A new kind of weed has infested the olive orchards. You get to work clearing it out, and by the end of the week it's completely gone. The olive trees are safe now.",
+      "GoodDayFinal": "Nuts are filling the storehouses, and olive oil is being pressed. You've never seen a better crop."
+    },
+    "FruitTrees": {
+      "WorkGer": "tending to the orchards",
+      "Workplace": "in the orchards",
+      "GoodsGer": "growing",
+      "Goods": "fruit",
+      "Purpose": "to make wine and feed",
+      "GoodDay": "A new kind of weed has infested one of the fruit orchards. You get to work clearing it out, and by the end of the week it's completely gone. The fruit trees are safe now.",
+      "GoodDayFinal": "Baskets are filling and preserves are being made. The orchards have produced plenty."
+    },
+    "Coal": {
+      "WorkGer": "mining coal",
+      "Workplace": "in the coal mines",
+      "GoodsGer": "bringing up",
+      "Goods": "coal",
+      "Purpose": "to trade for food and supplies, which provides for",
+      "GoodDay": "The mining is safe and efficient, and your buckets fill with coal. Coal fetches a good price at the markets this week.",
+      "GoodDayFinal": "In the mines, you run into a new vein of coal. Everyone's very excited. You all prepare to excavate the new vein."
+    },
+    "IronOre": {
+      "WorkGer": "mining iron ore",
+      "Workplace": "in the iron mines",
+      "GoodsGer": "bringing up",
+      "Goods": "iron",
+      "Purpose": "to trade for food and supplies, which provides for",
+      "GoodDay": "The mining is safe and efficient, and your buckets fill with iron ore. Smelting it yields good quality iron this week.",
+      "GoodDayFinal": "In the mines, you run into a new vein of iron ore. Everyone's very excited. You all prepare to excavate the new vein."
+    },
+    "CopperOre": {
+      "WorkGer": "mining copper ore",
+      "Workplace": "in the copper mines",
+      "GoodsGer": "bringing up",
+      "Goods": "iron",
+      "Purpose": "to trade for food and supplies, which provides for",
+      "GoodDay": "The mining is safe and efficient, and your buckets fill with copper ore. Smelting it yields good quality copper this week.",
+      "GoodDayFinal": "In the mines, you run into a new vein of copper ore. Everyone's very excited. You all prepare to excavate the new vein."
+    },
+    "Granite": {
+      "WorkGer": "mining granite",
+      "Workplace": "at the granite quarry",
+      "GoodsGer": "extracting",
+      "Goods": "granite",
+      "Purpose": "to build your village and trade for food and supplies, which provides for",
+      "GoodDay": "In the quarry, work goes quickly and efficiently. Quality granite is extracted, and you know it will get a good price in the markets.",
+      "GoodDayFinal": "Granite extraction continues without any interruptions or accidents. Everyone is happy to see the fine stone being mined from the quarry."
+    },
+    "Sulphur": {
+      "WorkGer": "mining sulphur",
+      "Workplace": "at the sulphur mine",
+      "GoodsGer": "bringing up",
+      "Goods": "sulphur",
+      "Purpose": "to trade to other villages for food and supplies, which provides for",
+      "GoodDay": "In the mines, work goes quickly and efficiently. Good sulphur is extracted, and you know it can be processed into high quality sulphur powder.",
+      "GoodDayFinal": "In the mines, you run into a new vein of sulphur. Everyone's very excited. You all prepare to excavate the new vein."
+    },
+    "Salt": {
+      "WorkGer": "mining salt",
+      "Workplace": "it the salt mines",
+      "GoodsGer": "extracting",
+      "Goods": "salt",
+      "Purpose": "to season your meals and trade for food and supplies, which provides for",
+      "GoodDay": "In the salt mines, work goes quickly and efficiently. Quality salt is extracted, and you know it will get a good price in the markets.",
+      "GoodDayFinal": "Salt mining continues without any interruptions or accidents, thankfully. Everyone is happy to see the fine salt being removed from the mine."
+    },
+    "Clay": {
+      "WorkGer": "collecting clay",
+      "Workplace": "in the clay flats",
+      "GoodsGer": "collecting",
+      "Goods": "clay",
+      "Purpose": "to build your homes and trade for food and supplies, which provides for",
+      "GoodDay": "In the clay flats, work goes quickly and efficiently. Quality clay is extracted, and you know it will get a good price in the markets.",
+      "GoodDayFinal": "Clay collecting continues without any interruptions or accidents. Everyone is happy to see the fine clay being gathered from the flats."
+    },
+    "Cattle": {
+      "WorkGer": "tending to the cattle",
+      "Workplace": "in the fields",
+      "GoodsGer": "looking after",
+      "Goods": "cattle",
+      "Purpose": "to provide food and leather for",
+      "GoodDay": "The sun is shining today and you find fresh grass for the cattle to graze. The cattle are very happy.",
+      "GoodDayFinal": "The cattle are thriving, and they graze happily as they often do under the warm sun. A new calf was born this week."
+    },
+    "Goats": {
+      "WorkGer": "tending to the goats",
+      "Workplace": "in the foothills",
+      "GoodsGer": "looking after",
+      "Goods": "goats",
+      "Purpose": "to provide milk and meat for",
+      "GoodDay": "The sun is shining today and you find a fresh hill for the goats to graze, full of green grass. The goats are very happy.",
+      "GoodDayFinal": "The goats are thriving, and they frolick happily as they often do under the warm sun. A new kid was born this week."
+    },
+    "HardwoodLumber": {
+      "WorkGer": "working in the forest",
+      "Workplace": "in the forest",
+      "GoodsGer": "chopping",
+      "Goods": "hardwood trees",
+      "Purpose": "to build your homes and furniture, and trade for food to feed",
+      "GoodDay": "Working in the forest is safe and today, and fortune smiles upon you. Several good clumps of trees are discovered that are ready to be felled.",
+      "GoodDayFinal": "The forest is alive, and your axes are sharp. You'll bring in the best lumber this week, and there will be plenty next season as well."
+    },
+    "Morels": {
+      "WorkGer": "hunting morels in the forest",
+      "Workplace": "in the forest",
+      "GoodsGer": "hunting",
+      "Goods": "morels",
+      "Purpose": "to trade to other villages and feed",
+      "GoodDay": "Working in the forest is safe and today, and fortune smiles upon you. You find a particularly good patch of morels.",
+      "GoodDayFinal": "The forest is alive, and your collecting baskets are ready. You'll bring in plenty of morels this week, and you have your eye on a few patches that are coming along quite nicely."
+    },
+    "SugarCane": {
+      "WorkGer": "working in the sugar cane fields",
+      "Workplace": "in the sugar cane fields",
+      "GoodsGer": "harvesting",
+      "Goods": "sugar cane",
+      "Purpose": "to trade to nearby villages for food and supplies to feed",
+      "GoodDay": "It's harvest time, and the work goes quickly. You begin to process the first crop of sugar cane.",
+      "GoodDayFinal": "The fields are full and sugar is being extracted from the sugar cane as fast as you can harvest it."
+    },
+    "Baskets": {
+      "WorkGer": "gathering bark",
+      "Workplace": "in the forest",
+      "GoodsGer": "weaving",
+      "Goods": "baskets",
+      "Purpose": "to weave baskets to trade with nearby villages, which provides for what little you lack in",
+      "GoodDay": "Working in the forest is safe and today, and fortune smiles upon you. Several good recently-felled trees are discovered that are ready to be stripped of their bark.",
+      "GoodDayFinal": "The forest is alive, and the bark you collected is turning into baskets. The one you're working on now, you think, will turn out to be particularly beautiful."
+    }
+  }
+}

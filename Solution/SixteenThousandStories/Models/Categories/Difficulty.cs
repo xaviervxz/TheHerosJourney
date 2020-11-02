@@ -8,5 +8,6 @@ namespace SixteenThousandStories.Models
 {
     public class Difficulty : Category
     {
+
     }
 }

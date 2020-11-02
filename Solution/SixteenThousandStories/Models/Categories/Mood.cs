@@ -8,7 +8,6 @@ namespace SixteenThousandStories.Models
 {
     public class Mood : Category
     {
-        public string Color { get; set; }
 
     }
 }

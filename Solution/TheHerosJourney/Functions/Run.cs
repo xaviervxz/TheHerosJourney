@@ -7,17 +7,20 @@ namespace TheHerosJourney.Functions
 {
     public static class Run
     {
-        public static FileData LoadGameData(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Stream adventuresStream, Action showLoadGameFilesError)
+        public static FileData LoadGameData(Stream characterDataStream, Stream locationDataStream, Stream scenesStream, Stream adventuresStream, Action showLoadGameFilesError, string fileType = "default")
         {
             // ----------------
             // DATA SET UP AND INTRODUCTION
             // ----------------
 
             // LOAD DATA FROM FILES AND CREATE EMPTY STORY
-            FileData fileData;
+            FileData fileData = new FileData();
             try
             {
-                fileData = LoadFromFile.Data(characterDataStream, locationDataStream, scenesStream, adventuresStream);
+                fileData.CharacterData = LoadFromFile.CharacterData(characterDataStream);
+                fileData.LocationData = LoadFromFile.LocationData(locationDataStream);
+                fileData.Scenes = LoadFromFile.SceneData(scenesStream);
+                fileData.Adventures = LoadFromFile.AdventureData(adventuresStream);
             }
             catch (Exception exception)
             {

@@ -34,6 +34,7 @@ namespace TheHerosJourney.Console
             /// <param name="tabSize">The value that indicates the column width of tab characters.</param>
             static void WriteMessage(string paragraph)
             {
+                fileData = new FileData();
                 paragraph = Process.Message(fileData, story, paragraph);
 
                 MessageLog.Add(paragraph);
@@ -146,6 +147,7 @@ namespace TheHerosJourney.Console
             var scenesStream = GetDataResourceStream("scenes.csv");
             var adventuresStream = GetDataResourceStream("adventures.csv");
 
+            // should be split up for maximum editability
             fileData = Run.LoadGameData(characterDataStream, locationDataStream, scenesStream, adventuresStream, ShowLoadGameFilesError);
 
             string[] scenesToTest = null;//new []{ "pathtobaron=Forest", "MTM3", "MWG2" };

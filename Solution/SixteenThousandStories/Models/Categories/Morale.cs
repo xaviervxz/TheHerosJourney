@@ -8,7 +8,5 @@ namespace SixteenThousandStories.Models
 {
     public class Morale : Category
     {
-        public string Color { get; set; }
-
     }
 }

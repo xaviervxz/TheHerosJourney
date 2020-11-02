@@ -12,9 +12,11 @@ namespace SixteenThousandStories.Models
         public string Name { get; set; }
         public string Description { get; set; }
 
+        [Display(Name = "Creation Date")]
         [DataType(DataType.Date)]
         public DateTime Created_At { get; set; } = DateTime.Today;
 
+        [Display(Name = "Created By")]
         public Player Created_By { get; set; }
     }
 }

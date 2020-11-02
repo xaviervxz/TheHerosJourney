@@ -37,7 +37,6 @@ namespace SixteenThousandStories.Pages.Categories.JourneyStages
                 return Page();
             }
             JourneyStage.Created_At = DateTime.Today;
-            JourneyStage.Ordering_Int = _context.JourneyStage.Max(model => model.Ordering_Int) + 1;
             _context.JourneyStage.Add(JourneyStage);
             await _context.SaveChangesAsync();
 

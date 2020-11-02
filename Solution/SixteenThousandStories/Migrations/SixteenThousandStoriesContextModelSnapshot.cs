@@ -67,6 +67,9 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -78,9 +81,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.Property<string>("Voice")
                         .HasColumnType("nvarchar(max)");
@@ -111,9 +111,6 @@ namespace SixteenThousandStories.Migrations
                     b.Property<string>("Message_Template")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Meta_Description")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("MoodID")
                         .HasColumnType("int");
 
@@ -141,6 +138,9 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -152,9 +152,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -185,9 +182,6 @@ namespace SixteenThousandStories.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<int?>("Skill_BaseID")
                         .HasColumnType("int");
 
@@ -195,9 +189,6 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Weight")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Worth")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
@@ -220,6 +211,9 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -231,9 +225,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -280,8 +271,8 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
@@ -294,9 +285,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -312,8 +300,8 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
@@ -326,9 +314,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -409,9 +394,6 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message_Template")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Meta_Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MoodID")
@@ -498,6 +480,9 @@ namespace SixteenThousandStories.Migrations
                     b.Property<string>("Adj_Possessive")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -512,9 +497,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Object")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.Property<string>("Pro_Possessive")
                         .HasColumnType("nvarchar(max)");
@@ -549,9 +531,6 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message_Template")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Meta_Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("MoodID")
@@ -612,8 +591,8 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
@@ -626,9 +605,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -644,6 +620,9 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -655,9 +634,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
@@ -673,6 +649,9 @@ namespace SixteenThousandStories.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Argb")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Created_At")
                         .HasColumnType("datetime2");
 
@@ -684,9 +663,6 @@ namespace SixteenThousandStories.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Ordering_Int")
-                        .HasColumnType("int");
 
                     b.HasKey("ID");
 
